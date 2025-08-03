@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Universal Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: #121212;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Swiper Pagination */
+.swiper-pagination {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+  gap: 10px;
+}
+
+.swiper-pagination-bullet {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  background-color: #FFCB05 !important;
+  border-radius: 9999px;
+  opacity: 0.6;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  transform: scale(1.3);
+}
+
+/* Inner fill animation */
+.swiper-pagination-bullet-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 100%;
+  background-color: #ffffff;
+  animation: fillDot 4s linear forwards;
+  z-index: 2;
+  border-radius: 9999px;
+}
+
+@keyframes fillDot {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Swiper Navigation Buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #FFCB05 !important;
+  background: rgba(31, 41, 55, 0.8) !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+}
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 18px !important;
+}
+
+/* Reusable UI Classes */
+.btn-primary {
+  @apply bg-yellow-400 text-gray-900 px-8 py-4 rounded-full font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105;
+}
+.btn-secondary {
+  @apply border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300;
+}
+.form-input {
+  @apply w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-300;
+}
+.card-hover {
+  @apply transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl;
+}
+.text-responsive {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+.hero-title {
+  font-size: clamp(2rem, 8vw, 4rem);
+}
+
+/* Animation Utilities */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out;
+}
+
+/* Accessibility */
+.focus-visible:focus {
+  outline: 2px solid #FFCB05;
+  outline-offset: 2px;
+}
+
+/* No Print */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+@keyframes phone-ring {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(-15deg); }
+  20% { transform: rotate(15deg); }
+  30% { transform: rotate(-15deg); }
+  40% { transform: rotate(15deg); }
+  50% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.animate-phone-ring {
+  animation: phone-ring 1s infinite;
+  transform-origin: center;
+}
