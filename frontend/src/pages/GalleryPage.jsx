@@ -5,85 +5,241 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
+// Sample featured and gallery images
 const featuredImages = [
-  "https://images.pexels.com/photos/3171837/pexels-photo-3171837.jpeg?auto=compress&cs=tinysrgb&w=800",
-  "https://images.pexels.com/photos/1024965/pexels-photo-1024965.jpeg?auto=compress&cs=tinysrgb&w=800",
-  "https://images.pexels.com/photos/2906602/pexels-photo-2906602.jpeg?auto=compress&cs=tinysrgb&w=800",
+  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575418/get_ty5cuf.jpg",
+  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574461/dm_for_more_enquire.......8124787002_1_gwlgmr.jpg",
+  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg",
+  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/441211858_1516889262195295_5631550106516590248_n_ztz91b.jpg",
+  "https://res.cloudinary.com/demo/image/upload/v1/gallery/featured5.jpg",
 ];
 
-const allImages = [
+const weddingImages = [
   {
-    src: "https://images.pexels.com/photos/6130052/pexels-photo-6130052.jpeg?auto=compress&cs=tinysrgb&w=800",
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497314/VIDE5698_xpws5g.jpg",
     category: "Wedding",
   },
   {
-    src: "https://images.pexels.com/photos/2072169/pexels-photo-2072169.jpeg?auto=compress&cs=tinysrgb&w=800",
-    category: "Birthday",
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497253/VIDE6810_bou4c1.jpg",
+    category: "Wedding",
   },
   {
-    src: "https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800",
-    category: "Corporate",
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497289/VIDE9208_wakqic.jpg",
+    category: "Wedding",
   },
   {
-    src: "https://images.pexels.com/photos/1206101/pexels-photo-1206101.jpeg?auto=compress&cs=tinysrgb&w=800",
-    category: "Festival",
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497090/DSC00810_yk3mts.jpg",
+    category: "Wedding",
   },
   {
-    src: "https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=800",
-    category: "Concert",
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497283/VIDE8942_kthszx.jpg",
+    category: "Wedding",
+  },
+  {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497082/DSC02822_kzph6q.jpg",
+    category: "Wedding",
+  },
+   {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497079/DONE6877_wbi80g.jpg",
+    category: "Wedding",
+  },
+   {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496991/CRZY4744_rrhqsh.jpg",
+    category: "Wedding",
+  },
+   {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496988/CRZY9081_f4n5sb.jpg",
+    category: "Wedding",
+  },
+   {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496984/CRZY5834_uczsgg.jpg",
+    category: "Wedding",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496977/CRZY0319_ufbjae.jpg",
+    category: "Wedding",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496957/Carousal5_nevc6u.jpg",
+    category: "Wedding",
+  },
+   {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496913/1C8A8580_ladwlo.jpg",
+    category: "Wedding",
+  },
+   {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496929/Carousal1_zatgdd.jpg",
+    category: "Wedding",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496911/02_kn968l.jpg",
+    category: "Wedding",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575418/get_ty5cuf.jpg",
+    category: "Wedding",
+  },
+     {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754576215/get_3_dquye5.jpg",
+    category: "Wedding",
   },
 ];
 
-const categories = ["All", "Wedding", "Birthday", "Corporate", "Festival", "Concert"];
+const birthdayImages = [
+  {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574463/dm_for_more_enquire.......8124787002_t4rvoa.jpg",
+    category: "Birthday",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317273066_854165815854107_4457544914850071124_n_j5nwf1.jpg",
+    category: "Birthday",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/HELLO_ALL_HOPE_YOU_ALL_ARE_GOOD_AND_SAFE_%EF%B8%8F_Yes_we_are_back_With_all_your_blessings_here_is_ou_1_zxaczf.jpg",
+    category: "Birthday",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574461/dm_for_more_enquire.......8124787002_1_gwlgmr.jpg",
+    category: "Birthday",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317146553_3370299676574390_6411223539222079084_n_qaagqe.jpg",
+    category: "Birthday",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574465/HELLO_ALL_HOPE_YOU_ALL_ARE_GOOD_AND_SAFE_%EF%B8%8F_Yes_we_are_back_With_all_your_blessings_here_is_ou_dpvfwz.jpg",
+    category: "Birthday",
+  },
+];
+const babyshowerImages = [
+  {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/441499064_405687615669094_7523321045747557921_n_t74lsd.jpg",
+    category: "BabyShower",
+  },
+  {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/get_2_q82lgm.jpg",
+    category: "BabyShower",
+  },
+  {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/441211858_1516889262195295_5631550106516590248_n_ztz91b.jpg",
+    category: "BabyShower",
+  },
+  {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575847/get_1_xn6txa.jpg",
+    category: "BabyShower",
+  },
+  {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575847/Someone_special_someone_dear_someone_new_to_love_is_here_PPL_Who_Collaborated_with_us_%EF%B8%8F_bu76ns.jpg",
+    category: "BabyShower",
+  },
+];
+const corporateImages = [
+  {
+    src: "https://res.cloudinary.com/demo/image/upload/corporate1.jpg",
+    category: "Corporate",
+  },
+];
+
+const festivalImages = [
+  {
+    src: "https://res.cloudinary.com/demo/image/upload/festival1.jpg",
+    category: "Festival",
+  },
+];
+
+const concertImages = [
+  {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg",
+    category: "Concert",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574979/It_is_more_important_to_click_with_people_than_to_click_the_shutter_Thanks_for_Capturing_the_m_-_Copy_ffa4xi.webp",
+    category: "Concert",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574978/Modeling_shoot_EVERYONEHASTALENT..._Teamwork_makes_the_Dreamwork_Inframe_-_methagu_lead_c_omidzp.jpg",
+    category: "Concert",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574978/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_1_fgsjlm.jpg",
+    category: "Concert",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574969/sanjeevalayamanasa_Stunning_Moments_Captured_Featuring_the_radiant_sanjeevalayamanasa_vsht6w.jpg",
+    category: "Concert",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574979/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_2_e4lvon.jpg",
+    category: "Concert",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574975/Modeling_shoot_EVERYONEHASTALENT..._Teamwork_makes_the_Dreamwork_Inframe_-_methagu_lead_c_1_sdcpuz.jpg",
+    category: "Concert",
+  },
+    {
+    src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574963/sathya_devarajan_official_trending_post_photography_d7hvvx.jpg",
+    category: "Concert",
+  },
+ 
+];
+
+const allImages = [
+  ...weddingImages,
+  ...birthdayImages,
+  ...babyshowerImages,
+  ...corporateImages,
+  ...festivalImages,
+  ...concertImages,
+];
+
+const categories = ["All", "Wedding", "Birthday","BabyShower", "Corporate", "Festival", "Concert"];
 
 const GalleryPage = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [expandedIndex, setExpandedIndex] = useState(null);
 
   const filteredImages =
     activeCategory === "All"
       ? allImages
       : allImages.filter((img) => img.category === activeCategory);
 
+  const handleToggleExpand = (index) => {
+    setExpandedIndex(index === expandedIndex ? null : index);
+  };
+
   return (
-<motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  exit={{ opacity: 0 }}
-  className="min-h-screen text-white pt-24 px-4 md:px-8"
-  style={{
-    backgroundColor: "rgba(3,17,40,0.6)",
-    backdropFilter: "blur(8px)",
-  }}
->
-  {/* Back to Home Button inside section */}
- <div className="mb-6">
-  <Link
-    to="/"
-    className="inline-flex items-center text-yellow-500 px-5 py-2 rounded-full hover:bg-yellow-500 hover:text-white transition text-base font-medium shadow-md border border-yellow-500"
-  >
-    <ArrowLeft size={20} className="mr-2 p-0.5 rounded-lg shadow" />
-    Back to Home
-  </Link>
-</div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen text-white pt-24 px-4 md:px-8"
+      style={{ backgroundColor: "#031128", backdropFilter: "blur(8px)" }}
+    >
+      {/* Back Button */}
+      <div className="mb-6">
+        <Link
+          to="/"
+          className="inline-flex items-center text-yellow-500 px-5 py-2 rounded-full hover:bg-yellow-500 hover:text-black transition text-base font-medium shadow-md border border-yellow-500"
+        >
+          <ArrowLeft size={20} className="mr-2" />
+          Back to Home
+        </Link>
+      </div>
 
+      {/* Title */}
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-3xl md:text-4xl font-bold text-center mb-12"
+      >
+        Gallery
+      </motion.h1>
 
-  {/* Page Title */}
-  <motion.h1
-    initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className="text-3xl md:text-4xl font-bold text-center mb-12"
-  >
-    Gallery
-  </motion.h1>
-
-
-
-
-      {/* Featured Slider */}
+      {/* Swiper Slider */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -129,9 +285,10 @@ const GalleryPage = () => {
         {categories.map((cat) => (
           <button
             key={cat}
-            onClick={() =>
-              setActiveCategory((prev) => (prev === cat ? "All" : cat))
-            }
+            onClick={() => {
+              setActiveCategory(cat);
+              setExpandedIndex(null);
+            }}
             className={`px-4 py-2 rounded-full border transition-colors duration-300 text-sm ${
               activeCategory === cat
                 ? "bg-[#FFCB05] text-black font-bold"
@@ -143,43 +300,64 @@ const GalleryPage = () => {
         ))}
       </div>
 
-      {/* Gallery Grid */}
+      {/* Grid Gallery */}
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-16"
+        className="grid grid-cols-2 md:grid-cols-3 gap-4 pb-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        {filteredImages.map((img, index) => (
-          <div
-            key={index}
-            className="relative group rounded-xl overflow-hidden shadow-lg"
-          >
-            <img
-              src={img.src}
-              alt={img.category}
-              className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-            />
-           <div className="absolute top-2 right-2 bg-yellow-400 text-black text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-  {img.category}
-</div>
+        {filteredImages.map((img, index) => {
+          const isExpanded = expandedIndex === index;
 
-          </div>
-        ))}
+          return (
+            <div
+              key={index}
+              className={`relative group bg-[#020e22] border border-[#FFCB05]/10 rounded-xl overflow-hidden shadow-md transition-all duration-300 cursor-pointer ${
+                isExpanded ? "col-span-2 md:col-span-3" : ""
+              }`}
+              onClick={() => handleToggleExpand(index)}
+            >
+              <img
+                src={img.src}
+                alt={img.category}
+                className={`w-full transition-all duration-300 ${
+                  isExpanded
+                    ? "max-h-[80vh] object-contain"
+                    : "aspect-square object-cover"
+                }`}
+              />
+              <div className="absolute top-2 right-2 bg-yellow-400 text-black text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                {img.category}
+              </div>
+
+              {/* Close Icon */}
+              {isExpanded && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedIndex(null);
+                  }}
+                  className="absolute top-3 left-3 bg-[#031128dd] hover:bg-yellow-500 text-yellow-400 hover:text-black border border-yellow-400 hover:border-yellow-500 p-1.5 rounded-full transition-all duration-200"
+                >
+                  <X size={22} />
+                </button>
+              )}
+            </div>
+          );
+        })}
       </motion.div>
 
-      {/* Swiper Custom Styling */}
-      <style>
-        {`
-          .swiper-pagination-bullet {
-            background-color: #4B5563;
-            opacity: 1;
-          }
-          .swiper-pagination-bullet-active {
-            background-color: #FFCB05;
-          }
-        `}
-      </style>
+      {/* Swiper Pagination Styling */}
+      <style>{`
+        .swiper-pagination-bullet {
+          background-color: #4B5563;
+          opacity: 1;
+        }
+        .swiper-pagination-bullet-active {
+          background-color: #FFCB05;
+        }
+      `}</style>
     </motion.div>
   );
 };

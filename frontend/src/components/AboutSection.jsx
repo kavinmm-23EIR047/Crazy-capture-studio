@@ -33,8 +33,8 @@ const Counter = ({ target, label }) => {
             label === 'Happy Clients' ? <Users className="w-8 h-8 text-[#FFCB05]" /> :
               <Camera className="w-8 h-8 text-[#FFCB05]" />}
       </div>
-      <div className="text-3xl font-bold mb-1">{count}+</div>
-      <div className="text-[#B0B0B0] text-sm">{label}</div>
+      <div className="text-xl sm:text-2xl md:text-3xl font-bold mb-1">{count}+</div>
+      <div className="text-xs sm:text-sm text-[#B0B0B0]">{label}</div>
     </div>
   );
 };
@@ -70,20 +70,20 @@ const AboutSection = () => {
             transition={{ duration: 0.8 }}
             className="backdrop-blur-md bg-white/5 border border-white/10 p-8 rounded-2xl shadow-xl"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center">
               About <span className="text-[#FFCB05]">Our Studio</span>
             </h2>
-            <p className="text-lg text-[#B0B0B0] mb-6 leading-relaxed">
+            <p className="text-base sm:text-lg text-[#B0B0B0] mb-6 leading-relaxed">
               Founded in 2016, Crazy Capture Studio has been at the forefront of creative photography,
               transforming ordinary moments into extraordinary memories.
             </p>
-            <p className="text-lg text-[#B0B0B0] mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg text-[#B0B0B0] mb-8 leading-relaxed">
               Our team blends artistic creativity with technical excellence to deliver photos that are both timeless and emotionally impactful.
             </p>
 
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 shadow-inner">
-              <h3 className="text-xl font-semibold text-[#FFCB05] mb-3">Our Mission</h3>
-              <p className="text-[#CCCCCC] text-base">
+              <h3 className="text-lg sm:text-xl font-semibold text-[#FFCB05] mb-3">Our Mission</h3>
+              <p className="text-sm sm:text-base text-[#CCCCCC]">
                 To create timeless photographs that celebrate life’s most precious moments while delivering
                 a seamless, heart-centered experience.
               </p>
@@ -112,8 +112,8 @@ const AboutSection = () => {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="absolute -bottom-6 -left-6 bg-[#FFCB05] text-black px-6 py-4 rounded-xl shadow-2xl"
             >
-              <div className="text-2xl font-bold leading-tight">8+ Years</div>
-              <div className="text-sm font-medium">of Excellence</div>
+              <div className="text-lg sm:text-xl md:text-2xl font-bold leading-tight">8+ Years</div>
+              <div className="text-xs sm:text-sm font-medium">of Excellence</div>
             </motion.div>
           </motion.div>
         </div>

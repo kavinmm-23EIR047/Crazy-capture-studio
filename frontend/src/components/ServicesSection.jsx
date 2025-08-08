@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import { Heart, Palette, Camera, Calendar } from 'lucide-react';
+import { Heart, Music, Baby, Gift, Megaphone } from 'lucide-react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -14,35 +14,38 @@ const ServicesSection = () => {
   const services = [
     {
       icon: Heart,
-      title: 'Cinematic Wedding Films',
-      description: 'We craft visually stunning wedding stories that are heartfelt and timeless.',
-      image: 'https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=800',
-      features: ['Cinematic Edits', 'Drone Footage', 'Candid Moments', 'Full-Day Coverage'],
-      price: 'From ₹50,000',
+      title: 'Wedding Photography',
+      description: 'Relive your big day through timeless, cinematic captures.',
+      image: 'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497314/VIDE5698_xpws5g.jpg',
+      features: ['Candid Moments', 'Couple Portraits', 'Drone Shots', 'Cinematic Editing'],
     },
     {
-      icon: Palette,
-      title: 'Creative Fashion Shoots',
-      description: 'Bold editorial photography that captures your unique style and elegance.',
-      image: 'https://images.pexels.com/photos/157675/fashion-men-s-individuality-black-and-white-157675.jpeg?auto=compress&cs=tinysrgb&w=800',
-      features: ['Lookbook Shoots', 'Themed Concepts', 'Retouching', 'Studio & Outdoor'],
-      price: 'From ₹15,000',
+      icon: Music,
+      title: 'Concert Coverage',
+      description: 'High-energy concert moments captured with dynamic precision.',
+      image: 'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg',
+      features: ['Live Action Shots', 'Artist Closeups', 'Audience Reactions', 'Stage Lighting Focus'],
     },
     {
-      icon: Camera,
-      title: 'Modern Studio Portraits',
-      description: 'Polished portraits perfect for professionals, artists, and families.',
-      image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=800',
-      features: ['Personal Branding', 'Family Sessions', 'Product Showcase', 'Headshots'],
-      price: 'From ₹5,000',
+      icon: Baby,
+      title: 'Baby Shoot',
+      description: 'Capture those adorable giggles and first milestones forever.',
+      image: 'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317273066_854165815854107_4457544914850071124_n_j5nwf1.jpg',
+      features: ['Newborn Themes', 'Natural Light', 'Candid Emotions', 'Safe Props','Birthday shoots'],
     },
     {
-      icon: Calendar,
-      title: 'Corporate & Event Coverage',
-      description: 'Capture every key moment at your conference, party, or launch.',
-      image: 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=800',
-      features: ['Full Event Coverage', 'Real-Time Edits', 'Candid Highlights', 'Press Kits'],
-      price: 'From ₹10,000',
+      icon: Gift,
+      title: 'Baby Shower Photography',
+      description: 'Celebrate new beginnings with warm and joyful frames.',
+      image: 'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/get_2_q82lgm.jpg',
+       features: ['Decor Details', 'Family Portraits', 'Games & Candid', 'Gift Reveal Shots'],
+    },
+    {
+      icon: Megaphone,
+      title: 'Advertisement Shoots',
+      description: 'Showcase your brand with powerful visuals and creative vision.',
+      image: 'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574978/Modeling_shoot_EVERYONEHASTALENT..._Teamwork_makes_the_Dreamwork_Inframe_-_methagu_lead_c_omidzp.jpg',
+      features: ['Product Styling', 'Model Integration', 'Studio Lighting', 'Creative Direction'],
     },
   ];
 
@@ -120,9 +123,8 @@ const ServicesSection = () => {
                       ))}
                     </ul>
 
-                    {/* Pricing and CTA */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-[#FFCB05]">{service.price}</span>
+                    {/* CTA */}
+                    <div className="flex justify-end">
                       <button className="bg-[#FFCB05] text-black px-5 py-2 rounded-full font-medium hover:bg-[#e6b800] transition">
                         Explore
                       </button>

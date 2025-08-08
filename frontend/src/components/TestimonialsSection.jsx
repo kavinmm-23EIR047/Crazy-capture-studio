@@ -1,137 +1,173 @@
-import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import { Star, Quote } from 'lucide-react';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Quote, Star, ArrowRight } from "lucide-react";
 
-const TestimonialsSection = () => {
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+export const TestimonialsSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true });
+  const [isMobile, setIsMobile] = useState(false);
+  const [testimonials, setTestimonials] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
 
-  const testimonials = [
-    {
-      name: 'Ananya Mehta',
-      role: 'Bride | Chennai Wedding',
-      image: 'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 5,
-      text: 'The photos made us relive our wedding all over again! Every moment was captured so beautifully — full of emotion and joy. Truly cinematic and professional.',
-    },
-    {
-      name: 'Rohit Sharma',
-      role: 'Startup Founder',
-      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 4,
-      text: 'We hired the team for our brand shoot. The lighting, the direction, and the editing were just top-notch. They understood our vision and executed it perfectly.',
-    },
-    {
-      name: 'Natasha Pillai',
-      role: 'Fashion Influencer',
-      image: 'https://images.pexels.com/photos/2100063/pexels-photo-2100063.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 5,
-      text: 'Every photo from the editorial shoot was a masterpiece. I felt like a true model — confident, elegant, and powerful. Highly recommend their creative team!',
-    },
-    {
-      name: 'Rahul & Priya',
-      role: 'Engagement Shoot Clients',
-      image: 'https://images.pexels.com/photos/1441122/pexels-photo-1441122.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 5,
-      text: 'The pictures were more than just images — they were memories frozen in time. From candid moments to posed elegance, they captured it all.',
-    },
-    {
-      name: 'Sofia Thomas',
-      role: 'Event Host',
-      image: 'https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?auto=compress&cs=tinysrgb&w=150',
-      rating: 4,
-      text: 'They covered our corporate gala night and the pictures turned out phenomenal. The team was punctual, polite, and incredibly talented.',
-    },
-  ];
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await fetch(`${VITE_BACKEND_URL}/api/feedback`);
+        const data = await response.json();
+        const reviews = data.reviews || [];
+        setTestimonials(reviews);
+
+        const total = reviews.reduce(
+          (sum, review) => sum + parseFloat(review.rating || 0),
+          0
+        );
+        setAverageRating((total / reviews.length).toFixed(1));
+      } catch (error) {
+        console.error("Failed to fetch testimonials:", error);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
 
   return (
-    <section id="testimonials" className="py-24 bg-transparent text-white relative z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* Header */}
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 50 }}
+    <section className="bg-transparent text-white py-20 px-4 md:px-10">
+      <div className="max-w-6xl mx-auto text-center text-[#FFCB05]" ref={ref}>
+        <motion.h2
+          className="text-2xl md:text-4xl font-bold mb-2"
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            What Our <span className="text-[#FFCB05]">Clients Say</span>
-          </h2>
-          <p className="text-xl text-[#B0B0B0] max-w-3xl mx-auto">
-            Real feedback from people who trusted us with their most special moments.
-          </p>
+          Crazy Capture Studio, <span className="text-[#CCCCCC]">Tirupur</span>
+        </motion.h2>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="flex justify-center items-center mb-4 text-yellow-400 text-xl font-semibold gap-2"
+        >
+          {averageRating}/5
+          <Star className="w-5 h-5 fill-current" />
         </motion.div>
 
-        {/* Testimonials Carousel */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
+        <motion.p
+          className="text-[#CCCCCC] max-w-2xl mx-auto mb-4"
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
+          Here's what our happy customers have to say about our services.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mb-10"
+        >
+          <a
+            href="https://www.google.com/search?q=Crazy+Capture+Studio+Tirupur"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-[#FFCB05] hover:underline transition"
+          >
+            View More Reviews on Google
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </motion.div>
+
+        {/* Navigation Arrows */}
+        <div className="relative">
           <Swiper
-            modules={[Autoplay, Pagination, Navigation]}
+            modules={[Navigation, Pagination, Autoplay]}
             spaceBetween={30}
-            slidesPerView={1}
-            autoplay={{ delay: 4000, disableOnInteraction: false }}
-            navigation
-            pagination={{
-              clickable: true,
-              bulletClass: 'swiper-pagination-bullet',
-              bulletActiveClass: 'swiper-pagination-bullet-active',
+            slidesPerView={isMobile ? 1 : 2}
+            loop={true}
+            autoplay={{ delay: 4000 }}
+            pagination={{ clickable: true }}
+            navigation={{
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
             }}
-            breakpoints={{
-              768: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-            }}
-            className="testimonials-swiper pb-16"
+            className="pb-12"
           >
             {testimonials.map((testimonial, index) => (
               <SwiperSlide key={index}>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
                   className="bg-white/5 border border-white/10 backdrop-blur-sm rounded-xl p-8 h-full flex flex-col justify-between"
                 >
-                  {/* Quote Icon */}
-                  <Quote className="w-8 h-8 text-[#FFCB05] mb-4" />
+                  <div className="flex items-center justify-between mb-4">
+                    <Quote className="w-6 h-6 text-[#FFCB05]" />
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
+                      alt="Google"
+                      className="h-6"
+                    />
+                  </div>
 
-                  {/* Rating */}
                   <div className="flex mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-[#FFCB05] fill-current" />
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-5 h-5 ${
+                          i < parseInt(testimonial.rating)
+                            ? "text-[#FFCB05]"
+                            : "text-white/20"
+                        } fill-current`}
+                      />
                     ))}
                   </div>
 
-                  {/* Testimonial Text */}
-                  <p className="text-[#CCCCCC] mb-6 text-base leading-relaxed">
-                    "{testimonial.text}"
+                  <p className="text-[#CCCCCC] mb-4 text-base leading-relaxed">
+                    "{testimonial.comment}"
                   </p>
 
-                  {/* Author */}
+                  {testimonial.date && (
+                    <p className="text-sm text-white/40 mb-4 text-right">
+                      {new Date(testimonial.date).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
+                  )}
+
                   <div className="flex items-center mt-auto pt-4 border-t border-white/10">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover mr-4"
-                    />
-                    <div>
-                      <h4 className="font-semibold text-white text-sm">{testimonial.name}</h4>
-                      <p className="text-[#B0B0B0] text-xs">{testimonial.role}</p>
+                    <div className="w-12 h-12 rounded-full bg-[#FFCB05] text-black font-bold flex items-center justify-center mr-4">
+                      {testimonial.image || testimonial.description?.charAt(0)}
                     </div>
+                    <h4 className="font-semibold text-white text-sm">
+                      {testimonial.description}
+                    </h4>
                   </div>
                 </motion.div>
               </SwiperSlide>
             ))}
           </Swiper>
-        </motion.div>
+
+          {/* Custom Navigation Buttons */}
+          <div className="swiper-button-prev text-white !left-0" />
+          <div className="swiper-button-next text-white !right-0" />
+        </div>
       </div>
     </section>
   );

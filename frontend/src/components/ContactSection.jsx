@@ -1,25 +1,46 @@
-import React, { useState, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-import {
-  Phone, Mail, MapPin, Facebook, Instagram, Twitter, Send, CheckCircle
-} from 'lucide-react';
-import logo from '../assets/Crazylogo.png';
+import { useState, useRef, useEffect } from "react";
+import { useInView, motion } from "framer-motion";
+import { Mail, Phone, User, CalendarDays, MessageCircle, CheckCircle } from "lucide-react";
 
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const [formData, setFormData] = useState({
-    name: '', email: '', phone: '', eventName: '', comment: ''
+    name: '', email: '', phone: '', eventName: '', comment: '', captcha: ''
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [captchaQuestion, setCaptchaQuestion] = useState("");
+  const [captchaAnswer, setCaptchaAnswer] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  // Generate a simple captcha
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
+
+  const generateCaptcha = () => {
+    const a = Math.floor(Math.random() * 10);
+    const b = Math.floor(Math.random() * 10);
+    setCaptchaQuestion(`${a} + ${b} = ?`);
+    setCaptchaAnswer((a + b).toString());
+  };
 
   const handleInputChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate captcha
+    if (formData.captcha !== captchaAnswer) {
+      alert("❌ Incorrect CAPTCHA. Try again.");
+      generateCaptcha();
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/contact`, {
@@ -30,11 +51,10 @@ const ContactSection = () => {
 
       const data = await res.json();
       if (data.success) {
+        setShowPopup(true);
         setFormSubmitted(true);
-        setFormData({
-          name: '', email: '', phone: '', eventName: '', comment: ''
-        });
-        setTimeout(() => setFormSubmitted(false), 4000);
+        setFormData({ name: '', email: '', phone: '', eventName: '', comment: '', captcha: '' });
+        generateCaptcha(); // Reset captcha
       }
     } catch (err) {
       console.error('❌ Form error:', err);
@@ -43,177 +63,150 @@ const ContactSection = () => {
     }
   };
 
-  const contactInfo = [
-    { icon: Phone, title: 'Phone', value: '+91 96007 32162', href: 'tel:+919600732162' },
-    { icon: Mail, title: 'Email', value: 'kavinmm200@gmail.com', href: 'mailto:kavinmm200@gmail.com' },
-    { icon: MapPin, title: 'Address', value: 'Tiruppur, Tamil Nadu, India', href: '#' },
-  ];
-
-  const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-  ];
-
   return (
-    <>
-      <section id="contact" className="relative bg-transparent text-white py-16 z-10 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <img
-            src="https://www.svgrepo.com/show/303397/envelope-send-mail.svg"
-            alt="bg pattern"
-            className="w-full h-full object-cover"
+    <section
+      id="contact"
+      ref={ref}
+      className="relative py-16 px-6 bg-transparent text-white backdrop-blur-lg"
+      style={{ background: "rgba(10, 10, 25, 0.6)" }}
+    >
+      {/* Corner Decorative Box */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/10 rounded-bl-full blur-2xl" />
+
+      <div className="max-w-4xl mx-auto text-center">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+          className="text-3xl font-bold text-yellow-400 mb-4"
+        >
+          Get in Touch
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.2 }}
+          className="text-lg text-gray-200 mb-10"
+        >
+          We’d love to hear about your event or project.
+        </motion.p>
+      </div>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="max-w-3xl mx-auto grid gap-6">
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="relative">
+            <User className="absolute left-3 top-4 text-yellow-400" size={18} />
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="w-full pl-10 bg-white/10 p-4 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <Mail className="absolute left-3 top-4 text-yellow-400" size={18} />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="w-full pl-10 bg-white/10 p-4 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="relative">
+            <Phone className="absolute left-3 top-4 text-yellow-400" size={18} />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone Number"
+              value={formData.phone}
+              onChange={handleInputChange}
+              className="w-full pl-10 bg-white/10 p-4 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            />
+          </div>
+
+          <div className="relative">
+            <CalendarDays className="absolute left-3 top-4 text-yellow-400" size={18} />
+            <input
+              type="text"
+              name="eventName"
+              placeholder="Event Name (optional)"
+              value={formData.eventName}
+              onChange={handleInputChange}
+              className="w-full pl-10 bg-white/10 p-4 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            />
+          </div>
+        </div>
+
+        <div className="relative">
+          <MessageCircle className="absolute left-3 top-4 text-yellow-400" size={18} />
+          <textarea
+            name="comment"
+            rows="4"
+            placeholder="Your Message"
+            value={formData.comment}
+            onChange={handleInputChange}
+            className="w-full pl-10 bg-white/10 p-4 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            required
           />
         </div>
 
-        <div className="relative max-w-6xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-6"
-          >
-            <img src={logo} alt="Crazy Capture Logo" className="mx-auto w-20 object-contain" />
-          </motion.div>
-
-          <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 40 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-10"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">Contact <span className="text-[#FFCB05]">Us</span></h2>
-            <p className="text-md text-[#B0B0B0] max-w-xl mx-auto">
-              Have a project in mind? Let's bring it to life.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-10">
-            {/* Form */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="w-full max-w-md mx-auto"
-            >
-              <div className="bg-white/5 border border-white/10 backdrop-blur-sm rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4 text-center">Send a Message</h3>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {[
-                    { name: 'name', label: 'Your Name' },
-                    { name: 'email', label: 'Your Email', type: 'email' },
-                    { name: 'phone', label: 'Phone Number' },
-                    { name: 'eventName', label: 'Event Name' },
-                    { name: 'comment', label: 'Message', isTextArea: true }
-                  ].map((field) => (
-                    <div key={field.name}>
-                      <label htmlFor={field.name} className="block text-sm mb-1">
-                        {field.label}
-                      </label>
-                      {field.isTextArea ? (
-                        <textarea
-                          id={field.name}
-                          name={field.name}
-                          rows={4}
-                          value={formData[field.name]}
-                          onChange={handleInputChange}
-                          required
-                          className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded text-sm"
-                          placeholder={field.label}
-                        />
-                      ) : (
-                        <input
-                          type={field.type || 'text'}
-                          id={field.name}
-                          name={field.name}
-                          value={formData[field.name]}
-                          onChange={handleInputChange}
-                          required
-                          className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded text-sm"
-                          placeholder={field.label}
-                        />
-                      )}
-                    </div>
-                  ))}
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-[#FFCB05] text-black py-2 rounded font-medium hover:bg-[#e6b800] transition"
-                  >
-                    {loading ? 'Sending...' : 'Send Message'}
-                    <Send className="inline ml-2 w-4 h-4" />
-                  </button>
-                </form>
-
-                {formSubmitted && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4 }}
-                    className="mt-4 p-3 rounded-md bg-green-900/30 text-green-300 border border-green-500 text-sm flex items-center justify-center gap-2"
-                  >
-                    <CheckCircle className="w-4 h-4" /> Message Sent!
-                  </motion.div>
-                )}
-              </div>
-            </motion.div>
-
-            {/* Info */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="space-y-10"
-            >
-              <div className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <div key={index} className="flex items-start">
-                    <info.icon className="w-5 h-5 text-[#FFCB05] mt-1" />
-                    <div className="ml-3">
-                      <h4 className="text-sm font-medium text-white">{info.title}</h4>
-                      <a href={info.href} className="text-[#B0B0B0] hover:text-[#FFCB05] text-sm">
-                        {info.value}
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex gap-4">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.href}
-                    aria-label={social.label}
-                    className="w-10 h-10 bg-white/5 border border-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-[#B0B0B0] hover:text-[#FFCB05]"
-                  >
-                    <social.icon className="w-4 h-4" />
-                  </a>
-                ))}
-              </div>
-            </motion.div>
-          </div>
+        {/* CAPTCHA */}
+        <div className="grid md:grid-cols-2 gap-4 items-center">
+          <p className="text-sm text-gray-300">{captchaQuestion}</p>
+          <input
+            type="text"
+            name="captcha"
+            placeholder="Your Answer"
+            value={formData.captcha}
+            onChange={handleInputChange}
+            className="bg-white/10 p-4 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            required
+          />
         </div>
-      </section>
 
-      {/* Footer */}
-      <footer className="bg-transparent text-[#B0B0B0] text-xs py-4 text-center border-t border-white/10">
-        <p>© {new Date().getFullYear()} Crazy Capture. All rights reserved.</p>
-        <p className="mt-1">
-          Developed by{' '}
-          <a
-            href="https://github.com/yourgithub"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#FFCB05] hover:underline"
-          >
-            Ak WebFlair Technologies
-          </a>
-        </p>
-      </footer>
-    </>
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          type="submit"
+          disabled={loading}
+          className="bg-yellow-400 text-black font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition"
+        >
+          {loading ? "Sending..." : "Submit"}
+        </motion.button>
+      </form>
+
+      {/* ✅ Success Popup */}
+      {showPopup && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed top-0 left-0 w-full h-full bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+        >
+          <div className="bg-white rounded-2xl p-8 text-center text-black max-w-sm shadow-2xl">
+            <CheckCircle className="text-green-500 mx-auto mb-4" size={48} />
+            <h3 className="text-xl font-bold mb-2">Success!</h3>
+            <p className="text-sm mb-4">Your message has been sent successfully. 🎉</p>
+            <button
+              onClick={() => setShowPopup(false)}
+              className="mt-2 bg-yellow-400 text-black px-6 py-2 rounded-lg hover:bg-yellow-500 transition"
+            >
+              Close
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </section>
   );
 };
 
