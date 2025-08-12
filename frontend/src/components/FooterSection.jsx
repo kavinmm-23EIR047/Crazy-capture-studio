@@ -28,22 +28,43 @@ const FooterSection = () => {
             ))}
           </ul>
         </div>
-
-     {/* Contact Info */}
+{/* Contact Info */}
 <div className="text-center md:text-left">
   <h3 className="text-lg font-semibold text-yellow-400 mb-4">Contact Us</h3>
   <ul className="space-y-3 text-sm">
     <li className="flex justify-center md:justify-start items-center gap-2">
-      <FaPhoneAlt size={16} className="text-yellow-400" /> +91 96007 32162
+      <FaPhoneAlt size={16} className="text-yellow-400" />
+      <a
+        href="tel:+918124787002"
+        className="hover:underline hover:text-yellow-300 transition-colors"
+      >
+        +91 81247 87002
+      </a>
     </li>
     <li className="flex justify-center md:justify-start items-center gap-2">
-      <FaEnvelope size={16} className="text-yellow-400" /> kavinmm200@gmail.com
+      <FaEnvelope size={16} className="text-yellow-400" />
+      <a
+        href="mailto:crazycapturestudio@gmail.com"
+        className="hover:underline hover:text-yellow-300 transition-colors"
+      >
+        crazycapturestudio@gmail.com
+      </a>
     </li>
     <li className="flex justify-center md:justify-start items-center gap-2">
-      <FaMapMarkerAlt size={16} className="text-yellow-400" /> Tiruppur, Tamil Nadu
+      <FaMapMarkerAlt size={16} className="text-yellow-400" />
+      <a
+        href="https://www.google.com/maps?q=Kumar+Nagar,+Tiruppur"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:underline hover:text-yellow-300 transition-colors"
+      >
+        Kumar Nagar, Tiruppur
+      </a>
     </li>
   </ul>
 </div>
+
+
 
 
       {/* Follow Us */}

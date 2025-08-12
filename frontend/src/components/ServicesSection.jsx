@@ -31,14 +31,14 @@ const ServicesSection = () => {
       title: 'Baby Shoot',
       description: 'Capture those adorable giggles and first milestones forever.',
       image: 'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317273066_854165815854107_4457544914850071124_n_j5nwf1.jpg',
-      features: ['Newborn Themes', 'Natural Light', 'Candid Emotions', 'Safe Props','Birthday shoots'],
+      features: ['Newborn Themes', 'Natural Light', 'Candid Emotions', 'Safe Props', 'Birthday shoots'],
     },
     {
       icon: Gift,
       title: 'Baby Shower Photography',
       description: 'Celebrate new beginnings with warm and joyful frames.',
       image: 'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/get_2_q82lgm.jpg',
-       features: ['Decor Details', 'Family Portraits', 'Games & Candid', 'Gift Reveal Shots'],
+      features: ['Decor Details', 'Family Portraits', 'Games & Candid', 'Gift Reveal Shots'],
     },
     {
       icon: Megaphone,
@@ -109,19 +109,21 @@ const ServicesSection = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="p-6">
-                    <h3 className="text-2xl font-bold text-white mb-2">{service.title}</h3>
-                    <p className="text-[#CCCCCC] text-sm mb-4">{service.description}</p>
+                  <div className="p-6 flex flex-col justify-between min-h-[340px]">
+                    <div>
+                      <h3 className="text-2xl font-bold text-white mb-2">{service.title}</h3>
+                      <p className="text-[#CCCCCC] text-sm mb-4">{service.description}</p>
 
-                    {/* Features */}
-                    <ul className="space-y-2 mb-6">
-                      {service.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center text-[#B0B0B0] text-sm">
-                          <div className="w-2 h-2 bg-[#FFCB05] rounded-full mr-3"></div>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
+                      {/* Features */}
+                      <ul className="space-y-2 mb-6">
+                        {service.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center text-[#B0B0B0] text-sm">
+                            <div className="w-2 h-2 bg-[#FFCB05] rounded-full mr-3"></div>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
                     {/* CTA */}
                     <div className="flex justify-end">

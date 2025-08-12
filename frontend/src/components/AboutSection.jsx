@@ -41,7 +41,6 @@ const AboutAndAchievements = () => {
     }, 16);
   };
 
-  // About and stats animations
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -69,7 +68,6 @@ const AboutAndAchievements = () => {
     return () => observer.disconnect();
   }, [statsVisible]);
 
-  // Auto play/pause video in Achievements
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (videoRef.current) {
@@ -107,99 +105,98 @@ const AboutAndAchievements = () => {
         ref={aboutRef}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20"
       >
-        <div className="text-center mb-12 px-2 sm:px-0">
-          <h1 className="text-3xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-200 leading-tight">
-            About Us
-          </h1>
-          <div className="w-16 h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-200 mx-auto mt-4 rounded-full shadow-lg"></div>
-          <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed text-gray-300">
-            Freezing moments in{" "}
-            <span className="text-yellow-300 font-semibold">golden light</span>, wrapping them in{" "}
-            <span className="text-gray-400 font-semibold">timeless silver</span>, so they live{" "}
-            <span className="text-yellow-200 font-semibold">forever</span> in your heart.
-          </p>
-        </div>
-
-        <div className="flex flex-col lg:flex-row items-center gap-10">
-    {/* Professional video frame with REC UI */}
-<div className="flex-1 max-w-md w-full flex justify-center">
-  <motion.div
-    initial={{ scale: 1 }}
-    animate={{ scale: [1, 1.02, 1] }}
-    transition={{
-      duration: 4,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }}
-    className="relative p-[6px] bg-gradient-to-br from-gray-900 to-gray-700 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
-    style={{
-      width: "380px", // slightly wider
-      height: "280px", // increased height for better aspect
-      boxShadow: "inset 0 0 10px rgba(0,0,0,0.5), 0 8px 25px rgba(0,0,0,0.4)"
-    }}
-  >
-    {/* Outer subtle glossy border */}
-    <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 p-[4px] rounded-lg">
-      
-      {/* Inner video container */}
-  <div className="relative w-full h-full rounded-md overflow-hidden shadow-lg border border-gray-600">
-  <video
-    src="https://res.cloudinary.com/dxm3glvjq/video/upload/v1754756318/Passionate_work_enjoyable_crazy_capture_studio_praba_prince_love_passion_work_enjoy_nrkz1c.mp4"
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="w-full h-full object-cover"
-    style={{
-      filter: "grayscale(1) brightness(0.7) contrast(1.3)"
-    }}
-  />
-
-
-        {/* Cinematic gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/25 to-transparent pointer-events-none"></div>
-
-        {/* Top-left REC label */}
-        <div className="absolute top-2 left-2 flex items-center space-x-2 bg-black/60 px-2 py-1 rounded-md">
-          <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-          <span className="text-white font-semibold text-xs tracking-wider">REC</span>
-        </div>
-
-        {/* Camera icon (top-right) */}
-        <div className="absolute top-2 right-2 bg-black/60 p-1.5 rounded-full shadow-md">
-          <FaCamera className="text-white text-sm" />
-        </div>
-
-        {/* Subtle corner markers */}
-        <div className="absolute top-0 left-0 w-6 h-0.5 bg-yellow-400"></div>
-        <div className="absolute top-0 left-0 h-6 w-0.5 bg-yellow-400"></div>
-        <div className="absolute top-0 right-0 w-6 h-0.5 bg-yellow-400"></div>
-        <div className="absolute top-0 right-0 h-6 w-0.5 bg-yellow-400"></div>
-        <div className="absolute bottom-0 left-0 w-6 h-0.5 bg-yellow-400"></div>
-        <div className="absolute bottom-0 left-0 h-6 w-0.5 bg-yellow-400"></div>
-        <div className="absolute bottom-0 right-0 w-6 h-0.5 bg-yellow-400"></div>
-        <div className="absolute bottom-0 right-0 h-6 w-0.5 bg-yellow-400"></div>
-      </div>
-    </div>
-  </motion.div>
+       <div className="text-center mb-12 px-2 sm:px-0">
+  <h1 className="text-3xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-200 leading-tight">
+    About Us
+  </h1>
+  <div className="w-16 h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-200 mx-auto mt-4 rounded-full shadow-lg"></div>
+  <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed text-gray-300">
+    Capturing{" "}
+    <span className="text-yellow-300 font-semibold">golden moments</span>{" "}
+    and sealing them in{" "}
+    <span className="text-gray-400 font-semibold">timeless frames</span>{" "}
+    to live{" "}
+    <span className="text-yellow-200 font-semibold">forever</span>.
+  </p>
 </div>
 
 
-          {/* Text */}
+        <div className="flex flex-col lg:flex-row items-center gap-10">
+          {/* Video Frame */}
+          <div className="flex-1 max-w-md w-full flex justify-center">
+            <motion.div
+              initial={{ scale: 1 }}
+              animate={{ scale: [1, 1.02, 1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="relative p-[6px] bg-gradient-to-br from-gray-900 to-gray-700 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
+              style={{
+                width: "380px",
+                height: "280px",
+                boxShadow: "inset 0 0 10px rgba(0,0,0,0.5), 0 8px 25px rgba(0,0,0,0.4)"
+              }}
+            >
+              <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 p-[4px] rounded-lg">
+                <div className="relative w-full h-full rounded-md overflow-hidden shadow-lg border border-gray-600">
+                  <video
+                    src="https://res.cloudinary.com/dxm3glvjq/video/upload/v1754756318/Passionate_work_enjoyable_crazy_capture_studio_praba_prince_love_passion_work_enjoy_nrkz1c.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
+                    style={{
+                      filter: "grayscale(1) brightness(0.7) contrast(1.3)"
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/25 to-transparent pointer-events-none"></div>
+                  <div className="absolute top-2 left-2 flex items-center space-x-2 bg-black/60 px-2 py-1 rounded-md">
+                    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                    <span className="text-white font-semibold text-xs tracking-wider">REC</span>
+                  </div>
+                  <div className="absolute top-2 right-2 bg-black/60 p-1.5 rounded-full shadow-md">
+                    <FaCamera className="text-white text-sm" />
+                  </div>
+                  {/* Corner markers */}
+                  {["top-0 left-0", "top-0 right-0", "bottom-0 left-0", "bottom-0 right-0"].map((pos, idx) => (
+                    <div key={idx}>
+                      <div className={`absolute ${pos.split(" ")[0]} ${pos.split(" ")[1]} w-6 h-0.5 bg-yellow-400`}></div>
+                      <div className={`absolute ${pos.split(" ")[0]} ${pos.split(" ")[1]} h-6 w-0.5 bg-yellow-400`}></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Text Content */}
           <div
             className={`flex-1 space-y-6 text-center lg:text-left transform transition-all duration-1000 px-2 sm:px-0 ${
               aboutVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
             <p className="text-base sm:text-lg leading-relaxed text-gray-300">
-              From <span className="text-yellow-300 font-semibold">joy</span> to tears, from{" "}
-              <span className="text-gray-400 font-semibold"> chaos</span> to calm — we embrace every shade of life.{" "}
-              Through our lens, fleeting moments become{" "}
-              <span className="text-yellow-200 font-semibold">timeless memories</span>, and simple glances turn into{" "}
-              <span className="text-gray-300 font-semibold">eternal stories</span>. We don’t just take pictures — we capture the{" "}
-              <span className="text-yellow-400 font-semibold">heartbeat</span> of every moment, so you can feel them forever.
+              Hello and welcome! I’m <span className="text-yellow-300 font-semibold">Prabakaran</span>, 
+              the founder and CEO of <span className="text-yellow-400 font-semibold">Crazy Capture Studio</span>. 
+              Photography has been more than a profession for me—it’s been my lifelong passion. 
+              Every frame we capture is a story, a memory, a feeling frozen in time.
             </p>
-            <p className="text-gray-400 italic">“Every click is a heartbeat frozen in time.”</p>
+            <p className="text-base sm:text-lg leading-relaxed text-gray-300">
+              When I started Crazy Capture Studio, my vision was simple: to create images that don’t just look beautiful 
+              but also make people feel something every time they see them. Our team blends 
+              <span className="text-yellow-200 font-semibold"> creativity</span> with 
+              <span className="text-gray-400 font-semibold"> technical mastery</span>, 
+              ensuring that every shot is crafted with care, precision, and heart.
+            </p>
+            <p className="text-base sm:text-lg leading-relaxed text-gray-300">
+              We believe in making every client experience personal, stress-free, and unforgettable—because great photography 
+              is not just about the camera; it’s about <span className="text-yellow-300 font-semibold">connection</span>.
+            </p>
+            <p className="text-gray-400 italic">
+              “Thank you for trusting us to tell your story through our lens. We look forward to creating timeless memories with you.”
+            </p>
+            <p className="text-sm text-gray-500 mt-4">
+              — Prabakaran, Founder & CEO, Crazy Capture Studio
+            </p>
           </div>
         </div>
       </section>
@@ -230,7 +227,6 @@ const AboutAndAchievements = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="absolute top-3 right-3 bg-black/50 p-2 rounded-full text-white hover:bg-black/70"
-                aria-label="Instagram"
               >
                 <FaInstagram />
               </a>
@@ -238,14 +234,12 @@ const AboutAndAchievements = () => {
                 <button
                   onClick={togglePlay}
                   className="bg-black/50 p-2 rounded-full text-white hover:bg-black/70"
-                  aria-label={isPlaying ? "Pause video" : "Play video"}
                 >
                   {isPlaying ? <FaPause /> : <FaPlay />}
                 </button>
                 <button
                   onClick={toggleMute}
                   className="bg-black/50 p-2 rounded-full text-white hover:bg-black/70"
-                  aria-label={isMuted ? "Unmute video" : "Mute video"}
                 >
                   {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
                 </button>
