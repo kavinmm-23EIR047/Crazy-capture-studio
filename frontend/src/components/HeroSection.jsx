@@ -76,7 +76,7 @@ function HomeSection() {
   }, [scrollY]);
 
   return (
-    <section className="relative h-screen flex flex-col justify-center items-center text-white overflow-hidden px-6 sm:px-10 md:px-16">
+    <section id="home" className="relative h-screen flex flex-col justify-center items-center text-white overflow-hidden px-6 sm:px-10 md:px-16">
       {/* Background video with parallax */}
       <motion.div
         className="absolute inset-0 z-0 overflow-hidden"

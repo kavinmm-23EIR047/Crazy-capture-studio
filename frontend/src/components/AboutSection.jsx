@@ -101,7 +101,7 @@ const AboutAndAchievements = () => {
   return (
     <div className="bg-transparent text-white">
       {/* About */}
-      <section
+      <section id="about"
         ref={aboutRef}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20"
       >

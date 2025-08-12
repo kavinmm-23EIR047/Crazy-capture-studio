@@ -45,7 +45,7 @@ export const TestimonialsSection = () => {
   }, []);
 
   return (
-    <section className="bg-transparent text-white py-20 px-4 md:px-10">
+    <section id="reviews" className="bg-transparent text-white py-20 px-4 md:px-10">
       <div className="max-w-6xl mx-auto text-center text-[#FFCB05]" ref={ref}>
         <motion.h2
           className="text-2xl md:text-4xl font-bold mb-2"

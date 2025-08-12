@@ -67,7 +67,7 @@ const Navigation = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6">
-            {['home', 'about', 'services', 'testimonials'].map((item) => (
+            {['home', 'about', 'services', 'reviews'].map((item) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item)}
@@ -112,7 +112,7 @@ const Navigation = () => {
               }`}
               style={{ boxShadow: isScrolled ? '0 8px 24px rgba(0,0,0,0.5)' : 'none' }}
             >
-              {['home', 'about', 'services', 'testimonials'].map((item) => (
+              {['home', 'about', 'services', 'reviews'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item)}
