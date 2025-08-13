@@ -15,19 +15,28 @@ const FooterSection = () => {
           </p>
         </div>
 
-        {/* Quick Links */}
-        <div className="text-center md:text-left">
-          <h3 className="text-lg font-semibold text-yellow-400 mb-4">Quick Links</h3>
-          <ul className="space-y-2">
-            {['Home', 'About', 'Services', 'Gallery', 'Testimonials', 'Contact'].map((item) => (
-              <li key={item}>
-                <a href={`#${item.toLowerCase()}`} className="hover:text-yellow-300 transition">
-                  {item}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* Quick Links */}
+<div className="text-center md:text-left">
+  <h3 className="text-lg font-semibold text-yellow-400 mb-4">Quick Links</h3>
+  <ul className="space-y-2">
+    {['Home', 'About', 'Services', 'Gallery', 'Reviews', 'Contact'].map((item) => (
+      <li key={item}>
+        {item.toLowerCase() === 'gallery' ? (
+          // Route-based link for Gallery
+          <a href="/gallery" className="hover:text-yellow-300 transition">
+            {item}
+          </a>
+        ) : (
+          // Scroll-based links for other sections
+          <a href={`#${item.toLowerCase()}`} className="hover:text-yellow-300 transition">
+            {item}
+          </a>
+        )}
+      </li>
+    ))}
+  </ul>
+</div>
+
 {/* Contact Info */}
 <div className="text-center md:text-left">
   <h3 className="text-lg font-semibold text-yellow-400 mb-4">Contact Us</h3>
