@@ -10,6 +10,7 @@ import Navigation from './components/Navigation';
 import FooterSection from './components/FooterSection';
 import WhatsAppChatbot from './components/WhatsAppChatbot';
 
+
 function App() {
   const contactRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);

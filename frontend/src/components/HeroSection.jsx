@@ -2,33 +2,34 @@ import { motion, useMotionValue, useTransform, AnimatePresence } from "framer-mo
 import { useEffect, useState } from "react";
 import { FaInstagram, FaWhatsapp, FaFacebook } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 function HomeSection() {
   const navigate = useNavigate();
 
-const services = [
-  ["Wedding", "Shoot"],
-  ["Baby", "Shoot"],
-  ["Concert", "Photography"],
-  ["Festival", "Coverage"],
-  ["Model", "Shoots"],
-  ["Baby", "Shower Photography"],
-  ["Engagement", "Shoot"],
-  ["Corporate", "Events"],
-  ["Birthday", "Events"],
-];
+  const services = [
+    ["Wedding", "Shoot"],
+    ["Baby", "Shoot"],
+    ["Concert", "Photography"],
+    ["Festival", "Coverage"],
+    ["Model", "Shoots"],
+    ["Baby", "Shower Photography"],
+    ["Engagement", "Shoot"],
+    ["Corporate", "Events"],
+    ["Birthday", "Events"],
+  ];
 
-const colors = [
-  ["#FFD700", "#FFFFFF"], // Wedding Shoot
-  ["#FFEEAA", "#E0E0E0"], // Baby Shoot
-  ["#FFFFF0", "#FFD700"], // Concert Photography
-  ["#FFD700", "#F5F5F5"], // Festival Coverage
-  ["#FFFFFF", "#FFD700"], // Model Shoots
-  ["#FFD700", "#E0E0E0"], // Baby Shower
-  ["#FFFFE0", "#FFFFFF"], // Engagement Shoot
-  ["#FFD700", "#DCDCDC"], // Corporate Events
-  ["#FFFACD", "#FFFFFF"], // Birthday Events
-];
+  const colors = [
+    ["#FFD700", "#FFFFFF"],
+    ["#FFEEAA", "#E0E0E0"],
+    ["#FFFFF0", "#FFD700"],
+    ["#FFD700", "#F5F5F5"],
+    ["#FFFFFF", "#FFD700"],
+    ["#FFD700", "#E0E0E0"],
+    ["#FFFFE0", "#FFFFFF"],
+    ["#FFD700", "#DCDCDC"],
+    ["#FFFACD", "#FFFFFF"],
+  ];
 
   const videos = [
     "https://res.cloudinary.com/dxm3glvjq/video/upload/f_mp4,q_auto/v1755096659/H1_z5fq4n.mov",
@@ -69,6 +70,44 @@ const colors = [
       id="home"
       className="relative h-screen flex flex-col justify-center items-center text-white overflow-hidden px-6 sm:px-10 md:px-16"
     >
+      {/* ✅ SEO Meta */}
+      <Helmet>
+        <title>Crazy Capture Studio | Wedding, Baby & Event Photography</title>
+        <meta
+          name="description"
+          content="Crazy Capture Studio in Tiruppur offers professional wedding, baby, and event photography services. Capture your story with us."
+        />
+        <meta
+          name="keywords"
+          content="Photography Tiruppur, Wedding Photography, Baby Shoot, Event Photographer, Crazy Capture Studio"
+        />
+        <link rel="canonical" href="https://crazycapturestudio.com" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: "Crazy Capture Studio",
+            image: "https://crazycapturestudio.com/logo.png",
+            "@id": "",
+            url: "https://crazycapturestudio.com",
+            telephone: "+91 1234567890",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "123 Main Street",
+              addressLocality: "Tiruppur",
+              addressRegion: "TN",
+              postalCode: "641601",
+              addressCountry: "IN",
+            },
+            sameAs: [
+              "https://instagram.com",
+              "https://facebook.com",
+              "https://wa.me/1234567890",
+            ],
+          })}
+        </script>
+      </Helmet>
+
       {/* Background Video */}
       <motion.div className="absolute inset-0 z-0 overflow-hidden" style={{ y: backgroundY }}>
         <AnimatePresence mode="wait">
@@ -98,45 +137,47 @@ const colors = [
         transition={{ duration: 1, delay: 0.3 }}
       >
         <span className="w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(255,0,0,0.8)]" />
-        <span className="text-sm tracking-widest text-red-400 font-semibold drop-shadow-[0_0_5px_rgba(255,0,0,0.8)]">
+        <span className="text-sm tracking-widest text-red-400 font-semibold">
           REC
         </span>
       </motion.div>
 
-      {/* Heading */}
-      <motion.h1
+      {/* Main Heading */}
+      <h1 className="sr-only">
+        Crazy Capture Studio - Wedding, Baby, and Event Photography in Tiruppur
+      </h1>
+      <motion.h2
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
         className="text-4xl sm:text-5xl md:text-7xl font-extrabold z-10 text-center tracking-wide drop-shadow-lg"
       >
         Capture <span className="text-yellow-400">Your Story</span>
-      </motion.h1>
+      </motion.h2>
 
-<AnimatePresence mode="wait">
-  <motion.div
-    key={index}
-    initial={{ opacity: 0, rotateX: -90 }}
-    animate={{ opacity: 1, rotateX: 0 }}
-    exit={{ opacity: 0, rotateX: 90 }}
-    transition={{ duration: 0.6 }}
-    className="mt-5 sm:mt-6 md:mt-10 text-center z-10"
-  >
-    <p className="text-xl sm:text-xl md:text-3xl font-bold tracking-wide">
-      {services[index].map((word, wordIndex) => (
-        <span
-          key={wordIndex}
-          style={{ color: colors[index][wordIndex] }}
-          className="mx-1"
+      {/* Rotating Services */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, rotateX: -90 }}
+          animate={{ opacity: 1, rotateX: 0 }}
+          exit={{ opacity: 0, rotateX: 90 }}
+          transition={{ duration: 0.6 }}
+          className="mt-5 sm:mt-6 md:mt-10 text-center z-10"
         >
-          {word}
-        </span>
-      ))}
-    </p>
-  </motion.div>
-</AnimatePresence>
-
-
+          <p className="text-xl sm:text-xl md:text-3xl font-bold tracking-wide">
+            {services[index].map((word, wordIndex) => (
+              <span
+                key={wordIndex}
+                style={{ color: colors[index][wordIndex] }}
+                className="mx-1"
+              >
+                {word}
+              </span>
+            ))}
+          </p>
+        </motion.div>
+      </AnimatePresence>
 
       {/* Buttons */}
       <motion.div
@@ -147,54 +188,50 @@ const colors = [
       >
         <button
           onClick={() => navigate("/gallery")}
-          className="bg-yellow-400/90 backdrop-blur-sm text-black px-6 py-3 rounded-full 
-                     font-semibold shadow-lg hover:bg-yellow-300 
-                     transition transform hover:scale-105"
+          className="bg-yellow-400/90 text-black px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-yellow-300 transition hover:scale-105"
         >
           View Portfolio
         </button>
-       <button
-  onClick={() => {
-    const section = document.getElementById("contact");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  }}
-  className="px-6 py-3 rounded-full font-semibold border border-yellow-400/80 
-             bg-white/10 backdrop-blur-lg text-yellow-300 
-             shadow-lg shadow-yellow-400/20
-             hover:bg-yellow-300 hover:text-black hover:shadow-yellow-400/40
-             transition-transform duration-300 ease-in-out transform hover:scale-105"
->
-  Book Session
-</button>
-
+        <button
+          onClick={() => {
+            const section = document.getElementById("contact");
+            if (section) section.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="px-6 py-3 rounded-full font-semibold border border-yellow-400/80 
+                     bg-white/10 text-yellow-300 shadow-lg hover:bg-yellow-300 hover:text-black hover:scale-105"
+        >
+          Book Session
+        </button>
       </motion.div>
 
       {/* Social Icons */}
-      <motion.div
-        className="absolute bottom-20 flex flex-row gap-5 z-10"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.8 }}
+      <nav
+        className="absolute bottom-20 flex gap-5 z-10"
+        aria-label="Social Media Links"
       >
         {[
-          { icon: FaInstagram, color: "#E1306C", link: "https://instagram.com" },
-          { icon: FaWhatsapp, color: "#25D366", link: "https://wa.me/1234567890" },
-          { icon: FaFacebook, color: "#1877F2", link: "https://facebook.com" },
-        ].map(({ icon: Icon, color, link }, i) => (
+          { icon: FaInstagram, color: "#E1306C", link: "https://instagram.com", label: "Instagram" },
+          { icon: FaWhatsapp, color: "#25D366", link: "https://wa.me/1234567890", label: "WhatsApp" },
+          { icon: FaFacebook, color: "#1877F2", link: "https://facebook.com", label: "Facebook" },
+        ].map(({ icon: Icon, color, link, label }, i) => (
           <a
             key={i}
             href={link}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={label}
             className="w-12 h-12 flex items-center justify-center rounded-full hover:scale-110 transition shadow-lg"
             style={{ backgroundColor: color }}
           >
             <Icon size={26} />
           </a>
         ))}
-      </motion.div>
+      </nav>
+
+      {/* Hidden text for SEO */}
+      <p className="sr-only">
+        Crazy Capture Studio offers professional wedding, baby, birthday, and event photography services in Tiruppur, Tamil Nadu.
+      </p>
 
       {/* Scroll Arrow */}
       <motion.div
