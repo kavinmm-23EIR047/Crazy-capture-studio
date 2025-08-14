@@ -104,6 +104,7 @@ const AboutAndAchievements = () => {
       {/* SEO Meta */}
       <Helmet>
         <title>About Crazy Capture Studio | Photography Studio & Awards</title>
+         <meta name="robots" content="index, follow" />
         <meta name="description" content="Crazy Capture Studio - Professional photography studio capturing weddings, birthdays, events, and more. Award-winning photography and satisfied clients." />
         <script type="application/ld+json">
           {`
