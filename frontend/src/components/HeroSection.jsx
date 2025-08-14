@@ -70,44 +70,7 @@ function HomeSection() {
       id="home"
       className="relative h-screen flex flex-col justify-center items-center text-white overflow-hidden px-6 sm:px-10 md:px-16"
     >
-      {/* ✅ SEO Meta */}
-      <Helmet>
-        <title>Best Photography Agency in Tiruppur | Crazy Capture Studio - Weddings & Events</title>
-        <meta
-          name="description"
-          content="Crazy Capture Studio in Tiruppur offers professional wedding, baby, birthday, and event photography services. Capture your story with our expert photographers."
-        />
-        <meta
-          name="keywords"
-          content="Photography Tiruppur, Wedding Photography, Baby Shoot, Event Photographer, Birthday Photography, Crazy Capture Studio"
-        />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://crazy-capture-studio.vercel.app" />
-        <script type="application/ld+json">
-          {JSON.stringify({
-           "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": "Crazy Capture Studio",
-        "image": "https://crazy-capture-studio.vercel.app/Crazylogo.jpg",
-        "logo": "https://crazy-capture-studio.vercel.app/Crazylogo.jpg",
-        "url": "https://crazy-capture-studio.vercel.app",
-        "telephone": "+91-9876543210",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Your Street Name",
-          "addressLocality": "Tiruppur",
-          "addressRegion": "TN",
-          "postalCode": "641602",
-          "addressCountry": "IN"
-        },
-        "openingHours": "Mo-Su 09:00-20:00",
-        "sameAs": [
-          "https://www.instagram.com/crazy_capture_studio/",
-          "https://www.justdial.com/Tirupur/Crazy-Capture-Studio-Near-Scm-Company-Kumarnagar/9999PX421-X421-220326152251-J3C2_BZDET/photos"
-        ],
-          })}
-        </script>
-      </Helmet>
+     
 
       {/* Background Video with Overlay */}
       <motion.div className="absolute inset-0 z-0 overflow-hidden" style={{ y: backgroundY }}>
