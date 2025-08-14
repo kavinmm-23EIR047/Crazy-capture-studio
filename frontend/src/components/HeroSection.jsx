@@ -72,34 +72,35 @@ function HomeSection() {
     >
       {/* ✅ SEO Meta */}
       <Helmet>
-        <title>Crazy Capture Studio | Wedding, Baby & Event Photography</title>
+        <title>Crazy Capture Studio | Wedding, Baby & Event Photography in Tiruppur</title>
         <meta
           name="description"
-          content="Crazy Capture Studio in Tiruppur offers professional wedding, baby, and event photography services. Capture your story with us."
+          content="Crazy Capture Studio in Tiruppur offers professional wedding, baby, birthday, and event photography services. Capture your story with our expert photographers."
         />
         <meta
           name="keywords"
-          content="Photography Tiruppur, Wedding Photography, Baby Shoot, Event Photographer, Crazy Capture Studio"
+          content="Photography Tiruppur, Wedding Photography, Baby Shoot, Event Photographer, Birthday Photography, Crazy Capture Studio"
         />
+        <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://crazycapturestudio.com" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
-            name: "Crazy Capture Studio",
-            image: "https://crazycapturestudio.com/logo.png",
+            "name": "Crazy Capture Studio",
+            "image": "https://crazycapturestudio.com/logo.png",
             "@id": "",
-            url: "https://crazycapturestudio.com",
-            telephone: "+91 1234567890",
-            address: {
+            "url": "https://crazycapturestudio.com",
+            "telephone": "+91 1234567890",
+            "address": {
               "@type": "PostalAddress",
-              streetAddress: "123 Main Street",
-              addressLocality: "Tiruppur",
-              addressRegion: "TN",
-              postalCode: "641601",
-              addressCountry: "IN",
+              "streetAddress": "123 Main Street",
+              "addressLocality": "Tiruppur",
+              "addressRegion": "TN",
+              "postalCode": "641601",
+              "addressCountry": "IN",
             },
-            sameAs: [
+            "sameAs": [
               "https://instagram.com",
               "https://facebook.com",
               "https://wa.me/1234567890",
@@ -108,7 +109,7 @@ function HomeSection() {
         </script>
       </Helmet>
 
-      {/* Background Video */}
+      {/* Background Video with Overlay */}
       <motion.div className="absolute inset-0 z-0 overflow-hidden" style={{ y: backgroundY }}>
         <AnimatePresence mode="wait">
           <motion.video
@@ -118,7 +119,8 @@ function HomeSection() {
             muted
             playsInline
             loop
-            preload="auto"
+            preload="metadata"
+            loading="lazy"
             className="w-full h-full object-cover scale-105"
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -137,14 +139,12 @@ function HomeSection() {
         transition={{ duration: 1, delay: 0.3 }}
       >
         <span className="w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(255,0,0,0.8)]" />
-        <span className="text-sm tracking-widest text-red-400 font-semibold">
-          REC
-        </span>
+        <span className="text-sm tracking-widest text-red-400 font-semibold">REC</span>
       </motion.div>
 
       {/* Main Heading */}
       <h1 className="sr-only">
-        Crazy Capture Studio - Wedding, Baby, and Event Photography in Tiruppur
+        Crazy Capture Studio - Wedding, Baby, Birthday, and Event Photography in Tiruppur
       </h1>
       <motion.h2
         initial={{ opacity: 0, y: 40 }}
@@ -165,7 +165,7 @@ function HomeSection() {
           transition={{ duration: 0.6 }}
           className="mt-5 sm:mt-6 md:mt-10 text-center z-10"
         >
-          <p className="text-xl sm:text-xl md:text-3xl font-bold tracking-wide">
+          <p className="text-lg sm:text-xl md:text-3xl font-bold tracking-wide">
             {services[index].map((word, wordIndex) => (
               <span
                 key={wordIndex}
@@ -179,7 +179,7 @@ function HomeSection() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Buttons */}
+      {/* Action Buttons */}
       <motion.div
         className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-4 z-10"
         initial={{ opacity: 0, scale: 0.9 }}
@@ -187,28 +187,26 @@ function HomeSection() {
         transition={{ duration: 0.8, delay: 0.5 }}
       >
         <button
+          aria-label="View Portfolio"
           onClick={() => navigate("/gallery")}
-          className="bg-yellow-400/90 text-black px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-yellow-300 transition hover:scale-105"
+          className="bg-yellow-400/90 text-black px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-yellow-300 transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400"
         >
           View Portfolio
         </button>
         <button
+          aria-label="Book a Photography Session"
           onClick={() => {
             const section = document.getElementById("contact");
             if (section) section.scrollIntoView({ behavior: "smooth" });
           }}
-          className="px-6 py-3 rounded-full font-semibold border border-yellow-400/80 
-                     bg-white/10 text-yellow-300 shadow-lg hover:bg-yellow-300 hover:text-black hover:scale-105"
+          className="px-6 py-3 rounded-full font-semibold border border-yellow-400/80 bg-white/10 text-yellow-300 shadow-lg hover:bg-yellow-300 hover:text-black hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400"
         >
           Book Session
         </button>
       </motion.div>
 
       {/* Social Icons */}
-      <nav
-        className="absolute bottom-20 flex gap-5 z-10"
-        aria-label="Social Media Links"
-      >
+      <nav className="absolute bottom-20 flex gap-5 z-10" aria-label="Social Media Links">
         {[
           { icon: FaInstagram, color: "#E1306C", link: "https://instagram.com", label: "Instagram" },
           { icon: FaWhatsapp, color: "#25D366", link: "https://wa.me/1234567890", label: "WhatsApp" },
@@ -220,7 +218,7 @@ function HomeSection() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            className="w-12 h-12 flex items-center justify-center rounded-full hover:scale-110 transition shadow-lg"
+            className="w-12 h-12 flex items-center justify-center rounded-full hover:scale-110 transition shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
             style={{ backgroundColor: color }}
           >
             <Icon size={26} />
@@ -228,13 +226,15 @@ function HomeSection() {
         ))}
       </nav>
 
-      {/* Hidden text for SEO */}
+      {/* Hidden Text for SEO */}
       <p className="sr-only">
         Crazy Capture Studio offers professional wedding, baby, birthday, and event photography services in Tiruppur, Tamil Nadu.
       </p>
 
       {/* Scroll Arrow */}
       <motion.div
+        role="button"
+        aria-label="Scroll Down"
         className="absolute bottom-6 cursor-pointer z-10 text-3xl text-yellow-400"
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 1.5 }}
