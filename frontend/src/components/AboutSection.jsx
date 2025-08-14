@@ -103,7 +103,7 @@ const AboutAndAchievements = () => {
     <div className="bg-transparent text-white">
      
       <Helmet>
-        <title>About Crazy Capture Studio | Photography Studio & Awards</title>
+        <title>Best Photography Agency in Tiruppur | Crazy Capture Studio - Weddings & Events</title>
          <meta name="robots" content="index, follow" />
         <meta name="description" content="Crazy Capture Studio - Professional photography studio capturing weddings, birthdays, events, and more. Award-winning photography and satisfied clients." />
        <script type="application/ld+json">

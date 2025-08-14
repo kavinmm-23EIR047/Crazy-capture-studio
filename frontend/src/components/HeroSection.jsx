@@ -72,7 +72,7 @@ function HomeSection() {
     >
       {/* ✅ SEO Meta */}
       <Helmet>
-        <title>Crazy Capture Studio | Wedding, Baby & Event Photography in Tiruppur</title>
+        <title>Best Photography Agency in Tiruppur | Crazy Capture Studio - Weddings & Events</title>
         <meta
           name="description"
           content="Crazy Capture Studio in Tiruppur offers professional wedding, baby, birthday, and event photography services. Capture your story with our expert photographers."
