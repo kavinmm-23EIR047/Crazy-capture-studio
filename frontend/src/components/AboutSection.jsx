@@ -113,8 +113,8 @@ const AboutAndAchievements = () => {
               "@type": "Organization",
               "name": "Crazy Capture Studio",
               "url": "https://crazy-capture-studio.vercel.app/",
-              "logo": "https://crazy-capture-studio.vercel.app/Crazylogo.png",
-              "sameAs": ["https://instagram.com/yourusername"],
+              "logo": "https://crazy-capture-studio.vercel.app/Crazylogo.jpg",
+              "sameAs": ["https://instagram.com/crazy-capture-studio"],
               "award": [
                 "Best Photographer 2025",
                 "Outstanding Photography Studio 2024"
