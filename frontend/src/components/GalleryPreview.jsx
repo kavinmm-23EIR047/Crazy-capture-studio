@@ -7,22 +7,46 @@ const GalleryPreview = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
+  // SEO-friendly gallery images with src and alt
   const galleryImages = [
-     "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575418/get_ty5cuf.jpg",
-  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574461/dm_for_more_enquire.......8124787002_1_gwlgmr.jpg",
-  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg",
-  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/441211858_1516889262195295_5631550106516590248_n_ztz91b.jpg",
-  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574963/aranthainisha_special_thanks_to_d_squad_studio_unique_surprise_plannerss_likes_like_follow_a8ocpp.jpg",
-  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317146553_3370299676574390_6411223539222079084_n_qaagqe.jpg",
-  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497079/DONE6877_wbi80g.jpg",
-  "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754576215/get_3_dquye5.jpg",
-
+    {
+      src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575418/get_ty5cuf.jpg",
+      alt: "Beautiful Wedding Photography in Tiruppur by Crazy Capture Studio"
+    },
+    {
+      src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574461/dm_for_more_enquire.......8124787002_1_gwlgmr.jpg",
+      alt: "Birthday Celebration Photography in Tiruppur by Crazy Capture Studio"
+    },
+    {
+      src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg",
+      alt: "Concert Photography in Tiruppur capturing live music moments"
+    },
+    {
+      src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/441211858_1516889262195295_5631550106516590248_n_ztz91b.jpg",
+      alt: "Baby Shower Photography in Tiruppur by Crazy Capture Studio"
+    },
+    {
+      src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574963/aranthainisha_special_thanks_to_d_squad_studio_unique_surprise_plannerss_likes_like_follow_a8ocpp.jpg",
+      alt: "Special Event Photography in Tiruppur by Crazy Capture Studio"
+    },
+    {
+      src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317146553_3370299676574390_6411223539222079084_n_qaagqe.jpg",
+      alt: "Professional Portrait Photography in Tiruppur"
+    },
+    {
+      src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497079/DONE6877_wbi80g.jpg",
+      alt: "Creative Wedding Photoshoot in Tiruppur"
+    },
+    {
+      src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754576215/get_3_dquye5.jpg",
+      alt: "Event Photography Portfolio in Tiruppur by Crazy Capture Studio"
+    },
   ];
 
   return (
     <section className="py-24 bg-transparent relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header */}
         <motion.div
           ref={ref}
@@ -55,8 +79,8 @@ const GalleryPreview = () => {
               className="group relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer backdrop-blur-md bg-white/5 border border-white/10"
             >
               <img
-                src={image}
-                alt={`Gallery ${index + 1}`}
+                src={image.src}
+                alt={image.alt} // ✅ Use proper alt text for SEO
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

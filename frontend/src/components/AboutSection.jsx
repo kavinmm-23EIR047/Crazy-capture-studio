@@ -5,6 +5,7 @@ import {
   FaStar, FaTrophy, FaCamera
 } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet";
 
 const AboutAndAchievements = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -100,26 +101,42 @@ const AboutAndAchievements = () => {
 
   return (
     <div className="bg-transparent text-white">
-      {/* About */}
+      {/* SEO Meta */}
+      <Helmet>
+        <title>About Crazy Capture Studio | Photography Studio & Awards</title>
+        <meta name="description" content="Crazy Capture Studio - Professional photography studio capturing weddings, birthdays, events, and more. Award-winning photography and satisfied clients." />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Crazy Capture Studio",
+              "url": "https://crazy-capture-studio.vercel.app/",
+              "logo": "https://crazy-capture-studio.vercel.app/Crazylogo.png",
+              "sameAs": ["https://instagram.com/yourusername"],
+              "award": [
+                "Best Photographer 2025",
+                "Outstanding Photography Studio 2024"
+              ]
+            }
+          `}
+        </script>
+      </Helmet>
+
+      {/* About Section */}
       <section id="about"
         ref={aboutRef}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20"
       >
-       <div className="text-center mb-12 px-2 sm:px-0">
-  <h1 className="text-3xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-200 leading-tight">
-    About Us
-  </h1>
-  <div className="w-16 h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-200 mx-auto mt-4 rounded-full shadow-lg"></div>
-  <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed text-gray-300">
-    Capturing{" "}
-    <span className="text-yellow-300 font-semibold">golden moments</span>{" "}
-    and sealing them in{" "}
-    <span className="text-gray-400 font-semibold">timeless frames</span>{" "}
-    to live{" "}
-    <span className="text-yellow-200 font-semibold">forever</span>.
-  </p>
-</div>
-
+        <div className="text-center mb-12 px-2 sm:px-0">
+          <h1 className="text-3xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-200 leading-tight">
+            About Us
+          </h1>
+          <div className="w-16 h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-200 mx-auto mt-4 rounded-full shadow-lg"></div>
+          <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed text-gray-300">
+            Capturing <span className="text-yellow-300 font-semibold">golden moments</span> and sealing them in <span className="text-gray-400 font-semibold">timeless frames</span> to live <span className="text-yellow-200 font-semibold">forever</span>.
+          </p>
+        </div>
 
         <div className="flex flex-col lg:flex-row items-center gap-10">
           {/* Video Frame */}
@@ -138,15 +155,17 @@ const AboutAndAchievements = () => {
               <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 p-[4px] rounded-lg">
                 <div className="relative w-full h-full rounded-md overflow-hidden shadow-lg border border-gray-600">
                   <video
+                    ref={videoRef}
                     src="https://res.cloudinary.com/dxm3glvjq/video/upload/v1754756318/Passionate_work_enjoyable_crazy_capture_studio_praba_prince_love_passion_work_enjoy_nrkz1c.mp4"
                     autoPlay
                     loop
                     muted
                     playsInline
+                    preload="metadata"
+                    poster="https://res.cloudinary.com/dxm3glvjq/video/upload/v1754756318/Passionate_work_poster.jpg"
                     className="w-full h-full object-cover"
-                    style={{
-                      filter: "grayscale(1) brightness(0.7) contrast(1.3)"
-                    }}
+                    style={{ filter: "grayscale(1) brightness(0.7) contrast(1.3)" }}
+                    aria-label="Behind the scenes video of Crazy Capture Studio"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/25 to-transparent pointer-events-none"></div>
                   <div className="absolute top-2 left-2 flex items-center space-x-2 bg-black/60 px-2 py-1 rounded-md">
@@ -154,9 +173,8 @@ const AboutAndAchievements = () => {
                     <span className="text-white font-semibold text-xs tracking-wider">REC</span>
                   </div>
                   <div className="absolute top-2 right-2 bg-black/60 p-1.5 rounded-full shadow-md">
-                    <FaCamera className="text-white text-sm" />
+                    <FaCamera className="text-white text-sm" aria-hidden="true"/>
                   </div>
-                  {/* Corner markers */}
                   {["top-0 left-0", "top-0 right-0", "bottom-0 left-0", "bottom-0 right-0"].map((pos, idx) => (
                     <div key={idx}>
                       <div className={`absolute ${pos.split(" ")[0]} ${pos.split(" ")[1]} w-6 h-0.5 bg-yellow-400`}></div>
@@ -170,9 +188,7 @@ const AboutAndAchievements = () => {
 
           {/* Text Content */}
           <div
-            className={`flex-1 space-y-6 text-center lg:text-left transform transition-all duration-1000 px-2 sm:px-0 ${
-              aboutVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`flex-1 space-y-6 text-center lg:text-left transform transition-all duration-1000 px-2 sm:px-0 ${aboutVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
           >
             <p className="text-base sm:text-lg leading-relaxed text-gray-300">
               Hello and welcome! I’m <span className="text-yellow-300 font-semibold">Prabakaran</span>, 
@@ -201,7 +217,7 @@ const AboutAndAchievements = () => {
         </div>
       </section>
 
-      {/* Achievements */}
+      {/* Achievements Section */}
       <section ref={statsRef} className="bg-transparent py-14 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 px-2 sm:px-0">
@@ -221,32 +237,39 @@ const AboutAndAchievements = () => {
                 src="https://res.cloudinary.com/dxm3glvjq/video/upload/v1754840452/Honored_to_receive_this_photography_award.Behind_every_frame_is_a_story_thank_you_for_seeing_m_1_pdopyf.mp4"
                 className="w-full h-full object-cover"
                 muted={isMuted}
+                poster="https://res.cloudinary.com/dxm3glvjq/video/upload/v1754840452/award-video-poster.jpg"
+                aria-label="Award video showcasing Crazy Capture Studio achievements"
+                playsInline
+                preload="metadata"
               />
               <a
                 href="https://instagram.com/yourusername"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="absolute top-3 right-3 bg-black/50 p-2 rounded-full text-white hover:bg-black/70"
+                aria-label="Visit Instagram page"
               >
-                <FaInstagram />
+                <FaInstagram aria-hidden="true"/>
               </a>
               <div className="absolute bottom-3 left-3 flex gap-2">
                 <button
                   onClick={togglePlay}
                   className="bg-black/50 p-2 rounded-full text-white hover:bg-black/70"
+                  aria-label={isPlaying ? "Pause video" : "Play video"}
                 >
                   {isPlaying ? <FaPause /> : <FaPlay />}
                 </button>
                 <button
                   onClick={toggleMute}
                   className="bg-black/50 p-2 rounded-full text-white hover:bg-black/70"
+                  aria-label={isMuted ? "Unmute video" : "Mute video"}
                 >
                   {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
                 </button>
               </div>
             </div>
             <div className="p-4">
-              <h4 className="text-lg font-bold text-white">Unique Awards</h4>
+              <h3 className="text-lg font-bold text-white">Unique Awards</h3>
               <p className="text-[#B0B0B0] text-sm">
                 Received <span className="text-[#FFCB05] font-semibold">Best Photographer</span> award.
               </p>
@@ -260,16 +283,13 @@ const AboutAndAchievements = () => {
               return (
                 <div
                   key={stat.key}
-                  className={`bg-white/5 border border-white/10 backdrop-blur-md rounded-xl p-4 sm:p-6 text-center transform transition-all duration-700 hover:shadow-2xl ${
-                    statsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                  }`}
+                  className={`bg-white/5 border border-white/10 backdrop-blur-md rounded-xl p-4 sm:p-6 text-center transform transition-all duration-700 hover:shadow-2xl ${statsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
                   style={{ transitionDelay: `${i * 150}ms` }}
                 >
-                  <Icon className="text-[#FFCB05] text-2xl sm:text-4xl mb-2" />
-                  <div className="text-xl sm:text-3xl font-bold text-white">
-                    {counters[stat.key]}
-                    {stat.suffix}
-                  </div>
+                  <Icon className="text-[#FFCB05] text-2xl sm:text-4xl mb-2" aria-hidden="true"/>
+                  <h3 className="text-xl sm:text-3xl font-bold text-white">
+                    {counters[stat.key]}{stat.suffix}
+                  </h3>
                   <p className="text-[#B0B0B0] text-xs sm:text-sm">{stat.label}</p>
                 </div>
               );
