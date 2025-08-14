@@ -101,7 +101,7 @@ const AboutAndAchievements = () => {
 
   return (
     <div className="bg-transparent text-white">
-      {/* SEO Meta */}
+{/*      
       <Helmet>
         <title>About Crazy Capture Studio | Photography Studio & Awards</title>
          <meta name="robots" content="index, follow" />
@@ -122,7 +122,7 @@ const AboutAndAchievements = () => {
             }
           `}
         </script>
-      </Helmet>
+      </Helmet> */}
 
       {/* About Section */}
       <section id="about"
