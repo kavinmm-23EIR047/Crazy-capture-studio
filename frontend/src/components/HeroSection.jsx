@@ -82,29 +82,29 @@ function HomeSection() {
           content="Photography Tiruppur, Wedding Photography, Baby Shoot, Event Photographer, Birthday Photography, Crazy Capture Studio"
         />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://crazycapturestudio.com" />
+        <link rel="canonical" href="https://crazy-capture-studio.vercel.app" />
         <script type="application/ld+json">
           {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            "name": "Crazy Capture Studio",
-            "image": "https://crazycapturestudio.com/logo.png",
-            "@id": "",
-            "url": "https://crazycapturestudio.com",
-            "telephone": "+91 1234567890",
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": "123 Main Street",
-              "addressLocality": "Tiruppur",
-              "addressRegion": "TN",
-              "postalCode": "641601",
-              "addressCountry": "IN",
-            },
-            "sameAs": [
-              "https://instagram.com",
-              "https://facebook.com",
-              "https://wa.me/1234567890",
-            ],
+           "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Crazy Capture Studio",
+        "image": "https://crazy-capture-studio.vercel.app/Crazylogo.jpg",
+        "logo": "https://crazy-capture-studio.vercel.app/Crazylogo.jpg",
+        "url": "https://crazy-capture-studio.vercel.app",
+        "telephone": "+91-9876543210",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Your Street Name",
+          "addressLocality": "Tiruppur",
+          "addressRegion": "TN",
+          "postalCode": "641602",
+          "addressCountry": "IN"
+        },
+        "openingHours": "Mo-Su 09:00-20:00",
+        "sameAs": [
+          "https://www.instagram.com/crazy_capture_studio/",
+          "https://www.justdial.com/Tirupur/Crazy-Capture-Studio-Near-Scm-Company-Kumarnagar/9999PX421-X421-220326152251-J3C2_BZDET/photos"
+        ],
           })}
         </script>
       </Helmet>

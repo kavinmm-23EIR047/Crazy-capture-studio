@@ -101,28 +101,36 @@ const AboutAndAchievements = () => {
 
   return (
     <div className="bg-transparent text-white">
-{/*      
+     
       <Helmet>
         <title>About Crazy Capture Studio | Photography Studio & Awards</title>
          <meta name="robots" content="index, follow" />
         <meta name="description" content="Crazy Capture Studio - Professional photography studio capturing weddings, birthdays, events, and more. Award-winning photography and satisfied clients." />
-        <script type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Crazy Capture Studio",
-              "url": "https://crazy-capture-studio.vercel.app/",
-              "logo": "https://crazy-capture-studio.vercel.app/Crazylogo.jpg",
-              "sameAs": ["https://instagram.com/crazy-capture-studio"],
-              "award": [
-                "Best Photographer 2025",
-                "Outstanding Photography Studio 2024"
-              ]
-            }
-          `}
+       <script type="application/ld+json">
+          {JSON.stringify({
+           "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Crazy Capture Studio",
+        "image": "https://crazy-capture-studio.vercel.app/Crazylogo.jpg",
+        "logo": "https://crazy-capture-studio.vercel.app/Crazylogo.jpg",
+        "url": "https://crazy-capture-studio.vercel.app",
+        "telephone": "+91-9876543210",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Your Street Name",
+          "addressLocality": "Tiruppur",
+          "addressRegion": "TN",
+          "postalCode": "641602",
+          "addressCountry": "IN"
+        },
+        "openingHours": "Mo-Su 09:00-20:00",
+        "sameAs": [
+          "https://www.instagram.com/crazy_capture_studio/",
+          "https://www.justdial.com/Tirupur/Crazy-Capture-Studio-Near-Scm-Company-Kumarnagar/9999PX421-X421-220326152251-J3C2_BZDET/photos"
+        ],
+          })}
         </script>
-      </Helmet> */}
+      </Helmet>
 
       {/* About Section */}
       <section id="about"
