@@ -14,7 +14,7 @@ const featuredImages = [
   "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574461/dm_for_more_enquire.......8124787002_1_gwlgmr.jpg",
   "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg",
   "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/441211858_1516889262195295_5631550106516590248_n_ztz91b.jpg",
-  "https://res.cloudinary.com/demo/image/upload/v1/gallery/featured5.jpg",
+  // "https://res.cloudinary.com/demo/image/upload/v1/gallery/featured5.jpg",
 ];
 
 // ------------------- Gallery Images -------------------
@@ -55,8 +55,8 @@ const babyshowerImages = [
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575847/Someone_special_someone_dear_someone_new_to_love_is_here_PPL_Who_Collaborated_with_us_%EF%B8%8F_bu76ns.jpg", category: "BabyShower" },
 ];
 
-const corporateImages = [{ src: "https://res.cloudinary.com/demo/image/upload/corporate1.jpg", category: "Corporate" }];
-const festivalImages = [{ src: "https://res.cloudinary.com/demo/image/upload/festival1.jpg", category: "Festival" }];
+// const corporateImages = [{ src: "https://res.cloudinary.com/demo/image/upload/corporate1.jpg", category: "Corporate" }];
+// const festivalImages = [{ src: "https://res.cloudinary.com/demo/image/upload/festival1.jpg", category: "Festival" }];
 const concertImages = [
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg", category: "Concert" },
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574979/It_is_more_important_to_click_with_people_than_to_click_the_shutter_Thanks_for_Capturing_the_m_-_Copy_ffa4xi.webp", category: "Concert" },
