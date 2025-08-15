@@ -66,7 +66,7 @@ const concertImages = [
 ];
 
 // Merge all images
-const allImages = [...weddingImages, ...birthdayImages, ...babyshowerImages, ...corporateImages, ...festivalImages, ...concertImages];
+const allImages = [...weddingImages, ...birthdayImages, ...babyshowerImages, ...concertImages];
 
 // Categories
 const categories = ["All", "Wedding", "Birthday", "BabyShower", "Corporate", "Festival", "Concert"];
