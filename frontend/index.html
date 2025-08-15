@@ -2,12 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon -->
     <link
       rel="icon"
       type="image/jpg"
       href="https://crazy-capture-studio.vercel.app/Crazylogo.jpg"
     />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Google Site Verification -->
     <meta
@@ -15,7 +17,7 @@
       content="google1dde4d278ca72291"
     />
 
-    <!-- SEO -->
+    <!-- SEO Meta Tags -->
     <title>Best Photography Agency in Tiruppur | Crazy Capture Studio - Weddings & Events</title>
     <meta
       name="description"
@@ -39,10 +41,15 @@
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://crazy-capture-studio.vercel.app" />
+  </head>
+  <body>
+    <!-- React App Root -->
+    <div id="root"></div>
 
-    <!-- LocalBusiness Schema -->
-    <script type="application/ld+json">
-      {
+    <!-- External JSON-LD for LocalBusiness -->
+    <script type="module">
+      // Fetch structured data externally or embed safely via React
+      const ldData = {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "name": "Crazy Capture Studio",
@@ -63,57 +70,15 @@
           "https://www.instagram.com/crazy_capture_studio/",
           "https://www.justdial.com/Tirupur/Crazy-Capture-Studio-Near-Scm-Company-Kumarnagar/9999PX421-X421-220326152251-J3C2_BZDET/photos"
         ]
-      }
+      };
+
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(ldData);
+      document.head.appendChild(script);
     </script>
-  </head>
-  <body>
-    <!-- Hidden SEO Content for Google (not visible to users) -->
-    <div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
-      <header>
-        <img
-          src="https://crazy-capture-studio.vercel.app/Crazylogo.jpg"
-          alt="Crazy Capture Studio Logo"
-          width="150"
-          height="150"
-        />
-        <h1>Best Photography Agency in Tiruppur - Crazy Capture Studio</h1>
-        <p>
-          We specialize in wedding photography, event coverage, and creative
-          portraits in Tiruppur. Our team captures timeless memories with stunning
-          quality and style.
-        </p>
-      </header>
 
-      <main>
-        <section>
-          <h2>Our Photography Services in Tiruppur</h2>
-          <ul>
-            <li>Wedding Photography & Videography</li>
-            <li>Event & Corporate Photography</li>
-            <li>Professional Portraits & Model Shoots</li>
-            <li>Product & Commercial Photography</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Why Choose Crazy Capture Studio?</h2>
-          <p>
-            We are passionate storytellers who believe in turning your special
-            moments into lifelong treasures. With top-notch equipment and an
-            artistic eye, we deliver the best photography experience in Tiruppur.
-          </p>
-        </section>
-
-        <section>
-          <h2>Contact Us</h2>
-          <p><strong>Phone:</strong> +91-9876543210</p>
-          <p><strong>Address:</strong> Your Street Name, Tiruppur, TN 641602</p>
-        </section>
-      </main>
-    </div>
-
-    <!-- React App Root -->
-    <div id="root"></div>
+    <!-- Main React Entry -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
