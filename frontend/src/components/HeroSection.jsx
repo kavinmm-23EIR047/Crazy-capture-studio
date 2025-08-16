@@ -88,7 +88,11 @@ function HomeSection() {
   ];
 
   return (
-    <section className="relative h-screen flex flex-col justify-center items-center text-white overflow-hidden px-3 sm:px-8 md:px-16">
+    <section
+  id="home"
+  className="relative h-screen flex flex-col justify-center items-center text-white overflow-hidden px-3 sm:px-8 md:px-16"
+>
+
       {/* Background Video with Overlay */}
       <motion.div className="absolute inset-0 z-0 overflow-hidden bg-black" style={{ y: backgroundY }}>
         <AnimatePresence mode="wait">
