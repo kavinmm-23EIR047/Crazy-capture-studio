@@ -71,10 +71,8 @@ function HomeSection() {
       id="home"
       className="relative h-screen flex flex-col justify-center items-center text-white overflow-hidden px-6 sm:px-10 md:px-16"
     >
-     
-
       {/* Background Video with Overlay */}
-      <motion.div className="absolute inset-0 z-0 overflow-hidden" style={{ y: backgroundY }}>
+      <motion.div className="absolute inset-0 z-0 overflow-hidden bg-black" style={{ y: backgroundY }}>
         <AnimatePresence mode="wait">
           <motion.video
             key={videoIndex}
@@ -85,9 +83,9 @@ function HomeSection() {
             loop
             preload="metadata"
             loading="lazy"
-            className="w-full h-full object-cover scale-105"
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
+            className="w-full h-full object-cover"  // 🔥 Fix: show full video, no crop
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.2 }}
           />
