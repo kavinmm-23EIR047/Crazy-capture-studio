@@ -52,7 +52,7 @@ function HomeSection() {
   useEffect(() => {
     const switchInterval = setInterval(() => {
       setVideoIndex((prev) => (prev + 1) % videos.length);
-    }, 10000);
+    }, 15000);
     return () => clearInterval(switchInterval);
   }, []);
 
