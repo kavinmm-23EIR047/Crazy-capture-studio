@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import { FaArrowUp, FaWhatsapp } from "react-icons/fa";
+import { FaArrowUp } from "react-icons/fa";
 
 import HomePage from './pages/HomePage';
 import GalleryPage from './pages/GalleryPage';
@@ -9,7 +9,6 @@ import GalleryPage from './pages/GalleryPage';
 import Navigation from './components/Navigation';
 import FooterSection from './components/FooterSection';
 import WhatsAppChatbot from './components/WhatsAppChatbot';
-
 
 function App() {
   const contactRef = useRef(null);
@@ -86,50 +85,59 @@ function App() {
         {/* WhatsApp Chatbot */}
         <WhatsAppChatbot />
 
-        {/* Floating Call Now Button */}
-        <a
-          href="tel:+918124787002"
-          className="fixed bottom-4 right-5 z-50 bg-[#FFD700] hover:bg-yellow-600 text-black px-4 py-4 rounded-full shadow-xl transition-all duration-300 flex items-center group overflow-hidden"
-          aria-label="Call Now"
-        >
-          <div className="animate-phoneRing">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 5a2 2 0 012-2h1.6a1 1 0 01.98.804l.53 2.65a1 1 0 01-.272.941l-1.272 1.272a16.978 16.978 0 007.416 7.416l1.272-1.272a1 1 0 01.941-.272l2.65.53a1 1 0 01.804.98V19a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z"
-              />
-            </svg>
-          </div>
-          <span
-            className="ml-1 max-w-0 overflow-hidden whitespace-nowrap transition-all duration-300 group-hover:max-w-xs group-hover:ml-2 font-semibold"
-          >
-            Call Now
-          </span>
-        </a>
+      {/* Floating Buttons Group */}
+<div className="fixed bottom-4 right-5 z-50 flex flex-col items-center space-y-4">
 
-       {/* Floating Previous Section Button with Yellow & White Circular Scroll Fill */}
-{isVisible && (
-  <button
-    onClick={goToPreviousSection}
-    className="fixed bottom-20 right-5 z-50 p-4 rounded-full shadow-xl flex items-center justify-center"
-    style={{
-      background: `conic-gradient(#FFD700 ${scrollProgress}%, #ffffffb1 0%)`,
-      width: "56px",
-      height: "56px",
-    }}
-    aria-label="Go to previous section"
+  {/* Floating Call Now Button */}
+  <a
+    href="tel:+918124787002"
+    className="bg-[#FFD700] hover:bg-yellow-600 text-black 
+               w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16
+               rounded-full shadow-xl transition-all duration-300 flex items-center justify-center group overflow-hidden"
+    aria-label="Call Now"
   >
-    <FaArrowUp size={30} className="text-black" />
-  </button>
-)}
+    <div className="animate-phoneRing flex items-center justify-center">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 5a2 2 0 012-2h1.6a1 1 0 01.98.804l.53 2.65a1 1 0 01-.272.941l-1.272 1.272a16.978 16.978 0 007.416 7.416l1.272-1.272a1 1 0 01.941-.272l2.65.53a1 1 0 01.804.98V19a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z"
+        />
+      </svg>
+    </div>
+    <span
+      className="ml-1 max-w-0 overflow-hidden whitespace-nowrap transition-all duration-300 
+                 group-hover:max-w-xs group-hover:ml-2 font-semibold text-sm sm:text-base"
+    >
+      Call Now
+    </span>
+  </a>
+
+  {/* Floating Previous Section Button */}
+  {isVisible && (
+    <button
+      onClick={goToPreviousSection}
+      className="rounded-full shadow-xl flex items-center justify-center 
+                 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16
+                 bg-[conic-gradient(#FFD700_var(--scroll),_#ffffffb1_0%)]"
+      style={{
+        ["--scroll"]: `${scrollProgress}%`,
+      }}
+      aria-label="Go to previous section"
+    >
+      <FaArrowUp 
+        className="text-black w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" 
+      />
+    </button>
+  )}
+</div>
 
       </div>
     </Router>
