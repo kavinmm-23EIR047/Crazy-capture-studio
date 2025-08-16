@@ -34,6 +34,7 @@ function HomeSection() {
   const videos = [
     "https://res.cloudinary.com/dxm3glvjq/video/upload/f_mp4,q_auto/v1755096659/H1_z5fq4n.mov",
     "https://res.cloudinary.com/dxm3glvjq/video/upload/f_mp4,q_auto/v1754750165/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_psp6wk.mp4",
+    "https://res.cloudinary.com/dxm3glvjq/video/upload/v1755315362/h4_djz028.mov",
   ];
 
   const [index, setIndex] = useState(0);
