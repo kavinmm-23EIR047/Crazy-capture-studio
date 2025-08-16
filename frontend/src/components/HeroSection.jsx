@@ -69,7 +69,7 @@ function HomeSection() {
   return (
     <section
       id="home"
-      className="relative h-screen flex flex-col justify-center items-center text-white overflow-hidden px-6 sm:px-10 md:px-16"
+      className="relative h-screen flex flex-col justify-center items-center text-white overflow-hidden px-3 sm:px-8 md:px-16"
     >
       {/* Background Video with Overlay */}
       <motion.div className="absolute inset-0 z-0 overflow-hidden bg-black" style={{ y: backgroundY }}>
@@ -83,7 +83,7 @@ function HomeSection() {
             loop
             preload="metadata"
             loading="lazy"
-            className="w-full h-full object-cover"  // 🔥 Fix: show full video, no crop
+            className="w-full h-full object-cover"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -95,13 +95,13 @@ function HomeSection() {
 
       {/* REC Indicator */}
       <motion.div
-        className="absolute top-14 right-5 z-10 flex items-center gap-2"
+        className="absolute top-10 right-3 sm:top-14 sm:right-5 z-10 flex items-center gap-1 sm:gap-2"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.3 }}
       >
-        <span className="w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(255,0,0,0.8)]" />
-        <span className="text-sm tracking-widest text-red-400 font-semibold">REC</span>
+        <span className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(255,0,0,0.8)]" />
+        <span className="text-[10px] sm:text-sm tracking-widest text-red-400 font-semibold">REC</span>
       </motion.div>
 
       {/* Main Heading */}
@@ -112,7 +112,7 @@ function HomeSection() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="text-4xl sm:text-5xl md:text-7xl font-extrabold z-10 text-center tracking-wide drop-shadow-lg"
+        className="text-2xl sm:text-5xl md:text-7xl font-extrabold z-10 text-center tracking-wide drop-shadow-lg"
       >
         Capture <span className="text-yellow-400">Your Story</span>
       </motion.h2>
@@ -125,14 +125,14 @@ function HomeSection() {
           animate={{ opacity: 1, rotateX: 0 }}
           exit={{ opacity: 0, rotateX: 90 }}
           transition={{ duration: 0.6 }}
-          className="mt-5 sm:mt-6 md:mt-10 text-center z-10"
+          className="mt-3 sm:mt-6 md:mt-10 text-center z-10"
         >
-          <p className="text-lg sm:text-xl md:text-3xl font-bold tracking-wide">
+          <p className="text-sm sm:text-xl md:text-3xl font-bold tracking-wide">
             {services[index].map((word, wordIndex) => (
               <span
                 key={wordIndex}
                 style={{ color: colors[index][wordIndex] }}
-                className="mx-1"
+                className="mx-0.5 sm:mx-1"
               >
                 {word}
               </span>
@@ -143,7 +143,7 @@ function HomeSection() {
 
       {/* Action Buttons */}
       <motion.div
-        className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-4 z-10"
+        className="mt-5 sm:mt-10 flex flex-wrap justify-center gap-2 sm:gap-4 z-10"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.5 }}
@@ -151,7 +151,7 @@ function HomeSection() {
         <button
           aria-label="View Portfolio"
           onClick={() => navigate("/gallery")}
-          className="bg-yellow-400/90 text-black px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-yellow-300 transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="bg-yellow-400/90 text-black px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-xs sm:text-base font-semibold shadow-lg hover:bg-yellow-300 transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400"
         >
           View Portfolio
         </button>
@@ -161,14 +161,14 @@ function HomeSection() {
             const section = document.getElementById("contact");
             if (section) section.scrollIntoView({ behavior: "smooth" });
           }}
-          className="px-6 py-3 rounded-full font-semibold border border-yellow-400/80 bg-white/10 text-yellow-300 shadow-lg hover:bg-yellow-300 hover:text-black hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-xs sm:text-base font-semibold border border-yellow-400/80 bg-white/10 text-yellow-300 shadow-lg hover:bg-yellow-300 hover:text-black hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400"
         >
           Book Session
         </button>
       </motion.div>
 
       {/* Social Icons */}
-      <nav className="absolute bottom-20 flex gap-5 z-10" aria-label="Social Media Links">
+      <nav className="absolute bottom-12 sm:bottom-20 flex gap-3 sm:gap-5 z-10" aria-label="Social Media Links">
         {[
           { icon: FaInstagram, color: "#E1306C", link: "https://instagram.com", label: "Instagram" },
           { icon: FaWhatsapp, color: "#25D366", link: "https://wa.me/1234567890", label: "WhatsApp" },
@@ -180,10 +180,10 @@ function HomeSection() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            className="w-12 h-12 flex items-center justify-center rounded-full hover:scale-110 transition shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-full hover:scale-110 transition shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
             style={{ backgroundColor: color }}
           >
-            <Icon size={26} />
+            <Icon size={16} className="sm:size-26" />
           </a>
         ))}
       </nav>
@@ -197,7 +197,7 @@ function HomeSection() {
       <motion.div
         role="button"
         aria-label="Scroll Down"
-        className="absolute bottom-6 cursor-pointer z-10 text-3xl text-yellow-400"
+        className="absolute bottom-4 cursor-pointer z-10 text-lg sm:text-3xl text-yellow-400"
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 1.5 }}
         onClick={scrollToNext}
