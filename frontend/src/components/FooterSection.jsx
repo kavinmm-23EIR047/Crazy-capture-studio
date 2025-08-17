@@ -66,8 +66,8 @@ const FooterSection = () => {
             </li>
             <li className="flex justify-center md:justify-start items-center gap-2">
               <FaMapMarkerAlt size={16} className="text-yellow-400" />
-              <a href="https://www.google.com/maps?q=Kumar+Nagar,+Tiruppur" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-yellow-300 transition-colors">
-                Kumar Nagar, Tiruppur
+              <a href="https://www.google.com/maps?q=476F+VPM,+Avinashi,+Tiruppur" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-yellow-300 transition-colors">
+                Mangalam, Avinashi, Tiruppur
               </a>
             </li>
           </ul>

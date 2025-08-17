@@ -18,26 +18,59 @@ const featuredImages = [
 
 // ------------------- Gallery Images -------------------
 const weddingImages = [
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754576215/get_3_dquye5.jpg", category: "Wedding" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575418/get_ty5cuf.jpg", category: "Wedding" },
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497314/VIDE5698_xpws5g.jpg", category: "Wedding" },
-  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497253/VIDE6810_bou4c1.jpg", category: "Wedding" },
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497289/VIDE9208_wakqic.jpg", category: "Wedding" },
-  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497090/DSC00810_yk3mts.jpg", category: "Wedding" },
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497283/VIDE8942_kthszx.jpg", category: "Wedding" },
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497253/VIDE6810_bou4c1.jpg", category: "Wedding" },
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497090/DSC00810_yk3mts.jpg", category: "Wedding" },
+   
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497082/DSC02822_kzph6q.jpg", category: "Wedding" },
+   
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497079/DONE6877_wbi80g.jpg", category: "Wedding" },
+   
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496991/CRZY4744_rrhqsh.jpg", category: "Wedding" },
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496988/CRZY9081_f4n5sb.jpg", category: "Wedding" },
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496984/CRZY5834_uczsgg.jpg", category: "Wedding" },
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496977/CRZY0319_ufbjae.jpg", category: "Wedding" },
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496957/Carousal5_nevc6u.jpg", category: "Wedding" },
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496929/Carousal1_zatgdd.jpg", category: "Wedding" },
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496913/1C8A8580_ladwlo.jpg", category: "Wedding" },
+   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754496911/02_kn968l.jpg", category: "Wedding" },
+   
+
+  
 ];
 
 const birthdayImages = [
-  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574463/dm_for_more_enquire.......8124787002_t4rvoa.jpg", category: "Birthday" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574465/HELLO_ALL_HOPE_YOU_ALL_ARE_GOOD_AND_SAFE_%EF%B8%8F_Yes_we_are_back_With_all_your_blessings_here_is_ou_dpvfwz.jpg", category: "Birthday" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317146553_3370299676574390_6411223539222079084_n_qaagqe.jpg", category: "Birthday" },
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317273066_854165815854107_4457544914850071124_n_j5nwf1.jpg", category: "Birthday" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/HELLO_ALL_HOPE_YOU_ALL_ARE_GOOD_AND_SAFE_%EF%B8%8F_Yes_we_are_back_With_all_your_blessings_here_is_ou_1_zxaczf.jpg", category: "Birthday" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574461/dm_for_more_enquire.......8124787002_1_gwlgmr.jpg", category: "Birthday" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574463/dm_for_more_enquire.......8124787002_t4rvoa.jpg", category: "Birthday" },
 ];
 
 const babyshowerImages = [
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/441499064_405687615669094_7523321045747557921_n_t74lsd.jpg", category: "BabyShower" },
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/get_2_q82lgm.jpg", category: "BabyShower" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/441211858_1516889262195295_5631550106516590248_n_ztz91b.jpg", category: "BabyShower" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575847/get_1_xn6txa.jpg", category: "BabyShower" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575847/Someone_special_someone_dear_someone_new_to_love_is_here_PPL_Who_Collaborated_with_us_%EF%B8%8F_bu76ns.jpg", category: "BabyShower" },
+
 ];
 
 const concertImages = [
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg", category: "Concert" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574979/It_is_more_important_to_click_with_people_than_to_click_the_shutter_Thanks_for_Capturing_the_m_-_Copy_ffa4xi.webp", category: "Concert" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574979/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_2_e4lvon.jpg", category: "Concert" },
   { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574978/Modeling_shoot_EVERYONEHASTALENT..._Teamwork_makes_the_Dreamwork_Inframe_-_methagu_lead_c_omidzp.jpg", category: "Concert" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574978/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_1_fgsjlm.jpg", category: "Concert" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574975/Modeling_shoot_EVERYONEHASTALENT..._Teamwork_makes_the_Dreamwork_Inframe_-_methagu_lead_c_1_sdcpuz.jpg", category: "Concert" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574969/sanjeevalayamanasa_Stunning_Moments_Captured_Featuring_the_radiant_sanjeevalayamanasa_vsht6w.jpg", category: "Concert" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574963/aranthainisha_special_thanks_to_d_squad_studio_unique_surprise_plannerss_likes_like_follow_a8ocpp.jpg", category: "Concert" },
+  { src: "https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574963/sathya_devarajan_official_trending_post_photography_d7hvvx.jpg", category: "Concert" },
 ];
 
 // Merge all images
