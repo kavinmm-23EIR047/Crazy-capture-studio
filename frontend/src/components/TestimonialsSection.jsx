@@ -138,7 +138,7 @@ export const TestimonialsSection = () => {
                   </div>
 
                   <p className="text-[#CCCCCC] mb-4 text-base leading-relaxed">
-                    "{testimonial.comment}"
+                    {testimonial.comment}
                   </p>
 
                   {testimonial.date && (
