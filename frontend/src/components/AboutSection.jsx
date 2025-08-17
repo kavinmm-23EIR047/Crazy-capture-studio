@@ -21,12 +21,12 @@ const AboutAndAchievements = () => {
   const statsRef = useRef(null);
 
   const stats = [
-    { key: "clients", target: 1222, icon: FaUsers, label: "Clients", suffix: "+" },
-    { key: "awards", target: 50, icon: FaAward, label: "Awards", suffix: "+" },
-    { key: "projects", target: 2500, icon: FaCamera, label: "Projects", suffix: "+" },
-    { key: "experience", target: 8, icon: FaTrophy, label: "Years", suffix: "+" },
+    { key: "clients", target: 500, icon: FaUsers, label: "Clients", suffix: "+" },
+    { key: "awards", target: 15, icon: FaAward, label: "Awards", suffix: "+" },
+    { key: "projects", target: 1000, icon: FaCamera, label: "Projects", suffix: "+" },
+    { key: "experience", target: 6, icon: FaTrophy, label: "Years", suffix: "+" },
     { key: "satisfaction", target: 98, icon: FaHeart, label: "Satisfaction", suffix: "%" },
-    { key: "events", target: 350, icon: FaStar, label: "Events", suffix: "+" }
+    // { key: "events", target: 350, icon: FaStar, label: "Events", suffix: "+" }
   ];
 
   const animateCounter = (target, key, duration = 2000) => {
