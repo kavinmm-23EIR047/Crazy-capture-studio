@@ -7,7 +7,7 @@ const FooterSection = () => {
     {
       icon: FaInstagram,
       gradient: "linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5)",
-      link: "https://instagram.com",
+      link: "https://www.instagram.com/crazy_capture_studio/",
       label: "Instagram",
     },
     {
@@ -19,7 +19,7 @@ const FooterSection = () => {
     {
       icon: FaFacebook,
       gradient: "linear-gradient(45deg, #1877F2, #42A5F5)",
-      link: "https://facebook.com",
+      link: "https://www.facebook.com/people/%F0%9D%91%AA%F0%9D%92%93%F0%9D%92%82%F0%9D%92%9B%F0%9D%92%9A-%F0%9D%91%AA%F0%9D%92%82%F0%9D%92%91%F0%9D%92%95%F0%9D%92%96%F0%9D%92%93%F0%9D%92%86-%F0%9D%91%BA%F0%9D%92%95%F0%9D%92%96%F0%9D%92%85%F0%9D%92%8A%F0%9D%92%90/61565983881585/",
       label: "Facebook",
     },
   ];
