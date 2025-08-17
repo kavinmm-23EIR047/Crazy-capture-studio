@@ -9,12 +9,21 @@ import GalleryPage from "./pages/GalleryPage";
 import Navigation from "./components/Navigation";
 import FooterSection from "./components/FooterSection";
 import WhatsAppChatbot from "./components/WhatsAppChatbot";
+import Loader from "./components/Loader"; // ✅ Import your loader
 
 function App() {
   const contactRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showCallText, setShowCallText] = useState(false);
+
+  // Loader state
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 5000); // ⏳ Show loader for 4s
+    return () => clearTimeout(timer);
+  }, []);
 
   const sectionIds = ["home", "about", "services", "reviews", "contact"];
 
@@ -58,6 +67,11 @@ function App() {
     if (previousSection) previousSection.scrollIntoView({ behavior: "smooth" });
   };
 
+  // ✅ If loading, only show Loader
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <Router>
       <div className="bg-gradient-to-br from-[#0c0c1d] via-transparent to-[#1a1a2e] text-white min-h-screen relative">
@@ -83,9 +97,11 @@ function App() {
           {/* Call Now Button */}
           <div className="relative flex items-center">
             {showCallText && (
-              <div className="absolute right-full top-1/2 -translate-y-1/2 mr-3
+              <div
+                className="absolute right-full top-1/2 -translate-y-1/2 mr-3
                            px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-600
-                           text-black font-semibold shadow-2xl transition-all duration-500 ease-in-out whitespace-nowrap">
+                           text-black font-semibold shadow-2xl transition-all duration-500 ease-in-out whitespace-nowrap"
+              >
                 <a href="tel:+918124787002">Call Now</a>
               </div>
             )}
