@@ -224,7 +224,7 @@ const AboutAndAchievements = () => {
                 preload="metadata"
               />
               <a
-                href="https://instagram.com/crazy-capture-studio"
+                href="https://www.instagram.com/crazy_capture_studio/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="absolute top-3 right-3 bg-black/50 p-2 rounded-full text-white hover:bg-black/70"
