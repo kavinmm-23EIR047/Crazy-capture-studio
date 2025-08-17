@@ -1,14 +1,14 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import React, { useRef, useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import { FaArrowUp } from "react-icons/fa";
 
-import HomePage from './pages/HomePage';
-import GalleryPage from './pages/GalleryPage';
+import HomePage from "./pages/HomePage";
+import GalleryPage from "./pages/GalleryPage";
 
-import Navigation from './components/Navigation';
-import FooterSection from './components/FooterSection';
-import WhatsAppChatbot from './components/WhatsAppChatbot';
+import Navigation from "./components/Navigation";
+import FooterSection from "./components/FooterSection";
+import WhatsAppChatbot from "./components/WhatsAppChatbot";
 
 function App() {
   const contactRef = useRef(null);
@@ -28,22 +28,24 @@ function App() {
       setIsVisible(scrollTop > 300);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (section) => {
-    if (section === 'contact' && contactRef.current) {
-      contactRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (section === "contact" && contactRef.current) {
+      contactRef.current.scrollIntoView({ behavior: "smooth" });
     } else {
       const element = document.getElementById(section);
-      if (element) element.scrollIntoView({ behavior: 'smooth' });
+      if (element) element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   const goToPreviousSection = () => {
     const currentScroll = window.scrollY;
-    const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
 
     let previousSection = null;
     for (let i = sections.length - 1; i >= 0; i--) {
@@ -59,7 +61,6 @@ function App() {
   return (
     <Router>
       <div className="bg-gradient-to-br from-[#0c0c1d] via-transparent to-[#1a1a2e] text-white min-h-screen relative">
-
         {/* Navigation */}
         <Navigation scrollToSection={scrollToSection} />
 
@@ -77,24 +78,17 @@ function App() {
         {/* WhatsApp Chatbot */}
         <WhatsAppChatbot />
 
-        {/* Floating Buttons Group */}
+        {/* Floating Buttons */}
         <div className="fixed bottom-4 right-5 z-50 flex flex-col items-center space-y-4">
-
           {/* Call Now Button */}
           <div className="relative flex items-center">
-            
-            {/* Expandable Text (left side, full bg) */}
             {showCallText && (
-              <div
-                className="absolute right-full top-1/2 -translate-y-1/2 mr-3
+              <div className="absolute right-full top-1/2 -translate-y-1/2 mr-3
                            px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-600
-                           text-black font-semibold shadow-2xl transition-all duration-500 ease-in-out whitespace-nowrap"
-              >
+                           text-black font-semibold shadow-2xl transition-all duration-500 ease-in-out whitespace-nowrap">
                 <a href="tel:+918124787002">Call Now</a>
               </div>
             )}
-
-            {/* Circle Button */}
             <button
               onClick={() => {
                 setShowCallText(true);
@@ -105,10 +99,7 @@ function App() {
                          flex items-center justify-center overflow-hidden group"
               aria-label="Call Now"
             >
-              {/* Ripple Pulse Effect */}
               <span className="absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75 animate-ping"></span>
-
-              {/* Phone Icon with custom vibration */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="relative z-10 w-7 h-7 text-black animate-phoneRing"
@@ -140,7 +131,6 @@ function App() {
               <FaArrowUp className="text-black w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
             </button>
           )}
-
         </div>
       </div>
     </Router>
