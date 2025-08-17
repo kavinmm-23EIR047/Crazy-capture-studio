@@ -26,7 +26,7 @@ const AboutAndAchievements = () => {
     { key: "projects", target: 1000, icon: FaCamera, label: "Projects", suffix: "+" },
     { key: "experience", target: 6, icon: FaTrophy, label: "Years", suffix: "+" },
     { key: "satisfaction", target: 98, icon: FaHeart, label: "Satisfaction", suffix: "%" },
-    // { key: "events", target: 350, icon: FaStar, label: "Events", suffix: "+" }
+    { key: "events", target: 950, icon: FaStar, label: "Events", suffix: "+" }
   ];
 
   const animateCounter = (target, key, duration = 2000) => {
