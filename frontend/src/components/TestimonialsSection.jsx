@@ -82,7 +82,7 @@ export const TestimonialsSection = () => {
           className="mb-10"
         >
           <a
-            href="https://www.google.com/search?q=Crazy+Capture+Studio+Tirupur"
+            href="https://g.page/r/CfwRSN0vyqTgEAI/review"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-[#FFCB05] hover:underline transition"
