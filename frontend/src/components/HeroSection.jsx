@@ -76,7 +76,7 @@ function HomeSection() {
     {
       icon: FaWhatsapp,
       gradient: "linear-gradient(45deg, #25D366, #128C7E)",
-      link: "https://wa.me/919600732162",
+      link: "https://wa.me/918124787002",
       label: "WhatsApp",
     },
     {
