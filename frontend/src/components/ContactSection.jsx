@@ -39,6 +39,7 @@ const ContactSection = () => {
     }
 
     setLoading(true);
+
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/contact`, {
         method: "POST",
@@ -48,16 +49,20 @@ const ContactSection = () => {
 
       const data = await res.json();
       if (data.success) {
-        setShowPopup(true);
-        setFormData({ name: "", email: "", phone: "", eventName: "", comment: "", captcha: "" });
-        generateCaptcha();
+        // Simulate 5-second delay for backend processing
+        setTimeout(() => {
+          setShowPopup(true);
+          setFormData({ name: "", email: "", phone: "", eventName: "", comment: "", captcha: "" });
+          generateCaptcha();
+          setLoading(false);
+        }, 5000);
       } else {
         alert(data.message || "Something went wrong. Try again.");
+        setLoading(false);
       }
     } catch (err) {
       console.error("❌ Form error:", err);
       alert("Network error. Please try again later.");
-    } finally {
       setLoading(false);
     }
   };
@@ -82,16 +87,15 @@ const ContactSection = () => {
         className="max-w-3xl mx-auto text-center mb-10"
       >
         <div className="mx-auto w-40 h-43 rounded-full bg-[#071a3d] flex items-center justify-center shadow-lg mb-4 overflow-hidden">
-  <motion.img
-    src="https://mir-s3-cdn-cf.behance.net/project_modules/source/edb8f056053335.5a01cb22f2786.gif"
-    alt="Camera lens rotating animation"
-    className="w-full h-full object-contain"
-    initial={{ scale: 0.85, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
-    transition={{ duration: 0.5, delay: 0.15 }}
-  />
-</div>
-
+          <motion.img
+            src="https://mir-s3-cdn-cf.behance.net/project_modules/source/edb8f056053335.5a01cb22f2786.gif"
+            alt="Camera lens rotating animation"
+            className="w-full h-full object-contain"
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+          />
+        </div>
 
         <h2 className="text-3xl sm:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-200">
           Let’s Connect
@@ -107,7 +111,6 @@ const ContactSection = () => {
           onSubmit={handleSubmit}
           className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-10 shadow-lg"
         >
-          {/* ... form fields and button unchanged from previous version ... */}
           {/* Name & Email */}
           <div className="grid sm:grid-cols-2 gap-5">
             <div className="relative">
@@ -182,22 +185,34 @@ const ContactSection = () => {
             <input
               type="text"
               name="captcha"
-                placeholder="Your Answer"
-                value={formData.captcha}
-                onChange={handleInputChange}
-                className="bg-white/10 p-4 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                required
+              placeholder="Your Answer"
+              value={formData.captcha}
+              onChange={handleInputChange}
+              className="bg-white/10 p-4 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              required
             />
           </div>
 
+          {/* Submit Button with Spinner */}
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.96 }}
             type="submit"
             disabled={loading}
-            className="w-full mt-6 bg-gradient-to-r from-yellow-400 to-yellow-200 text-black font-semibold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-yellow-400/30 transition"
+            className="w-full mt-6 bg-gradient-to-r from-yellow-400 to-yellow-200 text-black font-semibold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-yellow-400/30 transition flex items-center justify-center gap-2"
           >
-            {loading ? "Sending..." : "Send Message"}
+            {loading ? (
+              <>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                  className="w-5 h-5 border-2 border-t-black border-l-black border-b-transparent border-r-transparent rounded-full"
+                />
+                Sending...
+              </>
+            ) : (
+              "Send Message"
+            )}
           </motion.button>
         </form>
       </div>
