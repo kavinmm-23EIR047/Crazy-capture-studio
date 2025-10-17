@@ -24,7 +24,7 @@ const AboutAndAchievements = () => {
     { key: "clients", target: 500, icon: FaUsers, label: "Clients", suffix: "+" },
     { key: "awards", target: 15, icon: FaAward, label: "Awards", suffix: "+" },
     { key: "projects", target: 1000, icon: FaCamera, label: "Projects", suffix: "+" },
-    { key: "experience", target: 6, icon: FaTrophy, label: "Years", suffix: "+" },
+    { key: "experience", target: 5, icon: FaTrophy, label: "Years", suffix: "+" },
     { key: "satisfaction", target: 98, icon: FaHeart, label: "Satisfaction", suffix: "%" },
     { key: "events", target: 950, icon: FaStar, label: "Events", suffix: "+" }
   ];
