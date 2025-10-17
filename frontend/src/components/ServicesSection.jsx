@@ -12,87 +12,105 @@ const ServicesSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const services = [
-    {
-      icon: Heart,
-      title: 'Wedding Photography',
-      description: 'Relive your big day through timeless, cinematic captures.',
-      image:
-        'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497314/VIDE5698_xpws5g.jpg',
-      features: [
-        'Candid Moments',
-        'Couple Portraits',
-        'Drone Shots',
-        'Cinematic Editing',
-      ],
-      link: 'https://www.instagram.com/crazy_capture_studio/',
-      pdf: '/pdfs/wedding-catalog.pdf',
-    },
-    {
-      icon: Music,
-      title: 'Concert Coverage',
-      description:
-        'High-energy concert moments captured with dynamic precision.',
-      image:
-        'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg',
-      features: [
-        'Live Action Shots',
-        'Artist Closeups',
-        'Audience Reactions',
-        'Stage Lighting Focus',
-      ],
-      link: 'https://www.instagram.com/crazy_capture_studio/',
-      pdf: '/pdfs/concert-catalog.pdf',
-    },
-    {
-      icon: Baby,
-      title: 'Baby Shoot',
-      description:
-        'Capture those adorable giggles and first milestones forever.',
-      image:
-        'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317273066_854165815854107_4457544914850071124_n_j5nwf1.jpg',
-      features: [
-        'Newborn Themes',
-        'Natural Light',
-        'Candid Emotions',
-        'Safe Props',
-        'Birthday Shoots',
-      ],
-      link: 'https://www.instagram.com/crazy_capture_studio/',
-      pdf: '/pdfs/babyshoot-catalog.pdf',
-    },
-    {
-      icon: Gift,
-      title: 'Baby Shower Photography',
-      description:
-        'Celebrate new beginnings with warm and joyful frames.',
-      image:
-        'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/get_2_q82lgm.jpg',
-      features: [
-        'Decor Details',
-        'Family Portraits',
-        'Games & Candid',
-        'Gift Reveal Shots',
-      ],
-      link: 'hhttps://www.instagram.com/crazy_capture_studio/',
-      pdf: '/pdfs/babyshower-catalog.pdf',
-    },
-    {
-      icon: Megaphone,
-      title: 'Advertisement Shoots',
-      description:
-        'Showcase your brand with powerful visuals and creative vision.',
-      image:
-        'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574978/Modeling_shoot_EVERYONEHASTALENT..._Teamwork_makes_the_Dreamwork_Inframe_-_methagu_lead_c_omidzp.jpg',
-      features: [
-        'Product Styling',
-        'Model Integration',
-        'Studio Lighting',
-        'Creative Direction',
-      ],
-      link: 'https://www.instagram.com/crazy_capture_studio/',
-      pdf: '/pdfs/advertisement-catalog.pdf',
-    },
-  ];
+  {
+    icon: Heart,
+    title: 'Wedding Photography',
+    description: 'Relive your big day through timeless, cinematic captures.',
+    image:
+      'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754497314/VIDE5698_xpws5g.jpg',
+    features: [
+      'Candid Moments',
+      'Couple Portraits',
+      'Drone Shots',
+      'Cinematic Editing',
+    ],
+    link: 'https://www.instagram.com/crazy_capture_studio/',
+    pdf: '/pdfs/wedding-catalog.pdf',
+  },
+  {
+    icon: Music,
+    title: 'Concert Coverage',
+    description:
+      'High-energy concert moments captured with dynamic precision.',
+    image:
+      'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg',
+    features: [
+      'Live Action Shots',
+      'Artist Closeups',
+      'Audience Reactions',
+      'Stage Lighting Focus',
+    ],
+    link: 'https://www.instagram.com/crazy_capture_studio/',
+    pdf: '/pdfs/concert-catalog.pdf',
+  },
+  {
+    icon: Baby,
+    title: 'Baby Shoot',
+    description:
+      'Capture those adorable giggles and first milestones forever.',
+    image:
+      'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317273066_854165815854107_4457544914850071124_n_j5nwf1.jpg',
+    features: [
+      'Newborn Themes',
+      'Natural Light',
+      'Candid Emotions',
+      'Safe Props',
+      'Birthday Shoots',
+    ],
+    link: 'https://www.instagram.com/crazy_capture_studio/',
+    pdf: '/pdfs/babyshoot-catalog.pdf',
+  },
+  {
+    icon: Gift,
+    title: 'Baby Shower Photography',
+    description:
+      'Celebrate new beginnings with warm and joyful frames.',
+    image:
+      'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754575850/get_2_q82lgm.jpg',
+    features: [
+      'Decor Details',
+      'Family Portraits',
+      'Games & Candid',
+      'Gift Reveal Shots',
+    ],
+    link: 'https://www.instagram.com/crazy_capture_studio/',
+    pdf: '/pdfs/babyshower-catalog.pdf',
+  },
+  {
+    icon: Megaphone,
+    title: 'Advertisement Shoots',
+    description:
+      'Showcase your brand with powerful visuals and creative vision.',
+    image:
+      'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574978/Modeling_shoot_EVERYONEHASTALENT..._Teamwork_makes_the_Dreamwork_Inframe_-_methagu_lead_c_omidzp.jpg',
+    features: [
+      'Product Styling',
+      'Model Integration',
+      'Studio Lighting',
+      'Creative Direction',
+    ],
+    link: 'https://www.instagram.com/crazy_capture_studio/',
+    pdf: '/pdfs/advertisement-catalog.pdf',
+  },
+  // Added Birthday Shoot
+  {
+    icon: Baby,
+    title: 'Birthday Shoot',
+    description:
+      'Celebrate birthdays with fun, vibrant, and memorable moments.',
+    image:
+      'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574461/dm_for_more_enquire.......8124787002_1_gwlgmr.jpg',
+    features: [
+      'Theme-based Decor',
+      'Candles & Cake Shots',
+      'Candid Fun Moments',
+      'Family & Friends Portraits',
+    ],
+    link: 'https://www.instagram.com/crazy_capture_studio/',
+    pdf: '/pdfs/birthday-catalog.pdf',
+  },
+];
+
 
   return (
     <section
