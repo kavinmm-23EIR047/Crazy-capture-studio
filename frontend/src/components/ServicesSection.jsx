@@ -49,7 +49,7 @@ const ServicesSection = () => {
     description:
       'Capture those adorable giggles and first milestones forever.',
     image:
-      'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317273066_854165815854107_4457544914850071124_n_j5nwf1.jpg',
+      'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574465/HELLO_ALL_HOPE_YOU_ALL_ARE_GOOD_AND_SAFE_%EF%B8%8F_Yes_we_are_back_With_all_your_blessings_here_is_ou_dpvfwz.jpg',
     features: [
       'Newborn Themes',
       'Natural Light',
@@ -99,7 +99,7 @@ const ServicesSection = () => {
     description:
       'Celebrate birthdays with fun, vibrant, and memorable moments.',
     image:
-      'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574461/dm_for_more_enquire.......8124787002_1_gwlgmr.jpg',
+      'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574464/317273066_854165815854107_4457544914850071124_n_j5nwf1.jpg',
     features: [
       'Theme-based Decor',
       'Candles & Cake Shots',
@@ -109,6 +109,23 @@ const ServicesSection = () => {
     link: 'https://www.instagram.com/crazy_capture_studio/',
     pdf: '/pdfs/birthday-catalog.pdf',
   },
+
+  // --- NEW SERVICE ADDED BELOW ---
+  {
+    icon: Gift, // Using the 'Gift' icon
+    title: 'Custom Frames & Gifts',
+    description: 'Personalize your memories with frames and unique gifts. Prices start from Rs: 399/-',
+    // TODO: Update this placeholder image URL with your actual image
+    image: 'https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574461/dm_for_more_enquire.......8124787002_1_gwlgmr.jpg',
+    features: [
+      'All Frame Sizes Available',
+      'Customized Gifts',
+      'Photo Mugs & Prints',
+      'Personalized Albums'
+    ],
+    link: '[https://www.instagram.com/crazy_capture_studio/](https://www.instagram.com/crazy_capture_studio/)',
+    pdf: '/pdfs/frames-gifts-catalog.pdf', // Assumed PDF path
+  },
 ];
 
 
