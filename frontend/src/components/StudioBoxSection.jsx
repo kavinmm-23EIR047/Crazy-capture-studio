@@ -27,7 +27,27 @@ export default function StudioBoxSection() {
       <div className="container relative z-10">
         <div className="grid lg:grid-cols-[1fr_1.15fr] gap-10 xl:gap-16 items-start">
 
-          {/* Left — info */}
+          {/* Right — CrazyCaptureBox (Moved first for mobile priority) */}
+          <motion.div
+            initial={{ opacity:0, scale:0.92 }}
+            animate={isInView ? { opacity:1, scale:1 } : {}}
+            transition={{ duration: 0.9 }}
+            className="order-1 lg:order-2 w-full"
+          >
+            <div className="relative group">
+              {/* Glow */}
+              <div className="absolute -inset-6 bg-gradient-to-tr from-[#E8B84B]/12 to-white/4
+                              rounded-[3rem] blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* Frame */}
+              <div className="relative bg-[#0a0a0a] border-4 border-[#181818] p-1 rounded-2xl
+                              shadow-[0_30px_70px_rgba(0,0,0,0.8)] overflow-hidden
+                              group-hover:scale-[1.015] transition-transform duration-500">
+                <CrazyCaptureBox inline={true} />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Left — info (Moved second for mobile priority) */}
           <div className="space-y-8 order-2 lg:order-1">
             <motion.div
               initial={{ opacity:0, x:-30 }}
@@ -76,26 +96,6 @@ export default function StudioBoxSection() {
               Browser-only · No server uploads · 100% private
             </div>
           </div>
-
-          {/* Right — CrazyCaptureBox */}
-          <motion.div
-            initial={{ opacity:0, scale:0.92 }}
-            animate={isInView ? { opacity:1, scale:1 } : {}}
-            transition={{ duration: 0.9 }}
-            className="order-1 lg:order-2 w-full"
-          >
-            <div className="relative group">
-              {/* Glow */}
-              <div className="absolute -inset-6 bg-gradient-to-tr from-[#E8B84B]/12 to-white/4
-                              rounded-[3rem] blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
-              {/* Frame */}
-              <div className="relative bg-[#0a0a0a] border-4 border-[#181818] p-1 rounded-2xl
-                              shadow-[0_30px_70px_rgba(0,0,0,0.8)] overflow-hidden
-                              group-hover:scale-[1.015] transition-transform duration-500">
-                <CrazyCaptureBox inline={true} />
-              </div>
-            </div>
-          </motion.div>
         </div>
       </div>
     </section>

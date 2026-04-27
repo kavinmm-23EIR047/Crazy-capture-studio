@@ -49,7 +49,7 @@ export default function GalleryPreview() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-10 sm:mb-14"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 mb-10 sm:mb-14"
         >
           {IMAGES.map((img, i) => (
             <motion.div
@@ -59,7 +59,7 @@ export default function GalleryPreview() {
               transition={{ duration: 0.5, delay: 0.1 + i * 0.07 }}
               className={`group card-image overflow-hidden rounded-2xl shadow-md border border-white/8
                           hover:border-[#E8B84B]/40 transition-all duration-350 cursor-pointer
-                          ${i === 0 || i === 5 ? 'sm:col-span-2 aspect-[16/9]' : 'aspect-square'}`}
+                          ${i === 0 || i === 5 ? 'col-span-2 aspect-[16/9]' : 'aspect-square'}`}
             >
               <img
                 src={img.src}

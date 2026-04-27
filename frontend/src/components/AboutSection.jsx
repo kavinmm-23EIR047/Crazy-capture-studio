@@ -95,7 +95,7 @@ export default function AboutSection() {
   };
 
   return (
-    <section id="about" className="section bg-transparent">
+    <section id="about" className="section bg-transparent !pb-8 lg:!pb-12">
       <div className="container">
 
         {/* ─── ABOUT ─── */}

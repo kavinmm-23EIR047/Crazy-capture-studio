@@ -164,7 +164,7 @@ p { font-weight: 300; line-height: 1.7; }
 ═══════════════════════════════════════ */
 .section {
   position: relative;
-  padding: clamp(5rem, 10vw, 8rem) 0;
+  padding: clamp(3.5rem, 10vw, 8rem) 0;
   overflow: hidden;
 }
 .container {
