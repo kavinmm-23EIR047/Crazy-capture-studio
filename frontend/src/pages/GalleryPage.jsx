@@ -5,7 +5,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, X, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 
 // ------------------- Featured Images -------------------
@@ -221,6 +221,24 @@ const GalleryPage = () => {
             </div>
           );
         })}
+      </motion.div>
+
+      {/* Pixieset Link */}
+      <motion.div 
+        className="flex justify-center pb-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        <a 
+          href="https://crazycapturestudio.pixieset.com/crazycapturesamples/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-yellow-500 text-black px-8 py-4 rounded-full font-bold shadow-lg hover:bg-yellow-400 hover:scale-105 transition-all duration-300 flex items-center gap-3 text-lg"
+        >
+          View More Images on Pixieset
+          <ExternalLink size={20} />
+        </a>
       </motion.div>
 
       {/* Swiper Pagination Styling */}

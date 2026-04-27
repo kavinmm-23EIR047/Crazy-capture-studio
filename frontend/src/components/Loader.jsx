@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Camera, Focus, Aperture, Image, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Loader = () => {
   const [currentIcon, setCurrentIcon] = useState(0);
@@ -33,45 +34,49 @@ const Loader = () => {
   const { Icon, color } = icons[currentIcon];
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50" style={{backgroundColor: '#000F1A'}}>
-      <div className="text-center">
+    <div className="fixed inset-0 flex items-center justify-center z-[200] bg-[#0c0c1d]">
+      <div className="text-center relative">
+        {/* Decorative Ring */}
+        <div className="absolute inset-0 -m-10 border border-yellow-400/10 rounded-full animate-[spin_10s_linear_infinite]" />
+        <div className="absolute inset-0 -m-16 border border-white/5 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
+
         {/* Animated icon */}
-        <div className="mb-8 relative flex justify-center">
-          <Icon 
-            size={64} 
-            className={`${color} transition-all duration-300 transform hover:scale-110`}
-            key={currentIcon}
-          />
-          <div className="absolute inset-0 flex justify-center animate-ping opacity-20">
-            <Icon size={64} className={color} />
+        <div className="mb-10 relative flex justify-center">
+          <div className="w-24 h-24 glass-morphism rounded-3xl flex items-center justify-center shadow-[0_0_40px_rgba(255,203,5,0.2)]">
+            <Icon 
+              size={48} 
+              className={`${color} transition-all duration-500 transform`}
+              key={currentIcon}
+            />
+          </div>
+          <div className="absolute inset-0 flex justify-center animate-ping opacity-10">
+            <Icon size={48} className={color} />
           </div>
         </div>
 
         {/* Studio name */}
-        <h1 className="text-3xl font-bold text-white mb-12 tracking-wider">
-          CRAZY <span className="text-yellow-400">CAPTURE</span>
-        </h1>
-        <h2 className="text-lg font-semibold text-yellow-400 -mt-10 mb-8 tracking-widest">
-          STUDIO
-        </h2>
+        <div className="space-y-1">
+          <h1 className="text-4xl font-black tracking-tighter text-white">
+            CRAZY <span className="gradient-text">CAPTURE</span>
+          </h1>
+          <p className="text-xs tracking-[0.5em] text-white/50 uppercase font-light">
+            Professional Studio
+          </p>
+        </div>
 
-        {/* Loading dots */}
-        <div className="flex justify-center items-center space-x-3">
-          {[1, 2, 3].map((dot) => (
-            <div
-              key={dot}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                dot <= dotCount 
-                  ? 'bg-yellow-400 scale-125' 
-                  : 'bg-slate-600 scale-100'
-              }`}
-            />
-          ))}
+        {/* Progress Bar */}
+        <div className="mt-12 w-48 mx-auto h-1 bg-white/5 rounded-full overflow-hidden">
+          <motion.div 
+            className="h-full bg-yellow-400"
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 5, ease: "linear" }}
+          />
         </div>
 
         {/* Loading text */}
-        <div className="text-gray-300 text-sm mt-6 font-medium tracking-wide">
-          Crafting visuals{'.'.repeat(dotCount)}
+        <div className="text-gray-500 text-[10px] mt-4 font-bold tracking-widest uppercase">
+          Initializing Camera{'.'.repeat(dotCount)}
         </div>
       </div>
     </div>

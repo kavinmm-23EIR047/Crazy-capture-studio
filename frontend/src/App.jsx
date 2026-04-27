@@ -10,19 +10,26 @@ import Navigation from "./components/Navigation";
 import FooterSection from "./components/FooterSection";
 import WhatsAppChatbot from "./components/WhatsAppChatbot";
 import Loader from "./components/Loader"; // ✅ Import your loader
+import CrazyCaptureBox from "./components/CrazyCaptureBox";
 
 function App() {
   const contactRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showCallText, setShowCallText] = useState(false);
+  const [isStudioBoxOpen, setIsStudioBoxOpen] = useState(false);
 
   // Loader state
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const handleOpenStudioBox = () => setIsStudioBoxOpen(true);
+    window.addEventListener('open-studio-box', handleOpenStudioBox);
     const timer = setTimeout(() => setLoading(false), 5000); // ⏳ Show loader for 4s
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('open-studio-box', handleOpenStudioBox);
+    };
   }, []);
 
   const sectionIds = ["home", "about", "services", "reviews", "contact"];
@@ -91,6 +98,12 @@ function App() {
 
         {/* WhatsApp Chatbot */}
         <WhatsAppChatbot />
+
+        {/* Crazy Capture Studio Box Modal */}
+        <CrazyCaptureBox
+          isOpen={isStudioBoxOpen}
+          onClose={() => setIsStudioBoxOpen(false)}
+        />
 
         {/* Floating Buttons */}
         <div className="fixed bottom-4 right-5 z-50 flex flex-col items-center space-y-4">

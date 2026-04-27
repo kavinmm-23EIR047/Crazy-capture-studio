@@ -105,47 +105,45 @@ app.post("/api/contact", async (req, res) => {
     message: "✅ Message received and will be processed shortly",
   });
 
-  // 🕐 Delay heavy tasks (Sheets + Emails) by 5 seconds
-  setTimeout(() => {
-    Promise.allSettled([
-      sheets.spreadsheets.values.append({
-        spreadsheetId: process.env.GOOGLE_SHEET_ID,
-        range: "contact!A1:F1",
-        valueInputOption: "RAW",
-        insertDataOption: "INSERT_ROWS",
-        requestBody: {
-          values: [[name, email, phone, eventName, comment, timestamp]],
-        },
-      }),
-      transporter.sendMail(adminMail),
-      transporter.sendMail(autoReplyMail),
-    ])
-      .then((results) => {
-        results.forEach((result, index) => {
-          if (result.status === "fulfilled") {
-            console.log(
-              [
-                "✅ Saved to Google Sheets",
-                "📨 Admin notified",
-                "📨 Auto-reply sent",
-              ][index]
-            );
-          } else {
-            console.error(
-              [
-                "❌ Sheets error",
-                "❌ Admin email failed",
-                "❌ Auto-reply failed",
-              ][index],
-              result.reason.message
-            );
-          }
-        });
-      })
-      .catch((err) =>
-        console.error("❌ Background task error:", err.message)
-      );
-  }, 5000); // ⏱️ Delay = 5000 ms (5 seconds)
+  // ✅ Start background tasks immediately (Sheets + Emails)
+  Promise.allSettled([
+    sheets.spreadsheets.values.append({
+      spreadsheetId: process.env.GOOGLE_SHEET_ID,
+      range: "contact!A1:F1",
+      valueInputOption: "RAW",
+      insertDataOption: "INSERT_ROWS",
+      requestBody: {
+        values: [[name, email, phone, eventName, comment, timestamp]],
+      },
+    }),
+    transporter.sendMail(adminMail),
+    transporter.sendMail(autoReplyMail),
+  ])
+    .then((results) => {
+      results.forEach((result, index) => {
+        if (result.status === "fulfilled") {
+          console.log(
+            [
+              "✅ Saved to Google Sheets",
+              "📨 Admin notified",
+              "📨 Auto-reply sent",
+            ][index]
+          );
+        } else {
+          console.error(
+            [
+              "❌ Sheets error",
+              "❌ Admin email failed",
+              "❌ Auto-reply failed",
+            ][index],
+            result.reason.message
+          );
+        }
+      });
+    })
+    .catch((err) =>
+      console.error("❌ Background task error:", err.message)
+    );
 });
 
 // ✅ Feedback/Testimonial API

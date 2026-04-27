@@ -44,21 +44,25 @@ const GalleryPreview = () => {
   ];
 
   return (
-    <section className="py-24 bg-transparent relative z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
+    <section className="relative py-24 bg-transparent overflow-hidden">
+      <div className="parallax-bg bg-[url('https://res.cloudinary.com/dxm3glvjq/image/upload/v1754574980/Recent_shoot_with_pradeep_kumar1123_trending_livemusic_loveislove_songs_idk6ur.jpg')] opacity-5" />
+      
+      <div className="max-w-[1400px] mx-auto px-6 relative z-10">
         {/* Header */}
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Featured <span className="text-[#FFCB05]">Work</span>
+          <p className="text-xs font-bold uppercase tracking-widest text-[#E8B84B] mb-3">Portfolio</p>
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-4 font-heading">
+            Featured <span>Work</span>
           </h2>
-          <p className="text-xl text-[#B0B0B0] max-w-3xl mx-auto">
+          <div className="w-16 h-[3px] bg-[#E8B84B] rounded-full mb-8" />
+          
+          <p className="text-lg text-white/60 max-w-2xl leading-relaxed font-body">
             A glimpse into our portfolio showcasing the artistry and emotion we capture in every frame.
           </p>
         </motion.div>
@@ -97,7 +101,7 @@ const GalleryPreview = () => {
         >
           <Link
             to="/gallery"
-            className="inline-flex items-center bg-[#FFCB05] text-black px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#e6b800] transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="inline-flex items-center bg-[#E8B84B] text-black px-8 py-4 rounded-full text-lg font-bold hover:bg-[#D4A742] transition-all duration-300 transform hover:scale-105 shadow-lg font-heading"
           >
             View Full Gallery
             <ArrowRight className="ml-2 w-5 h-5" />

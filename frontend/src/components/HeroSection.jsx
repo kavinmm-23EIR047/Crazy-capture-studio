@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FaInstagram, FaWhatsapp, FaFacebook } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { Camera } from "lucide-react";
 
 function HomeSection() {
   const navigate = useNavigate();
@@ -20,14 +21,14 @@ function HomeSection() {
   ];
 
   const colors = [
-    ["#FFD700", "#FFFFFF"],
+    ["#E8B84B", "#FFFFFF"],
     ["#FFEEAA", "#E0E0E0"],
-    ["#FFFFF0", "#FFD700"],
-    ["#FFD700", "#F5F5F5"],
-    ["#FFFFFF", "#FFD700"],
-    ["#FFD700", "#E0E0E0"],
+    ["#FFFFF0", "#E8B84B"],
+    ["#E8B84B", "#F5F5F5"],
+    ["#FFFFFF", "#E8B84B"],
+    ["#E8B84B", "#E0E0E0"],
     ["#FFFFE0", "#FFFFFF"],
-    ["#FFD700", "#DCDCDC"],
+    ["#E8B84B", "#DCDCDC"],
     ["#FFFACD", "#FFFFFF"],
   ];
 
@@ -104,7 +105,7 @@ function HomeSection() {
             playsInline
             loop
             preload="metadata"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover parallax-bg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -116,38 +117,43 @@ function HomeSection() {
 
       {/* REC Indicator */}
       <motion.div
-        className="absolute top-10 right-3 sm:top-14 sm:right-5 z-10 flex items-center gap-1 sm:gap-2"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.3 }}
+        className="absolute top-10 right-3 sm:top-14 sm:right-10 z-20 flex items-center gap-2 px-3 py-1 bg-black/40 backdrop-blur-md rounded-full border border-red-500/30"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, delay: 0.5 }}
       >
-        <span className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(255,0,0,0.8)]" />
-        <span className="text-[10px] sm:text-sm tracking-widest text-red-400 font-semibold">REC</span>
+        <span className="w-2.5 h-2.5 bg-red-600 rounded-full animate-pulse shadow-[0_0_15px_rgba(220,38,38,0.8)]" />
+        <span className="text-[10px] sm:text-xs tracking-[0.2em] text-red-500 font-black">LIVE REC</span>
       </motion.div>
 
       {/* Main Heading */}
-      <motion.h2
-        initial={{ opacity: 0, y: 40 }}
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="text-2xl sm:text-5xl md:text-7xl font-extrabold z-10 text-center tracking-wide drop-shadow-lg"
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="z-10 text-center"
       >
-        Capture <span className="text-yellow-400">Your Story</span>
-      </motion.h2>
+        <h2 className="text-4xl sm:text-7xl md:text-8xl font-black tracking-tighter drop-shadow-2xl mb-4 font-heading">
+          CAPTURE <span className="gradient-text">MOMENTS</span>
+        </h2>
+        <p className="text-white/60 text-sm sm:text-lg tracking-[0.4em] font-bold uppercase font-body">
+          Crazy Capture Studio
+        </p>
+      </motion.div>
 
       {/* Rotating Services */}
       <AnimatePresence mode="wait">
         <motion.div
           key={index}
-          initial={{ opacity: 0, rotateX: -90 }}
-          animate={{ opacity: 1, rotateX: 0 }}
-          exit={{ opacity: 0, rotateX: 90 }}
-          transition={{ duration: 0.6 }}
-          className="mt-3 sm:mt-6 md:mt-10 text-center z-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.8 }}
+          className="mt-8 text-center z-10"
         >
-          <p className="text-sm sm:text-xl md:text-3xl font-bold tracking-wide">
+          <p className="text-lg sm:text-3xl font-medium tracking-tight">
             {services[index].map((word, wordIndex) => (
-              <span key={wordIndex} style={{ color: colors[index][wordIndex] }} className="mx-0.5 sm:mx-1">
+              <span key={wordIndex} style={{ color: colors[index][wordIndex] }} className="mx-1">
                 {word}
               </span>
             ))}
@@ -163,13 +169,19 @@ function HomeSection() {
       >
         <button
           onClick={() => navigate("/gallery")}
-          className="bg-yellow-400/90 text-black px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-xs sm:text-base font-semibold shadow-lg hover:bg-yellow-300 transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-xs sm:text-base font-bold border border-white/20 bg-white/5 backdrop-blur-md text-white shadow-lg hover:bg-white hover:text-black hover:scale-105 transition duration-300 font-heading"
         >
           View Portfolio
         </button>
         <button
+          onClick={() => document.getElementById("studio-box")?.scrollIntoView({ behavior: "smooth" })}
+          className="bg-[#E8B84B] text-black px-4 py-2 sm:px-8 sm:py-4 rounded-full text-sm sm:text-lg font-bold shadow-[0_0_20px_rgba(232,184,75,0.4)] hover:bg-[#D4A742] hover:scale-110 transition duration-300 flex items-center gap-2 animate-pulse font-heading"
+        >
+          <Camera className="w-5 h-5" /> Studio Box 📸
+        </button>
+        <button
           onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-          className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-xs sm:text-base font-semibold border border-yellow-400/80 bg-white/10 text-yellow-300 shadow-lg hover:bg-yellow-300 hover:text-black hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-xs sm:text-base font-bold border border-[#E8B84B]/80 bg-white/5 text-[#E8B84B] shadow-lg hover:bg-[#E8B84B] hover:text-black hover:scale-105 transition duration-300 font-heading"
         >
           Book Session
         </button>
@@ -201,7 +213,7 @@ function HomeSection() {
       <motion.div
         role="button"
         aria-label="Scroll Down"
-        className="absolute bottom-4 cursor-pointer z-10 text-lg sm:text-3xl text-yellow-400"
+        className="absolute bottom-4 cursor-pointer z-10 text-lg sm:text-3xl text-[#E8B84B]"
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 1.5 }}
         onClick={scrollToNext}

@@ -81,6 +81,7 @@ const Navigation = () => {
     { id: "home", label: "Home", icon: <Home className="w-5 h-5 mr-2" /> },
     { id: "about", label: "About", icon: <User className="w-5 h-5 mr-2" /> },
     { id: "services", label: "Services", icon: <Camera className="w-5 h-5 mr-2" /> },
+    { id: "studio-box", label: "Studio Box 📸", icon: <Camera className="w-5 h-5 mr-2 text-yellow-400" /> },
     { id: "reviews", label: "Reviews", icon: <Star className="w-5 h-5 mr-2" /> },
   ];
 
@@ -139,9 +140,9 @@ const Navigation = () => {
             </Link>
             <button
               onClick={() => scrollToSection("contact")}
-              className="bg-[#FFCB05] text-black px-4 py-2 rounded-full hover:bg-yellow-400 font-medium flex items-center transition transform hover:scale-105"
+              className="bg-[#FFCB05] text-black px-6 py-2.5 rounded-full hover:bg-yellow-400 font-bold flex items-center transition transform hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(255,203,5,0.3)]"
             >
-              <PhoneCall className="w-6 h-6 mr-2" /> Contact
+              <PhoneCall className="w-5 h-5 mr-2" /> Contact
             </button>
           </div>
 

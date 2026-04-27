@@ -45,35 +45,32 @@ export const TestimonialsSection = () => {
   }, []);
 
   return (
-    <section id="reviews" className="bg-transparent text-white py-20 px-4 md:px-10">
-      <div className="max-w-6xl mx-auto text-center text-[#FFCB05]" ref={ref}>
-        <motion.h2
-          className="text-2xl md:text-4xl font-bold mb-2"
+    <section id="reviews" className="bg-transparent text-white py-24 px-6">
+      <div className="max-w-[1400px] mx-auto" ref={ref}>
+        {/* Header */}
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
+          className="mb-12"
         >
-          Crazy Capture Studio, <span className="text-[#CCCCCC]">Tirupur</span>
-        </motion.h2>
+          <p className="text-xs font-bold uppercase tracking-widest text-[#E8B84B] mb-3">Client Love</p>
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-4 font-heading">
+            Voices of <span>Trust</span>
+          </h2>
+          <div className="w-16 h-[3px] bg-[#E8B84B] rounded-full mb-8" />
+          
+          <div className="flex items-center gap-3 mb-4">
+             <div className="flex text-[#E8B84B]">
+                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
+             </div>
+             <span className="text-xl font-bold font-heading">{averageRating}/5</span>
+          </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex justify-center items-center mb-4 text-yellow-400 text-xl font-semibold gap-2"
-        >
-          {averageRating}/5
-          <Star className="w-5 h-5 fill-current" />
+          <p className="text-lg text-white/60 max-w-2xl leading-relaxed font-body">
+            Here's what our happy customers have to say about our professional photography services.
+          </p>
         </motion.div>
-
-        <motion.p
-          className="text-[#CCCCCC] max-w-2xl mx-auto mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          Here's what our happy customers have to say about our services.
-        </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -85,7 +82,7 @@ export const TestimonialsSection = () => {
             href="https://g.page/r/CfwRSN0vyqTgEAI/review"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[#FFCB05] hover:underline transition"
+            className="inline-flex items-center gap-2 text-[#E8B84B] hover:underline transition font-bold font-body"
           >
             View More Reviews on Google
             <ArrowRight className="w-4 h-4" />
@@ -113,14 +110,14 @@ export const TestimonialsSection = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : {}}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
-                  className="bg-white/5 border border-white/10 backdrop-blur-sm rounded-xl p-8 h-full flex flex-col justify-between"
+                  className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-8 h-full flex flex-col justify-between"
                 >
-                  <div className="flex items-center justify-between mb-4">
-                    <Quote className="w-6 h-6 text-[#FFCB05]" />
+                  <div className="flex items-center justify-between mb-6">
+                    <Quote className="w-8 h-8 text-[#E8B84B]" />
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
                       alt="Google"
-                      className="h-6"
+                      className="h-6 opacity-60"
                     />
                   </div>
 
@@ -130,34 +127,35 @@ export const TestimonialsSection = () => {
                         key={i}
                         className={`w-5 h-5 ${
                           i < parseInt(testimonial.rating)
-                            ? "text-[#FFCB05]"
-                            : "text-white/20"
+                            ? "text-[#E8B84B]"
+                            : "text-white/10"
                         } fill-current`}
                       />
                     ))}
                   </div>
 
-                  <p className="text-[#CCCCCC] mb-4 text-base leading-relaxed">
-                    {testimonial.comment}
+                  <p className="text-white/60 mb-6 text-[15px] leading-relaxed font-body">
+                    "{testimonial.comment}"
                   </p>
 
-                  {testimonial.date && (
-                    <p className="text-sm text-white/40 mb-4 text-right">
-                      {new Date(testimonial.date).toLocaleDateString(undefined, {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </p>
-                  )}
-
-                  <div className="flex items-center mt-auto pt-4 border-t border-white/10">
-                    <div className="w-12 h-12 rounded-full bg-[#FFCB05] text-black font-bold flex items-center justify-center mr-4">
+                  <div className="flex items-center mt-auto pt-6 border-t border-white/10">
+                    <div className="w-12 h-12 rounded-full bg-[#E8B84B] text-black font-bold flex items-center justify-center mr-4 font-heading text-xl">
                       {testimonial.image || testimonial.description?.charAt(0)}
                     </div>
-                    <h4 className="font-semibold text-white text-sm">
-                      {testimonial.description}
-                    </h4>
+                    <div>
+                      <h4 className="font-bold text-white text-base font-heading">
+                        {testimonial.description}
+                      </h4>
+                      {testimonial.date && (
+                        <p className="text-[10px] text-white/30 uppercase tracking-widest font-bold">
+                          {new Date(testimonial.date).toLocaleDateString(undefined, {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               </SwiperSlide>
