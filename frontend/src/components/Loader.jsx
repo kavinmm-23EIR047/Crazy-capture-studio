@@ -1,124 +1,126 @@
 import React, { useEffect, useState } from 'react';
-import { Camera, Video, Clapperboard, Image, MonitorPlay } from 'lucide-react';
+import { Camera, Video, Clapperboard, Image, MonitorPlay, Heart, User, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SERVICES = [
-  { Icon: Camera,       title: 'Photography',    text: 'Capturing perfect moments' },
-  { Icon: Video,        title: 'Videography',    text: 'Recording cinematic memories' },
-  { Icon: Clapperboard, title: 'Editing',        text: 'Crafting stunning visuals' },
-  { Icon: Image,        title: 'Album Design',   text: 'Designing timeless albums' },
-  { Icon: MonitorPlay,  title: 'Reels & Shorts', text: 'Creating social content' },
+  { Icon: Camera,       title: 'Photographing' },
+  { Icon: Video,        title: 'Videography'   },
+  { Icon: Clapperboard, title: 'Editing'       },
+  { Icon: Image,        title: 'Albums'        },
+  { Icon: Heart,        title: 'Weddings'      },
+  { Icon: User,         title: 'Portraits'     },
+  { Icon: Sparkles,     title: 'Events'        },
+  { Icon: MonitorPlay,  title: 'Social Media'  },
 ];
 
 export default function Loader() {
-  const [idx,      setIdx]      = useState(0);
-  const [dots,     setDots]     = useState(1);
-  const [fading,   setFading]   = useState(false);
+  const [idx, setIdx] = useState(0);
   const [progress, setProgress] = useState(0);
 
+  // Faster rotation for icons
   useEffect(() => {
     const t = setInterval(() => {
-      setFading(true);
-      setTimeout(() => {
-        setIdx(p => (p + 1) % SERVICES.length);
-        setFading(false);
-      }, 300);
-    }, 1800);
+      setIdx(p => (p + 1) % SERVICES.length);
+    }, 800); // Fast transition
     return () => clearInterval(t);
   }, []);
 
+  // Progress bar to match 5.5s
   useEffect(() => {
-    const t = setInterval(() => setDots(p => (p === 3 ? 1 : p + 1)), 450);
+    const t = setInterval(() => {
+      setProgress(p => (p >= 100 ? 100 : p + 1));
+    }, 55);
     return () => clearInterval(t);
   }, []);
 
-  useEffect(() => {
-    const t = setInterval(() => setProgress(p => (p >= 100 ? 100 : p + 2)), 60);
-    return () => clearInterval(t);
-  }, []);
-
-  const { Icon, title, text } = SERVICES[idx];
+  const { Icon, title } = SERVICES[idx];
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-[#080810] flex items-center justify-center overflow-hidden">
-      {/* Glow orbs — GPU composited */}
-      <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-[#E8B84B]/8 rounded-full blur-[100px] animate-float" />
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-white/4 rounded-full blur-[80px]"
-           style={{ animation: 'float-y 7s ease-in-out infinite 1.5s' }} />
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[#080810]">
+      
+      {/* Dancing Background Colors — Shifting Gold & Dark Purple */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-[-15%] left-[-15%] w-[60%] h-[60%] rounded-full bg-[#E8B84B]/10 blur-[140px] animate-dance-bg" />
+        <div className="absolute bottom-[-15%] right-[-15%] w-[60%] h-[60%] rounded-full bg-purple-900/20 blur-[140px] animate-dance-bg" style={{ animationDelay: '-4s' }} />
+        <div className="absolute top-[30%] right-[-5%] w-[45%] h-[45%] rounded-full bg-[#E8B84B]/5 blur-[120px] animate-dance-bg" style={{ animationDelay: '-8s' }} />
+      </div>
 
-      {/* Rotating ring decoration */}
-      <div className="absolute w-[500px] h-[500px] border border-white/[0.04] rounded-full animate-spin-slow" />
-      <div className="absolute w-[380px] h-[380px] border border-[#E8B84B]/[0.06] rounded-full animate-spin-slow"
-           style={{ animationDirection: 'reverse', animationDuration: '28s' }} />
-
-      {/* Main card */}
-      <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-sm w-full">
-
-        {/* Icon container */}
-        <motion.div
-          className="relative w-28 h-28 sm:w-32 sm:h-32 mb-7 sm:mb-8"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      <div className="relative z-10 flex flex-col items-center text-center">
+        
+        {/* Dancing Icon Container with Theme Background */}
+        <motion.div 
+          className="relative w-32 h-32 mb-10"
+          animate={{ 
+            y: [0, -12, 0],
+            rotate: [-2, 2, -2]
+          }}
+          transition={{ 
+            duration: 4, 
+            repeat: Infinity, 
+            ease: "easeInOut" 
+          }}
         >
-          {/* Glow ring */}
-          <div className="absolute inset-0 rounded-3xl bg-[#E8B84B]/20 blur-lg animate-glow" />
-          {/* Card */}
-          <div className="relative w-full h-full glass border border-white/10 rounded-3xl
-                          flex items-center justify-center shadow-xl">
+          {/* Glass Circle with Theme Border */}
+          <div className="absolute inset-0 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl" />
+          <div className="absolute inset-0 rounded-full border border-[#E8B84B]/20 animate-ping opacity-20" />
+          
+          <div className="relative w-full h-full flex items-center justify-center">
             <AnimatePresence mode="wait">
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, scale: 0.7, rotate: -10 }}
+                initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                exit={{ opacity: 0, scale: 0.7, rotate: 10 }}
-                transition={{ duration: 0.35 }}
+                exit={{ opacity: 0, scale: 1.5, rotate: 45 }}
+                transition={{ duration: 0.3, ease: "backOut" }}
               >
-                <Icon size={48} className="text-[#E8B84B]" />
+                <Icon size={44} className="text-[#E8B84B]" />
               </motion.div>
             </AnimatePresence>
           </div>
         </motion.div>
 
-        {/* Brand */}
-        <h1 className="display-md text-white tracking-tighter mb-1">
-          CRAZY <span className="text-[#E8B84B]">CAPTURE</span>
-        </h1>
-        <p className="eyebrow text-white/30 mb-7">Professional Photography Studio</p>
-
-        {/* Rotating service label */}
-        <div className="min-h-[52px] mb-7 flex flex-col items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.3 }}
-              className="text-center"
-            >
-              <p className="text-lg sm:text-xl font-bold text-[#E8B84B] mb-1">{title}</p>
-              <p className="text-sm text-white/40 font-light">{text}</p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Progress bar */}
-        <div className="w-full max-w-xs mb-5">
-          <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full rounded-full"
-              style={{ background: 'linear-gradient(90deg, #E8B84B, #fff8d6, #E8B84B)' }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.12, ease: "linear" }}
-            />
+        {/* Branding & Subtitle */}
+        <div className="space-y-2">
+          <h1 className="text-3xl font-black tracking-tighter text-white mb-1 uppercase italic">
+            CRAZY <span className="text-[#E8B84B]">CAPTURE</span>
+          </h1>
+          
+          <div className="h-5 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={idx}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.2 }}
+                className="text-[10px] font-bold tracking-[0.4em] text-[#E8B84B] uppercase"
+              >
+                {title}
+              </motion.p>
+            </AnimatePresence>
           </div>
         </div>
 
-        {/* Loading dots */}
-        <p className="label text-white/25">
-          Loading{'.'.repeat(dots)}
-        </p>
+        {/* Progress bar in theme color */}
+        <div className="mt-12 w-40 h-1 bg-white/5 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full bg-[#E8B84B]"
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.1, ease: "linear" }}
+          />
+        </div>
       </div>
+
+      <style>{`
+        @keyframes dance-bg {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -40px) scale(1.1); }
+          66% { transform: translate(-30px, 20px) scale(0.9); }
+        }
+        .animate-dance-bg {
+          animation: dance-bg 15s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }
