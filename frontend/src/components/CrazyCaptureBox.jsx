@@ -75,6 +75,9 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
   const filterRef     = useRef(filter);
   const passportBgRef = useRef(passportBg);
   const userPausedRef = useRef(userPaused);
+  const isRequestingCamera = useRef(false);
+  const shouldBeActive = useRef(false);
+  
   useEffect(() => { modeRef.current = mode; },         [mode]);
   useEffect(() => { filterRef.current = filter; },     [filter]);
   useEffect(() => { passportBgRef.current = passportBg; }, [passportBg]);
@@ -110,12 +113,27 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
      CAMERA
   ───────────────────────────────── */
   const startCamera = useCallback(async () => {
-    if (streamRef.current) return;
+    if (userPausedRef.current) return;
+    shouldBeActive.current = true;
+    setPrivacy(false);
+    setPermissionDenied(false);
+    
+    if (streamRef.current || isRequestingCamera.current) return;
+    isRequestingCamera.current = true;
+    
     try {
       const media = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "user", width: { ideal: 3840 }, height: { ideal: 2160 } },
         audio: false,
       });
+      
+      // Strict Race Condition Check: If user scrolled away while requesting
+      if (!shouldBeActive.current) {
+        media.getTracks().forEach(t => t.stop());
+        isRequestingCamera.current = false;
+        return;
+      }
+      
       streamRef.current = media;
       if (videoRef.current) {
         videoRef.current.srcObject = media;
@@ -134,10 +152,13 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
     } catch (e) { 
       console.warn("Camera error:", e); 
       setPermissionDenied(true);
+    } finally {
+      isRequestingCamera.current = false;
     }
   }, []);
 
   const stopCamera = useCallback(() => {
+    shouldBeActive.current = false;
     if (timerRef.current) clearInterval(timerRef.current);
     if (rafRef.current)   cancelAnimationFrame(rafRef.current);
     if (streamRef.current) {
