@@ -5,7 +5,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Quote, Star, ArrowRight } from "lucide-react";
+import { Quote, Star, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -15,6 +15,8 @@ export const TestimonialsSection = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [testimonials, setTestimonials] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
+  const [prevEl, setPrevEl] = useState(null);
+  const [nextEl, setNextEl] = useState(null);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -89,20 +91,22 @@ export const TestimonialsSection = () => {
           </a>
         </motion.div>
 
-        {/* Navigation Arrows */}
-        <div className="relative">
+        {/* Navigation Arrows & Carousel */}
+        <div className="relative group px-0 lg:px-4">
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
             spaceBetween={30}
-            slidesPerView={isMobile ? 1 : 2}
-            loop={true}
-            autoplay={{ delay: 4000 }}
-            pagination={{ clickable: true }}
-            navigation={{
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
+            slidesPerView={1}
+            breakpoints={{
+              640: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
             }}
-            className="pb-12"
+            loop={true}
+            autoplay={{ delay: 4000, disableOnInteraction: false }}
+            pagination={{ clickable: true }}
+            navigation={{ prevEl, nextEl }}
+            className="pb-16"
           >
             {testimonials.map((testimonial, index) => (
               <SwiperSlide key={index}>
@@ -163,8 +167,12 @@ export const TestimonialsSection = () => {
           </Swiper>
 
           {/* Custom Navigation Buttons */}
-          <div className="swiper-button-prev text-white !left-0" />
-          <div className="swiper-button-next text-white !right-0" />
+          <button ref={(node) => setPrevEl(node)} className="absolute top-[40%] -translate-y-1/2 -left-4 lg:-left-6 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-black/60 border border-white/10 text-white hover:bg-[#E8B84B] hover:text-black transition-all backdrop-blur-md opacity-0 group-hover:opacity-100 disabled:opacity-0 disabled:cursor-not-allowed">
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <button ref={(node) => setNextEl(node)} className="absolute top-[40%] -translate-y-1/2 -right-4 lg:-right-6 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-black/60 border border-white/10 text-white hover:bg-[#E8B84B] hover:text-black transition-all backdrop-blur-md opacity-0 group-hover:opacity-100 disabled:opacity-0 disabled:cursor-not-allowed">
+            <ChevronRight className="w-6 h-6" />
+          </button>
         </div>
       </div>
     </section>
