@@ -1,137 +1,147 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { FaInstagram, FaWhatsapp, FaFacebook, FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import CrazyLogo from "../assets/Crazylogo.png";
 
-const FooterSection = () => {
-  const currentYear = new Date().getFullYear();
+const NAV_LINKS = [
+  { label:"Home",     href:"#home" },
+  { label:"About",    href:"#about" },
+  { label:"Services", href:"#services" },
+  { label:"Reviews",  href:"#reviews" },
+  { label:"Contact",  href:"#contact" },
+  { label:"Gallery",  href:"/gallery", isLink:true },
+];
+
+const SOCIALS = [
+  { Icon:FaInstagram, bg:"bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888]", href:"https://www.instagram.com/crazy_capture_studio/", label:"Instagram" },
+  { Icon:FaWhatsapp,  bg:"bg-[#25D366]",                                                  href:"https://wa.me/918124787002",                       label:"WhatsApp" },
+  { Icon:FaFacebook,  bg:"bg-[#1877F2]",                                                  href:"https://www.facebook.com/people/%F0%9D%91%AA%F0%9D%92%93%F0%9D%92%82%F0%9D%92%9B%F0%9D%92%9A-%F0%9D%91%AA%F0%9D%92%82%F0%9D%92%91%F0%9D%92%95%F0%9D%92%96%F0%9D%92%93%F0%9D%92%86-%F0%9D%91%BA%F0%9D%92%95%F0%9D%92%96%F0%9D%92%85%F0%9D%92%8A%F0%9D%92%90/61565983881585/", label:"Facebook" },
+];
+
+const CONTACTS = [
+  { Icon:FaPhoneAlt,     label:"Phone",    value:"+91 81247 87002",                href:"tel:+918124787002" },
+  { Icon:FaEnvelope,     label:"Email",    value:"crazycapturestudio@gmail.com",   href:"mailto:crazycapturestudio@gmail.com" },
+  { Icon:FaMapMarkerAlt, label:"Location", value:"Mangalam, Avinashi, Tiruppur, Tamil Nadu", href:null },
+];
+
+export default function FooterSection() {
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-transparent text-white pt-20 pb-10 overflow-hidden">
-      {/* Decorative Background Element */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-yellow-400/20 to-transparent" />
-      
-      <div className="max-w-screen-xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 pb-16">
-          
-          {/* Brand Identity */}
-          <div className="md:col-span-5 space-y-8">
-            <div className="flex items-center gap-5 group">
-              <div className="w-20 h-20 overflow-hidden group-hover:scale-105 transition-transform duration-500">
-                <img src="/Crazylogo.jpg" alt="Crazy Capture Logo" className="w-full h-full object-contain" />
+    <footer className="relative bg-[#050508] text-white pt-16 sm:pt-20 pb-8 overflow-hidden">
+      {/* Top border glow */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#E8B84B]/25 to-transparent" />
+
+      {/* Background logo watermark */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.025] pointer-events-none">
+        <img src={CrazyLogo} alt="" className="w-[400px] h-[400px] object-contain" />
+      </div>
+
+      <div className="container relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 sm:gap-12 pb-12 sm:pb-16">
+
+          {/* Brand */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="relative shrink-0">
+                <div className="absolute -inset-2 rounded-2xl bg-[#E8B84B]/12 blur-lg" />
+                <img src={CrazyLogo} alt="Crazy Capture Studio Logo"
+                  className="relative object-contain rounded-xl drop-shadow-lg"
+                  style={{ width: '64px', height: '64px', minWidth: '64px' }}
+                  loading="lazy" />
               </div>
               <div>
-                <h2 className="text-2xl font-black tracking-tighter uppercase leading-none">
-                  Crazy Capture <span className="text-yellow-400">Studio</span>
+                <h2 className="text-lg font-black tracking-tight uppercase leading-none text-white">
+                  Crazy Capture <span className="text-[#E8B84B]">Studio</span>
                 </h2>
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mt-1">
+                <p className="text-[10px] font-light tracking-[0.25em] uppercase text-white/35 mt-1">
                   Professional Photography
                 </p>
               </div>
             </div>
-            
-            <p className="text-white/50 text-sm leading-relaxed max-w-sm">
-              We specialize in capturing cinematic moments that last a lifetime. 
-              From weddings to professional portraits, we turn your stories into timeless visual art.
+
+            <p className="body-md text-white/45 max-w-sm leading-relaxed">
+              We specialize in capturing cinematic moments that last a lifetime.
+              From weddings to portraits, we turn your stories into timeless visual art.
             </p>
 
-            <div className="flex gap-4">
-              {[
-                { 
-                  icon: FaInstagram, 
-                  link: "https://www.instagram.com/crazy_capture_studio/", 
-                  bg: "bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888]" 
-                },
-                { 
-                  icon: FaWhatsapp, 
-                  link: "https://wa.me/918124787002", 
-                  bg: "bg-[#25D366]" 
-                },
-                { 
-                  icon: FaFacebook, 
-                  link: "https://www.facebook.com/people/%F0%9D%91%AA%F0%9D%92%93%F0%9D%92%82%F0%9D%92%9B%F0%9D%92%9A-%F0%9D%91%AA%F0%9D%92%82%F0%9D%92%91%F0%9D%92%95%F0%9D%92%96%F0%9D%92%93%F0%9D%92%86-%F0%9D%91%BA%F0%9D%92%95%F0%9D%92%96%F0%9D%92%85%F0%9D%92%8A%F0%9D%92%90/61565983881585/", 
-                  bg: "bg-[#1877F2]" 
-                }
-              ].map((social, i) => (
-                <a 
-                  key={i} 
-                  href={social.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className={`w-11 h-11 rounded-full ${social.bg} flex items-center justify-center text-white shadow-lg transition-all duration-300 hover:scale-110 hover:-translate-y-1 hover:brightness-110`}
+            <div className="flex gap-3">
+              {SOCIALS.map(({ Icon, bg, href, label }) => (
+                <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
+                  className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white
+                              shadow-lg hover:scale-110 hover:-translate-y-0.5 transition-all duration-250`}
                 >
-                  <social.icon size={20} />
+                  <Icon size={16} />
                 </a>
               ))}
             </div>
           </div>
 
           {/* Navigation */}
-          <div className="md:col-span-3 space-y-6">
-            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-yellow-400">Navigation</h3>
-            <ul className="space-y-4">
-              {['Home', 'Services', 'Gallery', 'About', 'Contact'].map((item) => (
-                <li key={item}>
-                  <a 
-                    href={item === 'Gallery' ? '/gallery' : `#${item.toLowerCase()}`}
-                    className="text-white/40 hover:text-white text-sm font-medium transition-colors duration-300 flex items-center gap-2 group"
-                  >
-                    <span className="w-0 h-[1px] bg-yellow-400 group-hover:w-4 transition-all duration-300" />
-                    {item}
-                  </a>
+          <div className="lg:col-span-3 space-y-5">
+            <h3 className="eyebrow text-[#E8B84B]">Navigation</h3>
+            <ul className="space-y-3">
+              {NAV_LINKS.map(({ label, href, isLink }) => (
+                <li key={label}>
+                  {isLink ? (
+                    <Link to={href}
+                      className="group flex items-center gap-2.5 text-sm font-light text-white/40
+                                 hover:text-white transition-colors duration-250"
+                    >
+                      <span className="w-0 h-px bg-[#E8B84B] group-hover:w-4 transition-all duration-300" />
+                      {label}
+                    </Link>
+                  ) : (
+                    <a href={href}
+                      className="group flex items-center gap-2.5 text-sm font-light text-white/40
+                                 hover:text-white transition-colors duration-250"
+                    >
+                      <span className="w-0 h-px bg-[#E8B84B] group-hover:w-4 transition-all duration-300" />
+                      {label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Details */}
-          <div className="md:col-span-4 space-y-6">
-            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-yellow-400">Get in Touch</h3>
-            <div className="space-y-6">
-              <a href="tel:+918124787002" className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-yellow-400 border border-white/10 group-hover:bg-yellow-400 group-hover:text-black transition-all">
-                  <FaPhoneAlt size={14} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/30">Phone</p>
-                  <p className="text-sm font-bold">+91 81247 87002</p>
-                </div>
-              </a>
-
-              <a href="mailto:crazycapturestudio@gmail.com" className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-yellow-400 border border-white/10 group-hover:bg-yellow-400 group-hover:text-black transition-all">
-                  <FaEnvelope size={14} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/30">Email</p>
-                  <p className="text-sm font-bold">crazycapturestudio@gmail.com</p>
-                </div>
-              </a>
-
-              <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-yellow-400 border border-white/10 transition-all">
-                  <FaMapMarkerAlt size={14} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/30">Location</p>
-                  <p className="text-sm font-bold leading-relaxed">Mangalam, Avinashi,<br />Tiruppur, Tamil Nadu</p>
-                </div>
-              </div>
+          {/* Contact */}
+          <div className="lg:col-span-4 space-y-5">
+            <h3 className="eyebrow text-[#E8B84B]">Get in Touch</h3>
+            <div className="space-y-5">
+              {CONTACTS.map(({ Icon, label, value, href }) => {
+                const inner = (
+                  <div className="flex items-start gap-3.5 group">
+                    <div className="w-9 h-9 rounded-xl glass border border-white/8 flex items-center justify-center
+                                    text-[#E8B84B] shrink-0 group-hover:bg-[#E8B84B] group-hover:text-black
+                                    group-hover:border-[#E8B84B] transition-all duration-250">
+                      <Icon size={13} />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-light uppercase tracking-widest text-white/30 mb-0.5">{label}</p>
+                      <p className="text-sm font-medium text-white/80 leading-snug">{value}</p>
+                    </div>
+                  </div>
+                );
+                return href ? (
+                  <a key={label} href={href}>{inner}</a>
+                ) : (
+                  <div key={label}>{inner}</div>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-white/30 text-[11px] font-medium tracking-wide">
-            © {currentYear} <span className="text-white">Crazy Capture Studio</span>. All rights reserved.
+        {/* Bottom bar */}
+        <div className="pt-7 border-t border-white/6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-white/25 text-[11px] font-light tracking-wide text-center sm:text-left">
+            © {year} <span className="text-white/50">Crazy Capture Studio</span>. All rights reserved.
           </p>
-          <div className="flex items-center gap-2">
-            <span className="text-white/20 text-[10px] uppercase font-black tracking-widest">Powered by</span>
-            <a 
-              href="https://akwebflairtechnologies.vercel.app/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-white/60 hover:text-yellow-400 text-[11px] font-bold transition-all underline decoration-white/10 underline-offset-4"
-            >
+          <div className="flex items-center gap-1.5 text-[11px]">
+            <span className="text-white/20 font-light">Designed by</span>
+            <a href="https://akwebflairtechnologies.vercel.app/" target="_blank" rel="noopener noreferrer"
+              className="text-[#E8B84B]/70 hover:text-[#E8B84B] font-medium transition-colors underline-offset-2 hover:underline">
               AK WebFlair Technologies
             </a>
           </div>
@@ -139,6 +149,4 @@ const FooterSection = () => {
       </div>
     </footer>
   );
-};
-
-export default FooterSection;
+}

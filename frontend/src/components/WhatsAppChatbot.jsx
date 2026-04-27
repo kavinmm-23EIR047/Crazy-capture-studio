@@ -1,117 +1,132 @@
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaWhatsapp } from "react-icons/fa";
+import { X } from "lucide-react";
 
-const WhatsAppChatbot = () => {
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const phoneNumber = "918124787002";
+const QUICK_MSGS = [
+  "Hi! I'd like to book a wedding shoot 📸",
+  "Can I get pricing details?",
+  "I want to enquire about baby shoot 👶",
+  "Please share your portfolio",
+];
 
-  const sendToWhatsApp = (text) => {
-    const encoded = encodeURIComponent(text);
-    window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, "_blank");
+export default function WhatsAppChatbot() {
+  const [open,      setOpen]      = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+  const phone = "918124787002";
+
+  /* Auto-open after 2.5s on first load, auto-close after 7s */
+  useEffect(() => {
+    if (dismissed) return;
+    const openTimer  = setTimeout(() => setOpen(true),  2500);
+    const closeTimer = setTimeout(() => setOpen(false), 7000);
+    return () => { clearTimeout(openTimer); clearTimeout(closeTimer); };
+  }, [dismissed]);   // only on mount
+
+  const handleClose = () => {
+    setOpen(false);
+    setDismissed(true);   // don't auto-reopen after user manually closes
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => setOpen(true), 800);
-    return () => clearTimeout(timer);
-  }, []);
+  const handleToggle = () => {
+    setOpen(p => !p);
+    setDismissed(true);   // user is now in manual control
+  };
+
+  const send = (msg) => {
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
+    setOpen(false);
+    setDismissed(true);
+  };
 
   return (
-    <>
-{/* Chat Window */}
-<div
-  className={`fixed bottom-1/4 right-2 sm:right-12 
-    w-[78%] xs:w-[70%] sm:w-80 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl
-    overflow-hidden transition-all duration-300 z-50 transform
-    ${open ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0 pointer-events-none"}`}
-  style={{ animation: open ? "slideUp 0.35s ease-out" : "none" }}
->
-
-
-        {/* Header */}
-        <div className="bg-gradient-to-r from-[#25D366] to-[#1ebe5d] px-2 sm:px-4 py-2 sm:py-3 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png"
-              alt="Chatbot"
-              className="w-5 h-5 sm:w-8 sm:h-8 animate-bounce"
-            />
-            <div>
-              <h4 className="font-semibold text-sm sm:text-lg text-white">
-                Crazy Capture Studio
-              </h4>
-              <span className="text-xs sm:text-sm text-white/90">
-                Typically replies in minutes
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={() => setOpen(false)}
-            className="text-lg sm:text-2xl font-bold text-white/90 hover:text-yellow-300"
+    <div className="fixed bottom-6 left-4 sm:left-6 z-[400]">
+      {/* Chat panel */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.85, y: 10 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="absolute bottom-16 left-0 w-72 sm:w-80 rounded-2xl overflow-hidden shadow-2xl border border-white/10"
+            style={{ background: "#1a1a2e" }}
           >
-            ×
-          </button>
-        </div>
-
-        {/* Chat Body */}
-        <div className="p-2 sm:p-3 space-y-2 sm:space-y-3 max-h-52 sm:max-h-64 overflow-y-auto custom-scroll">
-          <div className="bg-white/20 text-white p-2 rounded-lg w-fit max-w-[90%] text-xs sm:text-base">
-            👋 Hi! How can we help you today?
-          </div>
-
-          {[
-            "📸 I want to book a photoshoot",
-            "🎉 Do you cover events?",
-            "💰 Please send me pricing details",
-          ].map((msg, i) => (
-            <div
-              key={i}
-              onClick={() => sendToWhatsApp(msg)}
-              className="cursor-pointer bg-[#25D366] text-white font-medium px-2 sm:px-3 py-1 sm:py-2 rounded-lg w-fit max-w-[90%] text-xs sm:text-base hover:bg-[#1ebe5d] transition"
-            >
-              {msg}
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 bg-[#25D366]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                  <FaWhatsapp size={16} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-sm leading-none">Crazy Capture Studio</p>
+                  <p className="text-white/70 text-[10px] mt-0.5">Typically replies instantly</p>
+                </div>
+              </div>
+              <button onClick={handleClose}
+                className="text-white/70 hover:text-white transition-colors">
+                <X size={16} />
+              </button>
             </div>
-          ))}
-        </div>
 
-        {/* Footer */}
-        <div className="bg-white/10 p-2 flex items-center gap-2">
-          <input
-            type="text"
-            placeholder="Type a message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="flex-1 px-2 sm:px-3 py-1 sm:py-2 rounded-full border border-white/30 bg-white/10 text-white placeholder-white/60 text-xs sm:text-base focus:outline-none focus:ring-2 focus:ring-[#25D366]"
-          />
-          <button
-            onClick={() => {
-              if (message.trim()) sendToWhatsApp(message);
-              setMessage("");
-            }}
-            className="bg-[#25D366] hover:bg-[#1ebe5d] text-white px-3 sm:px-4 py-1 sm:py-2 rounded-full shadow-md text-xs sm:text-base"
-          >
-            ➤
-          </button>
-        </div>
-      </div>
+            {/* Body */}
+            <div className="p-4 space-y-3">
+              <div className="bg-white/8 rounded-xl rounded-tl-none px-3.5 py-2.5">
+                <p className="text-white/80 text-sm font-light">
+                  👋 Hi! How can we help you today? Choose a quick message or type your own on WhatsApp.
+                </p>
+              </div>
 
-      {/* Styles */}
-      <style>
-        {`
-          @keyframes slideDown {
-            from { transform: translateY(-20px) scale(0.95); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
+              <div className="space-y-2">
+                {QUICK_MSGS.map((msg) => (
+                  <button
+                    key={msg}
+                    onClick={() => send(msg)}
+                    className="w-full text-left text-sm text-white/70 hover:text-white font-light
+                               px-3.5 py-2.5 rounded-xl border border-white/10 hover:border-[#25D366]/60
+                               hover:bg-[#25D366]/10 transition-all duration-200"
+                  >
+                    {msg}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={() => send("Hi! I'd like to know more about your services.")}
+                className="w-full btn bg-[#25D366] text-white hover:bg-[#1ebe5d] py-2.5 rounded-xl text-sm gap-2 justify-center"
+              >
+                <FaWhatsapp size={15} />
+                Open WhatsApp
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Toggle button */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.93 }}
+        onClick={handleToggle}
+        aria-label="WhatsApp Chat"
+        className="w-13 h-13 w-[52px] h-[52px] rounded-full bg-[#25D366] text-white flex items-center justify-center
+                   shadow-[0_4px_20px_rgba(37,211,102,0.45)] relative"
+      >
+        <AnimatePresence mode="wait">
+          {open
+            ? <motion.div key="x" initial={{rotate:-90,opacity:0}} animate={{rotate:0,opacity:1}} exit={{rotate:90,opacity:0}} transition={{duration:0.18}}>
+                <X size={22} />
+              </motion.div>
+            : <motion.div key="wa" initial={{rotate:90,opacity:0}} animate={{rotate:0,opacity:1}} exit={{rotate:-90,opacity:0}} transition={{duration:0.18}}>
+                <FaWhatsapp size={24} />
+              </motion.div>
           }
-          .custom-scroll::-webkit-scrollbar {
-            width: 6px;
-          }
-          .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.3);
-            border-radius: 10px;
-          }
-        `}
-      </style>
-    </>
+        </AnimatePresence>
+        {/* Ping ring */}
+        {!open && (
+          <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30" />
+        )}
+      </motion.button>
+    </div>
   );
-};
-
-export default WhatsAppChatbot;
+}

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 
-/* ─── Animated counter hook ──────────────────────────────────── */
+/* ── Animated counter ── */
 function useCounter(target, active, duration = 1800) {
   const [value, setValue] = useState(0);
   useEffect(() => {
@@ -9,18 +9,18 @@ function useCounter(target, active, duration = 1800) {
     let start = null;
     const step = (ts) => {
       if (!start) start = ts;
-      const progress = Math.min((ts - start) / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
+      const p = Math.min((ts - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
       setValue(Math.floor(ease * target));
-      if (progress < 1) requestAnimationFrame(step);
+      if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
   }, [active, target, duration]);
   return value;
 }
 
-/* ─── Single stat tile ───────────────────────────────────────── */
-function StatTile({ stat, active, accent }) {
+/* ── Stat tile ── */
+function StatTile({ stat, active }) {
   const count = useCounter(stat.target, active);
   return (
     <motion.div
@@ -28,512 +28,262 @@ function StatTile({ stat, active, accent }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, delay: stat.delay }}
-      className={`stat-tile ${accent ? 'accent' : ''}`}
+      className={`flex flex-col items-center justify-center gap-1 rounded-2xl p-5 sm:p-6 border ${
+        stat.accent
+          ? "bg-[#E8B84B] border-[#E8B84B] text-black"
+          : "glass border-white/8"
+      }`}
     >
-      <span className="stat-label">{stat.label}</span>
-      <span className="stat-value">
+      <span className={`text-3xl sm:text-4xl font-black leading-none tracking-tighter ${stat.accent ? "text-black" : "text-white"}`}>
         {count}{stat.suffix}
+      </span>
+      <span className={`text-[9px] sm:text-[10px] font-medium tracking-[0.15em] uppercase ${stat.accent ? "text-black/60" : "text-white/40"}`}>
+        {stat.label}
       </span>
     </motion.div>
   );
 }
 
-/* ─── Main component ─────────────────────────────────────────── */
-const AboutAndAchievements = () => {
+/* ── Viewfinder corners ── */
+const Corner = ({ pos }) => {
+  const cls = {
+    tl: "top-3 left-3 border-t-2 border-l-2 rounded-tl-sm",
+    tr: "top-3 right-3 border-t-2 border-r-2 rounded-tr-sm",
+    bl: "bottom-3 left-3 border-b-2 border-l-2 rounded-bl-sm",
+    br: "bottom-3 right-3 border-b-2 border-r-2 rounded-br-sm",
+  };
+  return <div className={`absolute w-4 h-4 border-[#E8B84B] ${cls[pos]}`} />;
+};
+
+const STATS = [
+  { key:"clients",      target:500,  suffix:"+", label:"Happy Clients",    delay:0,    accent:true  },
+  { key:"awards",       target:15,   suffix:"+", label:"Awards Won",       delay:0.07, accent:false },
+  { key:"projects",     target:1000, suffix:"+", label:"Projects Done",    delay:0.14, accent:false },
+  { key:"experience",   target:5,    suffix:"+", label:"Years Active",     delay:0.21, accent:false },
+  { key:"satisfaction", target:98,   suffix:"%", label:"Satisfaction",     delay:0.28, accent:true  },
+  { key:"events",       target:950,  suffix:"+", label:"Events Captured",  delay:0.35, accent:false },
+];
+
+export default function AboutSection() {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
-
   const videoRef1 = useRef(null);
   const videoRef2 = useRef(null);
-  const statsRef = useRef(null);
+  const statsRef  = useRef(null);
   const statsInView = useInView(statsRef, { once: true, margin: "-80px" });
 
-  const stats = [
-    { key: "clients",      target: 500,  suffix: "+", label: "Happy Clients",    delay: 0.0,  accent: true  },
-    { key: "awards",       target: 15,   suffix: "+", label: "Awards Won",       delay: 0.07, accent: false },
-    { key: "projects",     target: 1000, suffix: "+", label: "Projects Done",    delay: 0.14, accent: false },
-    { key: "experience",   target: 5,    suffix: "+", label: "Years Active",     delay: 0.21, accent: false },
-    { key: "satisfaction", target: 98,   suffix: "%", label: "Satisfaction",     delay: 0.28, accent: true  },
-    { key: "events",       target: 950,  suffix: "+", label: "Events Captured",  delay: 0.35, accent: false },
-  ];
+  useEffect(() => {
+    const makeObs = (ref, onPlay, onPause) =>
+      new IntersectionObserver(([e]) => {
+        if (!ref.current) return;
+        if (e.isIntersecting) { ref.current.play().catch(()=>{}); onPlay?.(); }
+        else                  { ref.current.pause(); onPause?.(); }
+      }, { threshold: 0.35 });
+
+    const o1 = makeObs(videoRef1);
+    const o2 = makeObs(videoRef2, () => setIsPlaying(true), () => setIsPlaying(false));
+    if (videoRef1.current) o1.observe(videoRef1.current);
+    if (videoRef2.current) o2.observe(videoRef2.current);
+    return () => { o1.disconnect(); o2.disconnect(); };
+  }, []);
 
   const togglePlay = () => {
     const v = videoRef2.current;
     if (!v) return;
-    isPlaying ? v.pause() : v.play();
+    isPlaying ? v.pause() : v.play().catch(()=>{});
     setIsPlaying(!isPlaying);
   };
 
-  useEffect(() => {
-    const v1 = videoRef1.current;
-    const v2 = videoRef2.current;
-
-    const ob1 = new IntersectionObserver(([e]) => {
-      if (v1) e.isIntersecting ? v1.play() : v1.pause();
-    }, { threshold: 0.4 });
-    const ob2 = new IntersectionObserver(([e]) => {
-      if (v2) {
-        if (e.isIntersecting) { v2.play(); setIsPlaying(true); }
-        else { v2.pause(); setIsPlaying(false); }
-      }
-    }, { threshold: 0.4 });
-
-    if (v1) ob1.observe(v1);
-    if (v2) ob2.observe(v2);
-    return () => { ob1.disconnect(); ob2.disconnect(); };
-  }, []);
-
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;700&display=swap');
+    <section id="about" className="section bg-transparent">
+      <div className="container">
 
-        .ccs-root { font-family: 'DM Sans', sans-serif; background: transparent; color: #fff; }
+        {/* ─── ABOUT ─── */}
+        <div className="section-header">
+          <p className="eyebrow">About Us</p>
+          <div className="divider-gold" />
+        </div>
 
-        /* ── About section ── */
-        .about-wrap {
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 80px 24px;
-        }
-        
-        .about-header {
-          margin-bottom: 40px;
-          padding: 0 24px;
-        }
+        <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center mb-24 sm:mb-32">
 
-        .about-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 0;
-          align-items: stretch;
-        }
-        @media (max-width: 900px) {
-          .about-grid { grid-template-columns: 1fr; gap: 48px; }
-        }
-
-        /* ── Video frame ── */
-        .vid-border-box {
-          background: rgba(40, 40, 40, 0.7);
-          padding: 10px;
-          border-radius: 24px;
-          box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
-          width: 100%;
-          max-width: 440px;
-          margin: 0 auto;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(12px);
-        }
-
-        .vid-frame {
-          position: relative;
-          border-radius: 18px;
-          overflow: hidden;
-          aspect-ratio: 3/3.8;
-          background: #000;
-        }
-        .vid-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-        /* ── About text ── */
-        .about-text { 
-          display: flex; 
-          flex-direction: column; 
-          justify-content: center;
-          gap: 28px;
-          padding: 40px;
-        }
-        @media (max-width: 900px) { .about-text { padding: 0; } }
-
-        .section-eyebrow {
-          font-size: 11px; font-weight: 700;
-          letter-spacing: 0.2em; text-transform: uppercase;
-          color: #E8B84B;
-        }
-        .about-title {
-          font-family: 'Syne', sans-serif;
-          font-size: clamp(38px, 5vw, 64px);
-          font-weight: 800;
-          line-height: 1.05;
-          letter-spacing: -0.02em;
-          color: #FFFFFF;
-          margin: 0;
-        }
-        .about-title span { color: #E8B84B; }
-
-        .about-body {
-          font-size: 16px; line-height: 1.75;
-          color: rgba(255,255,255,0.6);
-          font-weight: 300;
-          border-left: 2px solid rgba(232,184,75,0.3);
-          padding-left: 20px;
-          margin: 0;
-        }
-
-        .quote-block {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
-          border-left: 3px solid #E8B84B;
-          border-radius: 12px;
-          padding: 20px 24px;
-        }
-        .quote-block p {
-          font-size: 15px; font-style: italic;
-          color: rgba(255,255,255,0.5);
-          margin: 0 0 12px;
-          line-height: 1.6;
-        }
-        .quote-author {
-          font-size: 12px; font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: #E8B84B;
-        }
-
-        /* ── Milestones section ── */
-        .milestones-section {
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 0 48px 100px;
-        }
-        @media (max-width: 900px) { .milestones-section { padding: 0 24px 80px; } }
-
-        .milestones-header {
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          margin-bottom: 48px;
-          gap: 24px;
-        }
-        .milestones-title {
-          font-family: 'Syne', sans-serif;
-          font-size: clamp(34px, 4.5vw, 52px);
-          font-weight: 800;
-          line-height: 1.1;
-          letter-spacing: -0.02em;
-          color: #fff;
-          margin: 0;
-        }
-        @media (max-width: 640px) {
-          .milestones-title { font-size: 28px; text-align: center; width: 100%; }
-          .milestones-header { flex-direction: column; align-items: center; text-align: center; }
-        }
-        .milestones-title span { color: #E8B84B; }
-
-        /* ── Bento layout ── */
-        .bento {
-          display: grid;
-          grid-template-columns: 1fr 1.8fr;
-          gap: 20px;
-        }
-        @media (max-width: 1024px) {
-          .bento { grid-template-columns: 1fr; }
-        }
-
-        .award-card {
-          border-radius: 24px;
-          overflow: hidden;
-          position: relative;
-          background: #111;
-          aspect-ratio: 4/3;
-        }
-
-        .award-card video { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .award-card-overlay {
-          position: absolute; inset: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
-        }
-        .award-card-info {
-          position: absolute; bottom: 0; left: 0; right: 0;
-          padding: 32px;
-          z-index: 10;
-        }
-        .award-tag {
-          display: inline-flex; align-items: center; gap: 8px;
-          background: #E8B84B; color: #0D0D12;
-          font-size: 11px; font-weight: 800;
-          letter-spacing: 0.18em; text-transform: uppercase;
-          padding: 6px 16px; border-radius: 40px;
-          margin-bottom: 12px;
-        }
-        .award-card-title {
-          font-family: 'Syne', sans-serif;
-          font-size: 24px; font-weight: 700;
-          color: #fff; margin: 0 0 6px;
-          max-width: 90%;
-        }
-        .award-card-desc {
-          font-size: 14px; color: rgba(255,255,255,0.5);
-          margin: 0;
-          max-width: 90%;
-        }
-        .award-controls {
-          position: absolute; top: 20px; right: 20px;
-          display: flex; gap: 10px;
-          z-index: 20;
-        }
-        .ctrl-btn {
-          width: 40px; height: 40px;
-          border-radius: 50%;
-          background: rgba(0,0,0,0.6);
-          border: 1px solid rgba(255,255,255,0.15);
-          color: #fff;
-          cursor: pointer;
-          display: flex; align-items: center; justify-content: center;
-          font-size: 14px;
-          transition: background 0.2s;
-        }
-        .ctrl-btn:hover { background: #E8B84B; color: #000; }
-
-        @media (max-width: 640px) {
-          .award-card { aspect-ratio: 1/1; border-radius: 16px; }
-          .award-card-info { padding: 24px 20px; }
-          .award-card-title { font-size: 20px; margin: 0 0 4px; max-width: 100%; }
-          .award-card-desc { font-size: 13px; max-width: 100%; }
-          .award-controls { top: 16px; right: 16px; }
-        }
-
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-        }
-        @media (max-width: 640px) { 
-          .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } 
-        }
-
-        .stat-tile {
-          background: rgba(255,255,255,0.06);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 20px;
-          padding: 32px 20px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
-        }
-        .stat-tile.accent {
-          background: #E8B84B;
-          border-color: #E8B84B;
-        }
-        .stat-label {
-          font-size: 10px;
-          font-weight: 700;
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.4);
-          text-align: center;
-        }
-        .stat-tile.accent .stat-label { color: rgba(0,0,0,0.5); }
-        
-        .stat-value {
-          font-size: 40px;
-          font-weight: 800;
-          line-height: 1;
-          letter-spacing: -0.03em;
-          color: #FFFFFF;
-          font-family: 'Syne', sans-serif;
-        }
-        .stat-tile.accent .stat-value { color: #000; }
-
-        @media (max-width: 640px) {
-          .stat-tile { padding: 20px 12px; border-radius: 16px; }
-          .stat-value { font-size: 28px; }
-          .stat-label { font-size: 9px; }
-        }
-
-        .divider {
-          width: 60px; height: 3px;
-          background: #E8B84B;
-          border-radius: 2px;
-        }
-
-        /* Viewfinder HUD styling */
-        .rec-dot { width: 8px; height: 8px; border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        .badge { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 800; color: #fff; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 4px; }
-        .corner { position: absolute; width: 16px; height: 16px; border-color: #E8B84B; border-style: solid; }
-        .corner.tl { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
-        .corner.tr { top: 12px; right: 12px; border-width: 2px 2px 0 0; }
-        .corner.bl { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; }
-        .corner.br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
-      `}</style>
-
-      <div className="ccs-root">
-
-        {/* ══════════════ ABOUT SECTION ══════════════ */}
-        <div className="about-wrap">
-          {/* Top Title Section */}
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+          {/* Video Frame */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="about-header"
+            transition={{ duration: 0.8 }}
+            className="relative mx-auto w-full max-w-sm sm:max-w-md"
           >
-            <p className="section-eyebrow">About Us</p>
-            <div className="divider" style={{ marginTop: 12 }} />
-          </motion.div>
-
-          <div className="about-grid">
-            {/* Video Frame */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="vid-border-box"
-            >
-              <div className="vid-frame">
+            {/* Outer glow frame */}
+            <div className="absolute -inset-3 sm:-inset-4 rounded-3xl bg-gradient-to-br from-[#E8B84B]/20 to-transparent blur-xl" />
+            <div className="relative glass border-white/10 p-2 sm:p-3 rounded-3xl overflow-hidden shadow-2xl">
+              {/* Video */}
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/5]">
                 <video
                   ref={videoRef1}
                   src="https://res.cloudinary.com/dxm3glvjq/video/upload/v1754756318/Passionate_work_enjoyable_crazy_capture_studio_praba_prince_love_passion_work_enjoy_nrkz1c.mp4"
-                  autoPlay loop muted playsInline preload="metadata"
-                  style={{ filter: "grayscale(1) contrast(1.1) brightness(0.9)" }}
+                  muted playsInline loop preload="metadata"
+                  className="video-fill"
+                  style={{ filter: "grayscale(1) contrast(1.1) brightness(0.88)" }}
                 />
-                
-                {/* Original Camera UI Overlay */}
-                <div className="absolute inset-0 pointer-events-none p-5 flex flex-col justify-between bg-gradient-to-b from-black/40 via-transparent to-black/40">
-                   <div className="flex justify-between items-start drop-shadow-md">
-                      <div className="badge shadow-lg"><div className="rec-dot bg-red-600" /><span>REC</span></div>
-                      <div className="flex flex-col items-end gap-1">
-                         <div className="flex items-center gap-2">
-                           <div className="w-8 h-4 border border-white/60 rounded-[2px] flex items-center p-[1px]">
-                             <div className="w-full h-full bg-green-500 rounded-[1px]" />
-                           </div>
-                           <span className="text-[10px] font-mono text-white font-bold">100%</span>
-                         </div>
-                         <div className="text-[10px] font-mono text-white/80 font-bold tracking-widest">999+ RAW</div>
+                {/* HUD Overlay */}
+                <div className="absolute inset-0 p-3 sm:p-4 flex flex-col justify-between pointer-events-none
+                                bg-gradient-to-b from-black/50 via-transparent to-black/50">
+                  {/* Top row */}
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-black/50 backdrop-blur-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                      <span className="text-[9px] text-white font-bold tracking-widest">REC</span>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-7 h-3.5 border border-white/50 rounded-sm flex items-center p-0.5">
+                          <div className="w-full h-full bg-green-400 rounded-[2px]" />
+                        </div>
+                        <span className="text-[8px] font-mono text-white">100%</span>
                       </div>
-                   </div>
-
-                   {/* 3x3 Grid Lines */}
-                   <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 opacity-20">
-                      <div className="border-r border-b border-white" />
-                      <div className="border-r border-b border-white" />
-                      <div className="border-b border-white" />
-                      <div className="border-r border-b border-white" />
-                      <div className="border-r border-b border-white" />
-                      <div className="border-b border-white" />
-                      <div className="border-r border-white" />
-                      <div className="border-r border-white" />
-                      <div />
-                   </div>
-
-                   <div className="flex justify-between items-end drop-shadow-md">
-                      <div className="flex gap-4">
-                         <div className="flex flex-col">
-                            <span className="text-[9px] text-white/60 uppercase font-bold">ISO</span>
-                            <span className="text-[11px] font-mono text-white font-bold">400</span>
-                         </div>
-                         <div className="flex flex-col">
-                            <span className="text-[9px] text-white/60 uppercase font-bold">Shutter</span>
-                            <span className="text-[11px] font-mono text-white font-bold">1/125</span>
-                         </div>
-                      </div>
-                      <div className="text-[11px] font-mono text-white font-bold tracking-tighter">00:42:15:09</div>
-                   </div>
+                      <span className="text-[8px] font-mono text-white/70 tracking-widest">999 RAW</span>
+                    </div>
+                  </div>
+                  {/* Grid */}
+                  <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 opacity-[0.12]">
+                    {[...Array(9)].map((_,i) => (
+                      <div key={i} className="border border-white" />
+                    ))}
+                  </div>
+                  {/* Crosshair */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="relative w-8 h-8">
+                      <div className="absolute top-1/2 inset-x-0 h-px bg-white/30" />
+                      <div className="absolute left-1/2 inset-y-0 w-px bg-white/30" />
+                    </div>
+                  </div>
+                  {/* Bottom row */}
+                  <div className="flex justify-between items-end">
+                    <div className="flex gap-3">
+                      {[["ISO","400"],["Shutter","1/125"]].map(([k,v]) => (
+                        <div key={k}>
+                          <span className="text-[8px] text-white/50 uppercase block">{k}</span>
+                          <span className="text-[10px] font-mono text-white font-bold">{v}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <span className="text-[9px] font-mono text-white font-bold tracking-tight">00:42:15:09</span>
+                  </div>
                 </div>
-
-                <div className="corner tl" /><div className="corner tr" />
-                <div className="corner bl" /><div className="corner br" />
-                
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center">
-                   <div className="w-4 h-[1px] bg-white/40" />
-                   <div className="h-4 w-[1px] bg-white/40 absolute" />
-                </div>
+                {/* Corners */}
+                <Corner pos="tl"/><Corner pos="tr"/><Corner pos="bl"/><Corner pos="br"/>
               </div>
-            </motion.div>
+            </div>
+          </motion.div>
 
-            {/* Text Content */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="about-text"
-            >
-              <h2 className="about-title">
-                We capture<br />
-                <span>golden</span> moments
-              </h2>
+          {/* Text Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="space-y-6 sm:space-y-8"
+          >
+            <h2 className="display-md text-white">
+              We capture<br />
+              <span className="text-[#E8B84B]">golden</span> moments
+            </h2>
 
-              <p className="about-body">
-                Hello and welcome! I'm <strong>Prabakaran</strong>, founder of{" "}
-                <strong>Crazy Capture Studio</strong>. Photography has been more than a
-                profession — it's my lifelong passion. Every frame we capture is a
-                story, a memory, a feeling frozen in time.
+            <p className="body-lg text-white/60 border-l-2 border-[#E8B84B]/30 pl-5">
+              Hello and welcome! I'm <strong className="text-white font-semibold">Prabakaran</strong>, founder of{" "}
+              <strong className="text-white font-semibold">Crazy Capture Studio</strong>. Photography has been more
+              than a profession — it's my lifelong passion. Every frame we capture is a story, a memory,
+              a feeling frozen in time.
+            </p>
+
+            {/* Quote */}
+            <div className="glass border-l-[3px] border-[#E8B84B] rounded-r-2xl px-5 sm:px-6 py-5">
+              <p className="text-white/50 text-sm sm:text-base italic font-light leading-relaxed mb-3">
+                "Thank you for trusting us to tell your story through our lens. We look forward
+                to creating timeless memories with you."
               </p>
+              <span className="text-[#E8B84B] text-xs font-semibold tracking-wider uppercase">
+                — Prabakaran, Founder & CEO
+              </span>
+            </div>
 
-              <div className="quote-block">
-                <p>
-                  "Thank you for trusting us to tell your story through our lens.
-                  We look forward to creating timeless memories with you."
-                </p>
-                <div className="quote-author mt-2">— Prabakaran, Founder & CEO</div>
-              </div>
-            </motion.div>
-          </div>
+            {/* CTA */}
+            <button
+              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+              className="btn btn-primary"
+            >
+              Work With Us
+            </button>
+          </motion.div>
         </div>
 
-        {/* ══════════════ MILESTONES SECTION ══════════════ */}
-        <div className="milestones-section" ref={statsRef}>
-
-          <div className="milestones-header">
-            <div>
-              <p className="section-eyebrow" style={{ marginBottom: 10 }}>Our Milestones</p>
-              <h2 className="milestones-title">
-                Built on<br /><span>trust</span> & craft
-              </h2>
-            </div>
-            <p className="milestones-sub">
+        {/* ─── MILESTONES ─── */}
+        <div ref={statsRef}>
+          <div className="section-header">
+            <p className="eyebrow">Our Milestones</p>
+            <div className="divider-gold" />
+            <h2 className="display-md text-white mt-4">
+              Built on <span className="text-[#E8B84B]">trust</span> & craft
+            </h2>
+            <p className="body-lg text-white/50 mt-3 max-w-xl">
               Celebrating excellence in every frame we capture — one story at a time.
             </p>
           </div>
 
-          <div className="bento">
-            {/* Award video card */}
+          <div className="grid lg:grid-cols-[1fr_1.6fr] gap-5 sm:gap-6">
+            {/* Award Video */}
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="award-card"
+              className="relative rounded-2xl overflow-hidden aspect-[4/3] group"
             >
               <video
                 ref={videoRef2}
                 src="https://res.cloudinary.com/dxm3glvjq/video/upload/v1754840452/Honored_to_receive_this_photography_award.Behind_every_frame_is_a_story_thank_you_for_seeing_m_1_pdopyf.mp4"
                 autoPlay loop muted={isMuted} playsInline preload="metadata"
-                style={{ filter: "contrast(1.1) saturate(1.2)" }}
+                className="video-fill"
+                style={{ filter: "contrast(1.1) saturate(1.15)" }}
               />
-              <div className="award-card-overlay" />
-
-              <div className="award-controls">
-                <button className="ctrl-btn" onClick={togglePlay}>
-                  {isPlaying ? "⏸" : "▶"}
-                </button>
-                <button className="ctrl-btn" onClick={() => setIsMuted(!isMuted)}>
-                  {isMuted ? "🔇" : "🔊"}
-                </button>
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/20" />
+              {/* Controls */}
+              <div className="absolute top-3 right-3 flex gap-2">
+                {[
+                  { label: isPlaying ? "⏸" : "▶", fn: togglePlay },
+                  { label: isMuted  ? "🔇" : "🔊", fn: () => setIsMuted(m => !m) },
+                ].map(({ label, fn }) => (
+                  <button key={label} onClick={fn}
+                    className="w-9 h-9 rounded-full bg-black/60 border border-white/15 text-white text-sm
+                               hover:bg-[#E8B84B] hover:text-black hover:border-[#E8B84B] transition-all"
+                  >
+                    {label}
+                  </button>
+                ))}
               </div>
-
-              <div className="award-card-info">
-                <div className="award-tag">🏆 Award</div>
-                <h3 className="award-card-title">Unique Excellence Award</h3>
-                <p className="award-card-desc">Prestigious recognition for cinematic photography</p>
+              {/* Info */}
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
+                <span className="inline-flex items-center gap-1.5 bg-[#E8B84B] text-black text-[10px] font-black
+                                 uppercase tracking-wider px-3 py-1 rounded-full mb-3">
+                  🏆 Award
+                </span>
+                <h3 className="heading-md text-white mb-1">Unique Excellence Award</h3>
+                <p className="text-white/50 text-sm font-light">Prestigious recognition for cinematic photography</p>
               </div>
             </motion.div>
 
-            {/* Stats grid */}
-            <div className="stats-grid">
-              {stats.map((stat) => (
-                <StatTile key={stat.key} stat={stat} active={statsInView} accent={stat.accent} />
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 content-start">
+              {STATS.map(stat => (
+                <StatTile key={stat.key} stat={stat} active={statsInView} />
               ))}
             </div>
           </div>
         </div>
 
       </div>
-    </>
+    </section>
   );
-};
-
-export default AboutAndAchievements;
+}

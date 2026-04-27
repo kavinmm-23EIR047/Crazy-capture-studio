@@ -1,86 +1,124 @@
-import React, { useState, useEffect } from 'react';
-import { Camera, Focus, Aperture, Image, Zap } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { Camera, Video, Clapperboard, Image, MonitorPlay } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const Loader = () => {
-  const [currentIcon, setCurrentIcon] = useState(0);
-  const [dotCount, setDotCount] = useState(1);
+const SERVICES = [
+  { Icon: Camera,       title: 'Photography',    text: 'Capturing perfect moments' },
+  { Icon: Video,        title: 'Videography',    text: 'Recording cinematic memories' },
+  { Icon: Clapperboard, title: 'Editing',        text: 'Crafting stunning visuals' },
+  { Icon: Image,        title: 'Album Design',   text: 'Designing timeless albums' },
+  { Icon: MonitorPlay,  title: 'Reels & Shorts', text: 'Creating social content' },
+];
 
-  const icons = [
-    { Icon: Camera, color: 'text-white' },
-    { Icon: Focus, color: 'text-yellow-400' },
-    { Icon: Aperture, color: 'text-white' },
-    { Icon: Image, color: 'text-yellow-400' },
-    { Icon: Zap, color: 'text-white' }
-  ];
+export default function Loader() {
+  const [idx,      setIdx]      = useState(0);
+  const [dots,     setDots]     = useState(1);
+  const [fading,   setFading]   = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Change icons every 800ms
-    const iconInterval = setInterval(() => {
-      setCurrentIcon(prev => (prev + 1) % icons.length);
-    }, 800);
-
-    // Animate dots every 500ms
-    const dotInterval = setInterval(() => {
-      setDotCount(prev => prev === 3 ? 1 : prev + 1);
-    }, 500);
-
-    return () => {
-      clearInterval(iconInterval);
-      clearInterval(dotInterval);
-    };
+    const t = setInterval(() => {
+      setFading(true);
+      setTimeout(() => {
+        setIdx(p => (p + 1) % SERVICES.length);
+        setFading(false);
+      }, 300);
+    }, 1800);
+    return () => clearInterval(t);
   }, []);
 
-  const { Icon, color } = icons[currentIcon];
+  useEffect(() => {
+    const t = setInterval(() => setDots(p => (p === 3 ? 1 : p + 1)), 450);
+    return () => clearInterval(t);
+  }, []);
+
+  useEffect(() => {
+    const t = setInterval(() => setProgress(p => (p >= 100 ? 100 : p + 2)), 60);
+    return () => clearInterval(t);
+  }, []);
+
+  const { Icon, title, text } = SERVICES[idx];
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-[200] bg-[#0c0c1d]">
-      <div className="text-center relative">
-        {/* Decorative Ring */}
-        <div className="absolute inset-0 -m-10 border border-yellow-400/10 rounded-full animate-[spin_10s_linear_infinite]" />
-        <div className="absolute inset-0 -m-16 border border-white/5 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
+    <div className="fixed inset-0 z-[9999] bg-[#080810] flex items-center justify-center overflow-hidden">
+      {/* Glow orbs — GPU composited */}
+      <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-[#E8B84B]/8 rounded-full blur-[100px] animate-float" />
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-white/4 rounded-full blur-[80px]"
+           style={{ animation: 'float-y 7s ease-in-out infinite 1.5s' }} />
 
-        {/* Animated icon */}
-        <div className="mb-10 relative flex justify-center">
-          <div className="w-24 h-24 glass-morphism rounded-3xl flex items-center justify-center shadow-[0_0_40px_rgba(255,203,5,0.2)]">
-            <Icon 
-              size={48} 
-              className={`${color} transition-all duration-500 transform`}
-              key={currentIcon}
+      {/* Rotating ring decoration */}
+      <div className="absolute w-[500px] h-[500px] border border-white/[0.04] rounded-full animate-spin-slow" />
+      <div className="absolute w-[380px] h-[380px] border border-[#E8B84B]/[0.06] rounded-full animate-spin-slow"
+           style={{ animationDirection: 'reverse', animationDuration: '28s' }} />
+
+      {/* Main card */}
+      <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-sm w-full">
+
+        {/* Icon container */}
+        <motion.div
+          className="relative w-28 h-28 sm:w-32 sm:h-32 mb-7 sm:mb-8"
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {/* Glow ring */}
+          <div className="absolute inset-0 rounded-3xl bg-[#E8B84B]/20 blur-lg animate-glow" />
+          {/* Card */}
+          <div className="relative w-full h-full glass border border-white/10 rounded-3xl
+                          flex items-center justify-center shadow-xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.7, rotate: -10 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.7, rotate: 10 }}
+                transition={{ duration: 0.35 }}
+              >
+                <Icon size={48} className="text-[#E8B84B]" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
+        {/* Brand */}
+        <h1 className="display-md text-white tracking-tighter mb-1">
+          CRAZY <span className="text-[#E8B84B]">CAPTURE</span>
+        </h1>
+        <p className="eyebrow text-white/30 mb-7">Professional Photography Studio</p>
+
+        {/* Rotating service label */}
+        <div className="min-h-[52px] mb-7 flex flex-col items-center justify-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.3 }}
+              className="text-center"
+            >
+              <p className="text-lg sm:text-xl font-bold text-[#E8B84B] mb-1">{title}</p>
+              <p className="text-sm text-white/40 font-light">{text}</p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Progress bar */}
+        <div className="w-full max-w-xs mb-5">
+          <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full rounded-full"
+              style={{ background: 'linear-gradient(90deg, #E8B84B, #fff8d6, #E8B84B)' }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.12, ease: "linear" }}
             />
           </div>
-          <div className="absolute inset-0 flex justify-center animate-ping opacity-10">
-            <Icon size={48} className={color} />
-          </div>
         </div>
 
-        {/* Studio name */}
-        <div className="space-y-1">
-          <h1 className="text-4xl font-black tracking-tighter text-white">
-            CRAZY <span className="gradient-text">CAPTURE</span>
-          </h1>
-          <p className="text-xs tracking-[0.5em] text-white/50 uppercase font-light">
-            Professional Studio
-          </p>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="mt-12 w-48 mx-auto h-1 bg-white/5 rounded-full overflow-hidden">
-          <motion.div 
-            className="h-full bg-yellow-400"
-            initial={{ width: 0 }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 5, ease: "linear" }}
-          />
-        </div>
-
-        {/* Loading text */}
-        <div className="text-gray-500 text-[10px] mt-4 font-bold tracking-widest uppercase">
-          Initializing Camera{'.'.repeat(dotCount)}
-        </div>
+        {/* Loading dots */}
+        <p className="label text-white/25">
+          Loading{'.'.repeat(dots)}
+        </p>
       </div>
     </div>
   );
-};
-
-export default Loader;
+}

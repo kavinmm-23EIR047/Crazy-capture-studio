@@ -1,325 +1,235 @@
 import { useState, useRef, useEffect } from "react";
 import { useInView, motion } from "framer-motion";
-import {
-  Mail, Phone, User, CalendarDays,
-  MessageCircle, CheckCircle, Battery, Aperture, Clock
-} from "lucide-react";
+import { Mail, Phone, User, CalendarDays, MessageCircle, CheckCircle } from "lucide-react";
 
-const ContactSection = () => {
+export default function ContactSection() {
   const sectionRef = useRef(null);
-  const formRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isInView   = useInView(sectionRef, { once: true, margin: "-80px" });
 
-  const [formData, setFormData] = useState({
-    name: "", email: "", phone: "", eventName: "", comment: "", captcha: ""
-  });
-  const [loading, setLoading] = useState(false);
-  const [captchaQuestion, setCaptchaQuestion] = useState("");
-  const [captchaAnswer, setCaptchaAnswer] = useState(null);
+  const [form, setForm]           = useState({ name:"", email:"", phone:"", eventName:"", comment:"", captcha:"" });
+  const [loading, setLoading]     = useState(false);
+  const [question, setQuestion]   = useState("");
+  const [answer, setAnswer]       = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [timecode, setTimecode] = useState("00:00:00:00");
 
-  useEffect(() => { 
-    generateCaptcha();
-    const timer = setInterval(() => {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      const s = String(now.getSeconds()).padStart(2, '0');
-      const f = String(Math.floor(Math.random() * 60)).padStart(2, '0');
-      setTimecode(`${h}:${m}:${s}:${f}`);
-    }, 40);
-    return () => clearInterval(timer);
-  }, []);
-
-  const generateCaptcha = () => {
+  const genCaptcha = () => {
     const a = Math.floor(Math.random() * 10);
     const b = Math.floor(Math.random() * 10);
-    setCaptchaQuestion(`${a} + ${b} = ?`);
-    setCaptchaAnswer((a + b).toString());
+    setQuestion(`${a} + ${b} = ?`);
+    setAnswer((a + b).toString());
   };
 
-  const handleInputChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  useEffect(() => { genCaptcha(); }, []);
 
-  const handleSubmit = async (e) => {
+  const onChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if (formData.captcha !== captchaAnswer) {
-      alert("❌ Incorrect CAPTCHA. Try again.");
-      generateCaptcha();
-      return;
-    }
-
+    if (form.captcha !== answer) { alert("❌ Incorrect CAPTCHA."); genCaptcha(); return; }
     setLoading(true);
-
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/contact`, {
+      const res  = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(form),
       });
-
       const data = await res.json();
       if (data.success) {
         setShowPopup(true);
-        setFormData({ name: "", email: "", phone: "", eventName: "", comment: "", captcha: "" });
-        generateCaptcha();
-        setLoading(false);
+        setForm({ name:"", email:"", phone:"", eventName:"", comment:"", captcha:"" });
+        genCaptcha();
       } else {
-        alert(data.message || "Something went wrong. Try again.");
-        setLoading(false);
+        alert(data.message || "Something went wrong.");
       }
-    } catch (err) {
-      console.error("❌ Form error:", err);
-      alert("Network error. Please try again later.");
+    } catch {
+      alert("Network error. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
 
+  const FIELDS = [
+    { name:"name",    label:"Full Name",  icon:User,         type:"text",  required:true,  placeholder:"Your full name" },
+    { name:"email",   label:"Email",      icon:Mail,         type:"email", required:true,  placeholder:"your@email.com" },
+    { name:"phone",   label:"Phone",      icon:Phone,        type:"tel",   required:false, placeholder:"+91 00000 00000" },
+  ];
+
   return (
-    <section
-      id="contact"
-      ref={sectionRef}
-      className="relative py-12 md:py-24 px-4 bg-transparent text-white overflow-hidden"
-    >
-      {/* Background HUD Decor */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
-        <Aperture className="w-[800px] h-[800px] animate-spin-slow" />
-      </div>
+    <section id="contact" ref={sectionRef} className="section bg-transparent">
+      <div className="container">
+        <div className="max-w-4xl mx-auto">
 
-      <div className="max-w-[1400px] mx-auto relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="mb-8 md:mb-16 text-center md:text-left"
-        >
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-8">
-            <div>
-              <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] text-[#E8B84B] mb-2 md:mb-4">Transmission Channel</p>
-              <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white font-heading tracking-tighter uppercase leading-tight">
-                Let's <span className="gradient-text">Connect</span>
-              </h2>
-              <div className="w-16 md:w-24 h-[3px] md:h-[4px] bg-[#E8B84B] rounded-full mt-2 md:mt-4 mx-auto md:mx-0" />
-            </div>
-            
-            <div className="hidden md:block text-right">
-              <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest font-body">Data Stream Status</p>
-              <p className="text-[#E8B84B] font-mono text-xl">CONNECTED // ENCRYPTED</p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Camera Style Form Container */}
-        <div className="max-w-4xl mx-auto relative group">
-          {/* Corner Brackets */}
-          <div className="absolute -top-2 -left-2 md:-top-4 md:-left-4 w-6 h-6 md:w-12 md:h-12 border-t-2 border-l-2 border-[#E8B84B]/40 group-hover:border-[#E8B84B] transition-colors duration-500" />
-          <div className="absolute -top-2 -right-2 md:-top-4 md:-right-4 w-6 h-6 md:w-12 md:h-12 border-t-2 border-r-2 border-[#E8B84B]/40 group-hover:border-[#E8B84B] transition-colors duration-500" />
-          <div className="absolute -bottom-2 -left-2 md:-bottom-4 md:-left-4 w-6 h-6 md:w-12 md:h-12 border-b-2 border-l-2 border-[#E8B84B]/40 group-hover:border-[#E8B84B] transition-colors duration-500" />
-          <div className="absolute -bottom-2 -right-2 md:-bottom-4 md:-right-4 w-6 h-6 md:w-12 md:h-12 border-b-2 border-r-2 border-[#E8B84B]/40 group-hover:border-[#E8B84B] transition-colors duration-500" />
-
-          <form
-            onSubmit={handleSubmit}
-            className="relative bg-white/[0.04] border-2 border-white/10 backdrop-blur-3xl rounded-xl p-5 md:p-10 shadow-2xl overflow-hidden"
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7 }}
+            className="section-header text-center"
           >
-            {/* Top HUD Row */}
-            <div className="flex justify-between items-center mb-6 md:mb-10 text-[9px] md:text-xs font-bold font-mono text-[#E8B84B] tracking-widest border-b border-white/10 pb-3 md:pb-4">
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 md:w-2.5 md:h-2.5 bg-red-600 rounded-full animate-pulse" />
-                REC 001
-              </div>
-              <div className="hidden sm:block">4K RAW // 60FPS</div>
-              <div className="flex items-center gap-2">
-                100% <Battery className="w-3 h-3 md:w-4 md:h-4 text-green-500" />
-              </div>
-            </div>
+            <p className="eyebrow">Get In Touch</p>
+            <div className="divider-gold mx-auto" />
+            <h2 className="display-md text-white mt-4">
+              Let's <span className="text-[#E8B84B]">Connect</span>
+            </h2>
+            <p className="body-lg text-white/50 mt-4 max-w-xl mx-auto">
+              Tell us about your vision and we'll capture it beautifully.
+            </p>
+          </motion.div>
 
-            {/* Input Grid */}
-            <div className="grid md:grid-cols-2 gap-x-10 gap-y-5 md:gap-y-10">
-              {/* Name */}
-              <div className="relative group/field">
-                <label className="text-[10px] md:text-xs font-black text-[#E8B84B] uppercase tracking-widest mb-1 md:mb-3 block font-heading">
-                  Your Name
-                </label>
-                <div className="relative">
-                  <User className="absolute left-0 top-1/2 -translate-y-1/2 text-white/50 group-focus-within/field:text-[#E8B84B] transition-colors" size={14} />
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    placeholder="Full Name"
-                    className="w-full bg-transparent border-b-2 border-white/20 py-2 md:py-3 pl-7 md:pl-10 text-white focus:outline-none focus:border-[#E8B84B] transition-all font-body placeholder:text-white/30 text-xs md:text-base"
-                    required
-                  />
+          {/* Form Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.75, delay: 0.15 }}
+            className="relative"
+          >
+            {/* Corner brackets */}
+            {["tl","tr","bl","br"].map(p => {
+              const styles = {
+                tl:"top-0 left-0 border-t-2 border-l-2 rounded-tl-2xl",
+                tr:"top-0 right-0 border-t-2 border-r-2 rounded-tr-2xl",
+                bl:"bottom-0 left-0 border-b-2 border-l-2 rounded-bl-2xl",
+                br:"bottom-0 right-0 border-b-2 border-r-2 rounded-br-2xl",
+              };
+              return (
+                <div key={p}
+                  className={`absolute -m-3 w-10 h-10 sm:w-12 sm:h-12 border-[#E8B84B]/30 ${styles[p]} transition-colors duration-500 hover:border-[#E8B84B]`}
+                />
+              );
+            })}
+
+            <form
+              onSubmit={onSubmit}
+              className="glass rounded-3xl p-6 sm:p-8 md:p-10 border border-white/10 shadow-2xl"
+            >
+              {/* REC indicator */}
+              <div className="flex items-center justify-between mb-7 pb-5 border-b border-white/8
+                              text-[10px] font-medium font-mono text-[#E8B84B] tracking-widest">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.7)]" />
+                  <span className="text-red-400">REC 001</span>
                 </div>
+                <span className="hidden sm:block text-white/30">4K RAW // SECURE CHANNEL</span>
+                <span className="text-white/30">100% ■</span>
               </div>
 
-              {/* Email */}
-              <div className="relative group/field">
-                <label className="text-[10px] md:text-xs font-black text-[#E8B84B] uppercase tracking-widest mb-1 md:mb-3 block font-heading">
-                  Email
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-0 top-1/2 -translate-y-1/2 text-white/50 group-focus-within/field:text-[#E8B84B] transition-colors" size={14} />
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder="Email Address"
-                    className="w-full bg-transparent border-b-2 border-white/20 py-2 md:py-3 pl-7 md:pl-10 text-white focus:outline-none focus:border-[#E8B84B] transition-all font-body placeholder:text-white/30 text-xs md:text-base"
-                    required
-                  />
-                </div>
-              </div>
+              {/* Text inputs */}
+              <div className="grid sm:grid-cols-2 gap-x-8 sm:gap-x-10 gap-y-7 mb-7">
+                {FIELDS.map(({ name, label, icon: Icon, type, required, placeholder }) => (
+                  <div key={name} className="group/f relative">
+                    <label className="eyebrow text-[10px] text-[#E8B84B] mb-2 block">{label}</label>
+                    <div className="relative">
+                      <Icon size={14} className="absolute left-0 top-1/2 -translate-y-1/2 text-white/30
+                                                 group-focus-within/f:text-[#E8B84B] transition-colors" />
+                      <input
+                        type={type} name={name} value={form[name]}
+                        onChange={onChange} placeholder={placeholder}
+                        required={required}
+                        className="input-field"
+                      />
+                    </div>
+                  </div>
+                ))}
 
-              {/* Phone */}
-              <div className="relative group/field">
-                <label className="text-[10px] md:text-xs font-black text-[#E8B84B] uppercase tracking-widest mb-1 md:mb-3 block font-heading">
-                  Phone
-                </label>
-                <div className="relative">
-                  <Phone className="absolute left-0 top-1/2 -translate-y-1/2 text-white/50 group-focus-within/field:text-[#E8B84B] transition-colors" size={14} />
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    placeholder="+91 00000 00000"
-                    className="w-full bg-transparent border-b-2 border-white/20 py-2 md:py-3 pl-7 md:pl-10 text-white focus:outline-none focus:border-[#E8B84B] transition-all font-body placeholder:text-white/30 text-xs md:text-base"
-                  />
-                </div>
-              </div>
-
-              {/* Event Dropdown */}
-              <div className="relative group/field">
-                <label className="text-[10px] md:text-xs font-black text-[#E8B84B] uppercase tracking-widest mb-1 md:mb-3 block font-heading">
-                  Service Type
-                </label>
-                <div className="relative">
-                  <CalendarDays className="absolute left-0 top-1/2 -translate-y-1/2 text-white/50 group-focus-within/field:text-[#E8B84B] transition-colors pointer-events-none" size={14} />
-                  <select
-                    name="eventName"
-                    value={formData.eventName}
-                    onChange={handleInputChange}
-                    className="w-full bg-transparent border-b-2 border-white/20 py-2 md:py-3 pl-7 md:pl-10 text-white focus:outline-none focus:border-[#E8B84B] transition-all font-body text-xs md:text-base appearance-none cursor-pointer"
-                    required
-                  >
-                    <option value="" className="bg-[#111]">SELECT SERVICE</option>
-                    <option value="Baby Shoot" className="bg-[#111]">Baby Shoot</option>
-                    <option value="Wedding Photography" className="bg-[#111]">Wedding Photography</option>
-                    <option value="Baby Shower" className="bg-[#111]">Baby Shower Photography</option>
-                    <option value="Corporate" className="bg-[#111]">Corporate & Advertisement</option>
-                    <option value="Puberty Shoot" className="bg-[#111]">Puberty Shoot</option>
-                    <option value="Birthday Shoot" className="bg-[#111]">Birthday Shoot</option>
-                    <option value="Others" className="bg-[#111]">Others / Custom Project</option>
-                  </select>
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-[#E8B84B] opacity-40 group-focus-within/field:opacity-100">
-                    ▼
+                {/* Service select */}
+                <div className="group/f relative">
+                  <label className="eyebrow text-[10px] text-[#E8B84B] mb-2 block">Service Type</label>
+                  <div className="relative">
+                    <CalendarDays size={14} className="absolute left-0 top-1/2 -translate-y-1/2 text-white/30
+                                                        group-focus-within/f:text-[#E8B84B] transition-colors pointer-events-none" />
+                    <select
+                      name="eventName" value={form.eventName} onChange={onChange}
+                      required
+                      className="input-field appearance-none cursor-pointer"
+                      style={{ background: "transparent" }}
+                    >
+                      <option value="" className="bg-[#111]">Select Service</option>
+                      {["Baby Shoot","Wedding Photography","Baby Shower","Corporate & Ads","Puberty Shoot","Birthday Shoot","Others"].map(s => (
+                        <option key={s} value={s} className="bg-[#111]">{s}</option>
+                      ))}
+                    </select>
+                    <span className="absolute right-0 top-1/2 -translate-y-1/2 text-[#E8B84B]/40 pointer-events-none">▼</span>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Message */}
-            <div className="relative group/field mt-6 md:mt-10">
-              <label className="text-[10px] md:text-xs font-black text-[#E8B84B] uppercase tracking-widest mb-1 md:mb-3 block font-heading">
-                Message
-              </label>
-              <div className="relative">
-                <MessageCircle className="absolute left-0 top-3 text-white/50 group-focus-within/field:text-[#E8B84B] transition-colors" size={14} />
-                <textarea
-                  name="comment"
-                  rows="3"
-                  value={formData.comment}
-                  onChange={handleInputChange}
-                  placeholder="Describe your vision..."
-                  className="w-full bg-transparent border-b-2 border-white/20 py-2 md:py-3 pl-7 md:pl-10 text-white focus:outline-none focus:border-[#E8B84B] transition-all font-body placeholder:text-white/30 text-xs md:text-base resize-none"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Footer HUD Row */}
-            <div className="flex flex-wrap justify-between items-center mt-6 md:mt-10 gap-4 md:gap-8">
-              {/* Captcha */}
-              <div className="flex items-center gap-3 bg-white/5 px-4 py-2 md:py-4 rounded-xl border border-white/10 w-full sm:w-auto">
-                <div className="font-bold text-[10px] md:text-sm text-white/60 uppercase tracking-widest font-heading">Check:</div>
-                <div className="text-[#E8B84B] font-black text-sm md:text-lg font-mono tracking-tighter">{captchaQuestion}</div>
-                <input
-                  type="text"
-                  name="captcha"
-                  value={formData.captcha}
-                  onChange={handleInputChange}
-                  className="w-14 md:w-20 bg-white/10 border-b-2 border-[#E8B84B] text-center py-1 md:py-2 text-[#E8B84B] focus:outline-none font-bold text-sm md:text-lg"
-                  required
-                />
-              </div>
-
-              {/* Timecode Decor */}
-              <div className="hidden lg:block font-mono text-2xl text-white/30 font-bold">
-                {timecode}
-              </div>
-
-              {/* Submit Button */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                disabled={loading}
-                className="w-full sm:w-auto bg-[#E8B84B] text-black font-black px-8 md:px-12 py-4 md:py-5 rounded-xl hover:shadow-[0_0_40px_rgba(232,184,75,0.4)] transition-all flex items-center justify-center gap-3 md:gap-4 font-heading uppercase text-sm md:text-base group"
-              >
-                {loading ? (
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                    className="w-6 h-6 border-2 border-t-black border-l-black border-b-transparent border-r-transparent rounded-full"
+              {/* Message */}
+              <div className="group/f relative mb-7">
+                <label className="eyebrow text-[10px] text-[#E8B84B] mb-2 block">Message</label>
+                <div className="relative">
+                  <MessageCircle size={14} className="absolute left-0 top-3.5 text-white/30
+                                                       group-focus-within/f:text-[#E8B84B] transition-colors" />
+                  <textarea
+                    name="comment" rows={4} value={form.comment} onChange={onChange}
+                    placeholder="Describe your vision..." required
+                    className="input-field resize-none"
+                    style={{ paddingTop: "0.75rem" }}
                   />
-                ) : (
-                  <>
-                    <div className="w-3.5 h-3.5 bg-red-600 rounded-full animate-pulse shadow-[0_0_15px_rgba(220,38,38,0.8)]" />
-                    SEND MESSAGE
-                  </>
-                )}
-              </motion.button>
-            </div>
-          </form>
-          
-          {/* Technical Info Bottom */}
-          <div className="mt-8 flex justify-between text-[8px] font-mono text-white/20 uppercase tracking-[0.3em]">
-             <div>Crazy Capture Studio // Hub-01</div>
-             <div>Signal Strength: 100% // Stable</div>
-             <div>Studio ID: 8124787002</div>
-          </div>
+                </div>
+              </div>
+
+              {/* Captcha + Submit */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                <div className="flex items-center gap-3 glass px-4 py-3 rounded-xl border border-white/10 shrink-0">
+                  <span className="text-[10px] text-white/50 uppercase tracking-widest">Check:</span>
+                  <span className="text-[#E8B84B] font-black text-base font-mono">{question}</span>
+                  <input
+                    type="text" name="captcha" value={form.captcha} onChange={onChange}
+                    className="w-14 bg-white/10 border-b-2 border-[#E8B84B] text-center py-1
+                               text-[#E8B84B] text-base font-bold outline-none"
+                    required
+                  />
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                  type="submit" disabled={loading}
+                  className="btn btn-primary btn-lg w-full sm:w-auto gap-3"
+                >
+                  {loading ? (
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ repeat: Infinity, duration: 0.9, ease: "linear" }}
+                      className="w-5 h-5 rounded-full border-2 border-t-black border-l-black border-b-transparent border-r-transparent"
+                    />
+                  ) : (
+                    <>
+                      <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse" />
+                      Send Message
+                    </>
+                  )}
+                </motion.button>
+              </div>
+            </form>
+          </motion.div>
+
         </div>
       </div>
 
-      {/* Success Popup */}
+      {/* Success popup */}
       {showPopup && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[500] p-4"
         >
-          <div className="bg-[#111] border border-[#E8B84B]/30 rounded-sm p-12 text-center max-w-sm shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-[#E8B84B]" />
-            <CheckCircle className="text-[#E8B84B] mx-auto mb-6" size={64} />
-            <h3 className="text-2xl font-black text-white font-heading mb-4 uppercase tracking-tighter">Transmission Successful</h3>
-            <p className="text-white/60 text-xs mb-8 font-mono uppercase tracking-widest">Signal received. Our crew will debrief you shortly.</p>
-            <button
-              onClick={() => setShowPopup(false)}
-              className="w-full bg-white text-black py-4 rounded-sm font-black text-xs uppercase tracking-widest hover:bg-[#E8B84B] transition-colors"
-            >
-              CLOSE CHANNEL
+          <motion.div
+            initial={{ scale: 0.7, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 280, damping: 22 }}
+            className="glass border border-[#E8B84B]/30 rounded-3xl p-8 sm:p-10 text-center max-w-sm w-full shadow-2xl relative"
+          >
+            <div className="absolute top-0 left-0 right-0 h-1 bg-[#E8B84B] rounded-t-3xl" />
+            <CheckCircle size={56} className="text-[#E8B84B] mx-auto mb-5" />
+            <h3 className="heading-lg text-white mb-3">Message Sent!</h3>
+            <p className="text-white/50 text-sm font-light mb-7">
+              Our crew will get back to you shortly. Thank you!
+            </p>
+            <button onClick={() => setShowPopup(false)} className="btn btn-primary w-full justify-center">
+              Close
             </button>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </section>
   );
-};
-
-export default ContactSection;
+}
