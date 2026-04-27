@@ -82,6 +82,9 @@ function App() {
   return (
     <Router>
       <div className="bg-gradient-to-br from-[#0c0c1d] via-transparent to-[#1a1a2e] text-white min-h-screen relative">
+        {/* Navigation */}
+        <Navigation />
+
         {/* Pages */}
         <AnimatePresence mode="wait">
           <Routes>
