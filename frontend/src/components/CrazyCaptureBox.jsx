@@ -68,14 +68,17 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
   const [segReady,     setSegReady]     = useState(false);
   const [segLoading,   setSegLoading]   = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
+  const [userPaused,   setUserPaused]   = useState(false);
 
   /* Refs mirror state to avoid stale closures in rAF */
   const modeRef       = useRef(mode);
   const filterRef     = useRef(filter);
   const passportBgRef = useRef(passportBg);
+  const userPausedRef = useRef(userPaused);
   useEffect(() => { modeRef.current = mode; },         [mode]);
   useEffect(() => { filterRef.current = filter; },     [filter]);
   useEffect(() => { passportBgRef.current = passportBg; }, [passportBg]);
+  useEffect(() => { userPausedRef.current = userPaused; }, [userPaused]);
 
   /* ─────────────────────────────────
      LOAD MEDIAPIPE (lazy, once)
@@ -110,7 +113,7 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
     if (streamRef.current) return;
     try {
       const media = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } },
+        video: { facingMode: "user", width: { ideal: 3840 }, height: { ideal: 2160 } },
         audio: false,
       });
       streamRef.current = media;
@@ -175,35 +178,45 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
 
       if (curMode === "PASSPORT" && seg) {
         if (seg._last) {
-          /* ── Solid bg + segmented person ── */
-          // 1. Fill background
+          /* ── Optimized Native Canvas Compositing (Zero Allocation) ── */
+          
+          // 1. Clear frame
+          ctx.clearRect(0, 0, vw, vh);
+
+          // 2. Draw mask (mirrored selfie)
+          ctx.save();
+          ctx.translate(vw, 0); ctx.scale(-1, 1);
+          ctx.drawImage(seg._last.segmentationMask, 0, 0, vw, vh);
+          
+          // 3. Keep video ONLY where mask is opaque
+          ctx.globalCompositeOperation = "source-in";
+          ctx.drawImage(video, 0, 0, vw, vh);
+          ctx.restore();
+
+          // 4. Draw solid background BEHIND the person
+          ctx.globalCompositeOperation = "destination-over";
           ctx.fillStyle = BG_COLORS[curBg];
           ctx.fillRect(0, 0, vw, vh);
 
-          // 2. Build person layer on offscreen
-          const off = new OffscreenCanvas(vw, vh);
-          const oct = off.getContext("2d");
-          // Flip horizontally (selfie)
-          oct.save();
-          oct.translate(vw, 0); oct.scale(-1, 1);
-          oct.drawImage(video, 0, 0, vw, vh);
-          oct.restore();
-          // Cut out only the person using mask
-          oct.globalCompositeOperation = "destination-in";
-          oct.drawImage(seg._last.segmentationMask, 0, 0, vw, vh);
+          // Reset composite for next frame
+          ctx.globalCompositeOperation = "source-over";
 
-          // 3. Composite person over bg
-          ctx.drawImage(off, 0, 0);
-
-          // Feed next frame (non-blocking)
-          seg.send({ image: video }).catch(() => {});
+          // Feed next frame safely without spamming (lag fix)
+          if (!seg._isProcessing) {
+            seg._isProcessing = true;
+            seg.send({ image: video }).finally(() => { seg._isProcessing = false; });
+          }
         } else {
           // No mask yet — plain mirrored video while we wait
           ctx.save();
           ctx.translate(vw, 0); ctx.scale(-1, 1);
           ctx.drawImage(video, 0, 0, vw, vh);
           ctx.restore();
-          seg.send({ image: video }).catch(() => {});
+          
+          if (!seg._isProcessing) {
+            seg._isProcessing = true;
+            seg.send({ image: video }).finally(() => { seg._isProcessing = false; });
+          }
         }
       } else {
         /* ── Standard / Insta — plain mirrored video ── */
@@ -233,7 +246,7 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
      LIFECYCLE
   ───────────────────────────────── */
   useEffect(() => {
-    if (isOpen || inline) startCamera();
+    if (isOpen || inline) { setUserPaused(false); startCamera(); }
     else stopCamera();
     return stopCamera;
   }, [isOpen, inline]);
@@ -241,7 +254,7 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
   useEffect(() => {
     const h = () => {
       if (document.hidden) { stopCamera(); setPrivacy(true); }
-      else if (!captured)   startCamera();
+      else if (!captured && !userPausedRef.current) startCamera();
     };
     document.addEventListener("visibilitychange", h);
     return () => document.removeEventListener("visibilitychange", h);
@@ -253,7 +266,7 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
     const obs = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) { stopCamera(); setPrivacy(true); }
-        else if (!captured)      startCamera();
+        else if (!captured && !userPausedRef.current) startCamera();
       },
       { threshold: 0.15 }
     );
@@ -292,12 +305,19 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
       else ctx.rect(x, y, w, h);
     };
 
+    // Apply scaling for High Res / 4K captures
+    const refW = 1280;
+    const s = dst.width / refW;
+    const vW = refW;
+    const vH = dst.height / s;
+
     // Add overlays if standard or insta
     if (modeRef.current === "STANDARD") {
       const logo = new Image();
       logo.src = "/Crazylogo.jpg";
       await new Promise(r => { logo.onload = r; logo.onerror = r; });
       ctx.save();
+      ctx.scale(s, s);
       
       const logoH = 28;
       let logoW = 28;
@@ -307,7 +327,7 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
       
       const boxW = Math.max(180, 12 + logoW + 10 + 100);
       const boxH = 50;
-      const x = dst.width - boxW - 16, y = dst.height - boxH - 16;
+      const x = vW - boxW - 16, y = vH - boxH - 16;
       
       ctx.fillStyle = "rgba(0,0,0,0.6)";
       ctx.beginPath(); drawRR(x, y, boxW, boxH, 12); ctx.fill();
@@ -333,11 +353,12 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
       await new Promise(r => { logo.onload = r; logo.onerror = r; });
       
       ctx.save();
+      ctx.scale(s, s);
       const topH = 65;
       ctx.fillStyle = "rgba(255,255,255,0.95)";
-      ctx.fillRect(0, 0, dst.width, topH);
+      ctx.fillRect(0, 0, vW, topH);
       ctx.fillStyle = "rgba(0,0,0,0.1)";
-      ctx.fillRect(0, topH - 1, dst.width, 1);
+      ctx.fillRect(0, topH - 1, vW, 1);
       
       const logoH = 32;
       let logoW = 32;
@@ -361,22 +382,22 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
       ctx.fillText("● LIVE NOW", textX, topH/2 + 14);
       
       ctx.fillStyle = "#ef4444";
-      ctx.beginPath(); drawRR(dst.width - 65, topH/2 - 12, 50, 24, 4); ctx.fill();
+      ctx.beginPath(); drawRR(vW - 65, topH/2 - 12, 50, 24, 4); ctx.fill();
       ctx.fillStyle = "#fff";
       ctx.font = "900 11px sans-serif";
-      ctx.fillText("LIVE", dst.width - 53, topH/2 + 4);
+      ctx.fillText("LIVE", vW - 53, topH/2 + 4);
 
       const botH = 80;
-      const botY = dst.height - botH;
+      const botY = vH - botH;
       ctx.fillStyle = "rgba(255,255,255,0.95)";
-      ctx.fillRect(0, botY, dst.width, botH);
+      ctx.fillRect(0, botY, vW, botH);
       ctx.fillStyle = "rgba(0,0,0,0.1)";
-      ctx.fillRect(0, botY, dst.width, 1);
+      ctx.fillRect(0, botY, vW, 1);
       
       ctx.font = "20px sans-serif";
       ctx.fillStyle = "#000";
       ctx.fillText("♡  💬  ⌲", 16, botY + 28);
-      ctx.fillText("⚲", dst.width - 32, botY + 28); 
+      ctx.fillText("⚲", vW - 32, botY + 28); 
 
       ctx.font = "bold 14px sans-serif";
       ctx.fillText("Crazy Capture Studio", 16, botY + 52);
@@ -387,7 +408,7 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
       ctx.restore();
     }
 
-    setCaptured(dst.toDataURL("image/jpeg", 0.95));
+    setCaptured(dst.toDataURL("image/jpeg", 1.0));
     setCounting(false);
     setShowConfirm(true);
     stopCamera();
@@ -395,31 +416,136 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
 
   const retake = async () => { setCaptured(null); setShowConfirm(false); await startCamera(); };
 
-  const saveJPG = () => {
-    if (!captured) return;
-    const link = document.createElement("a");
-    link.href = captured;
-    link.download = `CrazyCapture_${Date.now()}.jpg`;
-    link.click();
-  };
-
   const savePDF = async () => {
     if (!captured) return;
+    
+    // Open a new tab synchronously to bypass popup blockers
+    const newTab = window.open("", "_blank");
+    if (newTab) {
+      newTab.document.title = "Crazy Capture Studio";
+      newTab.document.body.innerHTML = "<div style='font-family:sans-serif; text-align:center; margin-top:20vh; color:#333;'><h2>Generating High-Quality Photo...</h2><p>Please wait a moment.</p></div>";
+    }
+
     try {
       setLoading(true); setShowConfirm(false);
-      await loadScript("https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js");
+      await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
       const img = new Image();
       img.src = captured;
-      await new Promise(r => { img.onload = r; });
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF({
-        orientation: img.width > img.height ? "landscape" : "portrait",
-        unit: "px", format: [img.width, img.height],
+      await new Promise((resolve, reject) => { 
+        img.onload = resolve; 
+        img.onerror = reject; 
       });
-      pdf.addImage(captured, "JPEG", 0, 0, img.width, img.height);
-      pdf.save(`CrazyCapture_${Date.now()}.pdf`);
+      
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      
+      // 1. Header
+      const headerY = 60;
+      const logo = new Image();
+      logo.src = "/Crazylogo.jpg";
+      await new Promise(r => { logo.onload = r; logo.onerror = r; });
+      if (logo.complete && logo.naturalWidth > 0) {
+        const logoW = 55;
+        const logoH = 55 * (logo.naturalHeight / logo.naturalWidth);
+        const logoX = (pageWidth - logoW) / 2;
+        pdf.addImage(logo, "JPEG", logoX, headerY, logoW, logoH);
+      }
+      
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(22);
+      pdf.setTextColor(30, 30, 30);
+      const title = "CRAZY CAPTURE STUDIO";
+      const titleW = pdf.getTextWidth(title);
+      pdf.text(title, (pageWidth - titleW) / 2, headerY + 80);
+      
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(10);
+      pdf.setTextColor(120, 120, 120);
+      const subtitle = "Professional Photography";
+      const subW = pdf.getTextWidth(subtitle);
+      pdf.text(subtitle, (pageWidth - subW) / 2, headerY + 95);
+
+      // 2. Photo (Centered & correctly scaled)
+      const marginX = 40;
+      const photoMaxWidth = pageWidth - (marginX * 2);
+      const photoMaxHeight = pageHeight - 380; 
+      
+      const photoAspect = img.width / img.height;
+      let photoW = photoMaxWidth;
+      let photoH = photoW / photoAspect;
+      
+      if (photoH > photoMaxHeight) {
+        photoH = photoMaxHeight;
+        photoW = photoH * photoAspect;
+      }
+      
+      const photoX = (pageWidth - photoW) / 2;
+      const photoY = headerY + 115;
+      
+      pdf.setDrawColor(220, 220, 220);
+      pdf.setLineWidth(1);
+      pdf.rect(photoX - 1, photoY - 1, photoW + 2, photoH + 2);
+      pdf.addImage(captured, "JPEG", photoX, photoY, photoW, photoH);
+      
+      // 2.5 Thoughts / Message
+      const messageY = photoY + photoH + 50;
+      pdf.setFont("helvetica", "italic");
+      pdf.setFontSize(14);
+      pdf.setTextColor(80, 80, 80);
+      const msg1 = "“ Creating memories that last a lifetime ”";
+      const m1W = pdf.getTextWidth(msg1);
+      pdf.text(msg1, (pageWidth - m1W) / 2, messageY);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(11);
+      pdf.setTextColor(130, 130, 130);
+      const msg2 = "Thank you for using Crazy Capture Studio. Enjoy your capture!";
+      const m2W = pdf.getTextWidth(msg2);
+      pdf.text(msg2, (pageWidth - m2W) / 2, messageY + 22);
+
+      // 3. Footer
+      const footerY = pageHeight - 80;
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(11);
+      pdf.setTextColor(50, 50, 50);
+      const contact1 = "Phone: +91 81247 87002   |   Email: crazycapturestudio@gmail.com";
+      const c1W = pdf.getTextWidth(contact1);
+      pdf.text(contact1, (pageWidth - c1W) / 2, footerY);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(10);
+      pdf.setTextColor(100, 100, 100);
+      const contact2 = "Location: Mangalam, Avinashi, Tiruppur, Tamil Nadu";
+      const c2W = pdf.getTextWidth(contact2);
+      pdf.text(contact2, (pageWidth - c2W) / 2, footerY + 18);
+
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(11);
+      pdf.setTextColor(0, 102, 204);
+      const linkText = "crazy-capture-studio.vercel.app";
+      const linkW = pdf.getTextWidth(linkText);
+      const linkX = (pageWidth - linkW) / 2;
+      pdf.text(linkText, linkX, footerY + 40);
+      pdf.link(linkX, footerY + 40 - 10, linkW, 12, { url: "https://crazy-capture-studio.vercel.app" });
+
+      // Create Blob and open in tab
+      const blob = pdf.output("blob");
+      const url = URL.createObjectURL(blob);
+      
+      if (newTab) {
+        newTab.location.href = url;
+      } else {
+        window.open(url, "_blank");
+      }
+      
       setLoading(false); setCaptured(null); await startCamera();
-    } catch { setLoading(false); }
+    } catch (e) { 
+      console.error("PDF Save Error:", e);
+      if (newTab) newTab.close();
+      setLoading(false); 
+    }
   };
 
   if (!isOpen && !inline) return null;
@@ -482,7 +608,9 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
                     <div className="w-14 h-14 rounded-full border-2 border-white/15 flex items-center justify-center">
                       <Camera size={24} className="text-white/25" />
                     </div>
-                    <LCD className="text-[9px] opacity-40">LENS CAP ON · PRIVACY ACTIVE</LCD>
+                    <LCD className="text-[9px] opacity-40">
+                      {userPaused ? "CAMERA DISABLED BY USER" : "LENS CAP ON · PRIVACY ACTIVE"}
+                    </LCD>
                   </div>
                 )}
 
@@ -666,6 +794,15 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
               <LCD className="text-[8px]">{flash ? "FLASH ON" : "NO FLASH"}</LCD>
             </button>
 
+            <button onClick={() => {
+              if (cameraActive) { stopCamera(); setUserPaused(true); }
+              else { setUserPaused(false); startCamera(); }
+            }}
+              className={`cc-flash-btn ${cameraActive ? "" : "border-red-500/50 text-red-400"}`}>
+              <Camera size={13}/>
+              <LCD className="text-[8px]">{cameraActive ? "CAM ON" : "CAM OFF"}</LCD>
+            </button>
+
             <div className="cc-status">
               {[
                 { d: cameraActive ? "#4ade80" : "#444", t: cameraActive ? "CAM ON" : "CAM OFF" },
@@ -714,13 +851,10 @@ export default function CrazyCaptureBox({ isOpen = true, onClose = () => {}, inl
                 <button onClick={retake} className="cc-action-btn cc-action-retake flex-1">
                   <Trash2 size={14}/><span>RETAKE</span>
                 </button>
-                <button onClick={saveJPG} className="cc-action-btn cc-action-save flex-1">
-                  <Download size={14}/><span>JPG</span>
-                </button>
                 <button onClick={savePDF} className="cc-action-btn cc-action-save flex-1">
                   {loading
                     ? <RefreshCw size={14} className="animate-spin"/>
-                    : <><Download size={14}/><span>PDF</span></>
+                    : <><Download size={14}/><span>SAVE PDF</span></>
                   }
                 </button>
               </div>

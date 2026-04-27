@@ -236,16 +236,16 @@ const AboutAndAchievements = () => {
           background: #111;
           aspect-ratio: 4/3;
         }
-        @media (max-width: 1024px) { .award-card { aspect-ratio: 16/9; } }
 
         .award-card video { width: 100%; height: 100%; object-fit: cover; display: block; }
         .award-card-overlay {
           position: absolute; inset: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
+          background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
         }
         .award-card-info {
           position: absolute; bottom: 0; left: 0; right: 0;
           padding: 32px;
+          z-index: 10;
         }
         .award-tag {
           display: inline-flex; align-items: center; gap: 8px;
@@ -259,14 +259,17 @@ const AboutAndAchievements = () => {
           font-family: 'Syne', sans-serif;
           font-size: 24px; font-weight: 700;
           color: #fff; margin: 0 0 6px;
+          max-width: 90%;
         }
         .award-card-desc {
           font-size: 14px; color: rgba(255,255,255,0.5);
           margin: 0;
+          max-width: 90%;
         }
         .award-controls {
           position: absolute; top: 20px; right: 20px;
           display: flex; gap: 10px;
+          z-index: 20;
         }
         .ctrl-btn {
           width: 40px; height: 40px;
@@ -280,6 +283,14 @@ const AboutAndAchievements = () => {
           transition: background 0.2s;
         }
         .ctrl-btn:hover { background: #E8B84B; color: #000; }
+
+        @media (max-width: 640px) {
+          .award-card { aspect-ratio: 1/1; border-radius: 16px; }
+          .award-card-info { padding: 24px 20px; }
+          .award-card-title { font-size: 20px; margin: 0 0 4px; max-width: 100%; }
+          .award-card-desc { font-size: 13px; max-width: 100%; }
+          .award-controls { top: 16px; right: 16px; }
+        }
 
         .stats-grid {
           display: grid;
