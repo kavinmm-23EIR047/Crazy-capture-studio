@@ -5,18 +5,18 @@ import { Menu, X, Home, User, Camera, Star, Image, PhoneCall, Aperture } from "l
 import CrazyLogo from "../assets/Crazylogo.png";
 
 const NAV_ITEMS = [
-  { id: "home",      label: "Home",       icon: Home },
-  { id: "about",     label: "About",      icon: User },
-  { id: "services",  label: "Services",   icon: Camera },
-  { id: "studio-box",label: "Studio 📸",  icon: Aperture },
-  { id: "reviews",   label: "Reviews",    icon: Star },
+  { id: "home",       label: "Home",      icon: Home },
+  { id: "about",      label: "About",     icon: User },
+  { id: "services",   label: "Services",  icon: Camera },
+  { id: "studio-box", label: "Studio 📸", icon: Aperture },
+  { id: "reviews",    label: "Reviews",   icon: Star },
 ];
 
 export default function Navigation() {
-  const [scrolled,    setScrolled]    = useState(false);
-  const [menuOpen,    setMenuOpen]    = useState(false);
-  const [active,      setActive]      = useState("home");
-  const [scrollTarget,setScrollTarget]= useState(null);
+  const [scrolled,     setScrolled]     = useState(false);
+  const [menuOpen,     setMenuOpen]     = useState(false);
+  const [active,       setActive]       = useState("home");
+  const [scrollTarget, setScrollTarget] = useState(null);
 
   const location = useLocation();
   const navigate  = useNavigate();
@@ -31,6 +31,12 @@ export default function Navigation() {
 
   /* ── close on route change ── */
   useEffect(() => setMenuOpen(false), [location.pathname]);
+
+  /* ── lock body scroll when drawer open ── */
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
 
   /* ── scroll after navigate ── */
   useEffect(() => {
@@ -66,90 +72,172 @@ export default function Navigation() {
 
   return (
     <>
+      {/* ═══════════════════════════════════════
+          DESKTOP / LAPTOP NAV BAR
+      ═══════════════════════════════════════ */}
       <motion.nav
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.55, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-400 ${
-          menuOpen || scrolled
-            ? "bg-[#080810]/95 backdrop-blur-xl shadow-[0_1px_0_rgba(255,255,255,0.06)]"
+        initial={{ y: -90, opacity: 0 }}
+        animate={{ y: 0,   opacity: 1 }}
+        transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+          scrolled
+            ? "bg-[#06060f]/90 backdrop-blur-2xl shadow-[0_1px_40px_rgba(0,0,0,0.6),0_1px_0_rgba(232,184,75,0.08)]"
             : "bg-transparent"
         }`}
       >
-        <div className="container">
-          <div className="flex items-center justify-between h-[70px] md:h-[76px]">
+        {/* Top accent line */}
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#E8B84B]/40 to-transparent" />
 
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group shrink-0" onClick={() => scrollTo("home")}>
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
+          <div className="flex items-center justify-between h-[72px] md:h-[80px]">
+
+            {/* ── Logo ── */}
+            <Link
+              to="/"
+              onClick={() => scrollTo("home")}
+              className="flex items-center gap-3 group shrink-0 select-none"
+            >
               <div className="relative">
-                {/* Soft glow behind logo */}
-                <div className="absolute -inset-2 rounded-2xl bg-[#E8B84B]/15 blur-lg group-hover:bg-[#E8B84B]/30 transition-all duration-400" />
-                <img src={CrazyLogo} alt="Crazy Capture Studio Logo"
-                  className="relative w-13 h-13 md:w-[58px] md:h-[58px] object-contain rounded-xl drop-shadow-lg"
-                  style={{ width: '52px', height: '52px', minWidth: '52px' }}
-                  draggable={false} loading="eager"
+                <div className="absolute -inset-2 rounded-2xl bg-[#E8B84B]/10 blur-xl
+                                group-hover:bg-[#E8B84B]/25 transition-all duration-500" />
+                <img
+                  src={CrazyLogo}
+                  alt="Crazy Capture Studio"
+                  draggable={false}
+                  loading="eager"
+                  className="relative object-contain rounded-xl"
+                  style={{ width: 52, height: 52, minWidth: 52 }}
                 />
               </div>
               <div className="hidden sm:block leading-none">
-                <div className="text-white font-bold text-base tracking-tight">Crazy Capture</div>
-                <div className="text-[#E8B84B] text-[11px] font-light tracking-[0.2em] uppercase mt-0.5">Studio</div>
+                <div className="text-white font-bold text-[15px] tracking-tight">Crazy Capture</div>
+                <div
+                  className="text-[#E8B84B] text-[10px] font-light tracking-[0.25em] uppercase mt-0.5"
+                  style={{ fontVariant: "small-caps" }}
+                >
+                  Studio
+                </div>
               </div>
             </Link>
 
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center gap-1 lg:gap-2">
+            {/* ── Desktop Menu ── */}
+            <div className="hidden md:flex items-center gap-0.5 lg:gap-1">
               {NAV_ITEMS.map(({ id, label, icon: Icon }) => (
                 <button
                   key={id}
                   onClick={() => scrollTo(id)}
-                  className={`relative flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-full text-[13px] lg:text-sm font-medium transition-all duration-250 ${
-                    isActive(id)
-                      ? "text-[#E8B84B] bg-[#E8B84B]/10"
-                      : "text-white/70 hover:text-white hover:bg-white/5"
-                  }`}
+                  className="relative group flex items-center gap-2 px-4 lg:px-5 py-2.5 text-[13px] lg:text-[13.5px] font-medium transition-all duration-300 rounded-lg overflow-hidden"
                 >
-                  <Icon size={14} className="shrink-0" />
-                  {label}
+                  {/* Hover fill */}
+                  <span className="absolute inset-0 rounded-lg bg-white/0 group-hover:bg-white/[0.04] transition-all duration-300" />
+                  {/* Active fill */}
                   {isActive(id) && (
-                    <motion.div layoutId="nav-dot"
-                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#E8B84B]"
+                    <motion.span
+                      layoutId="nav-active-bg"
+                      className="absolute inset-0 rounded-lg bg-[#E8B84B]/10"
+                      transition={{ type: "spring", stiffness: 380, damping: 36 }}
+                    />
+                  )}
+                  <Icon
+                    size={13}
+                    className={`relative shrink-0 transition-colors duration-300 ${
+                      isActive(id) ? "text-[#E8B84B]" : "text-white/40 group-hover:text-white/70"
+                    }`}
+                  />
+                  <span className={`relative transition-colors duration-300 ${
+                    isActive(id) ? "text-[#E8B84B]" : "text-white/60 group-hover:text-white/90"
+                  }`}>
+                    {label}
+                  </span>
+                  {/* Bottom underline indicator */}
+                  {isActive(id) && (
+                    <motion.span
+                      layoutId="nav-underline"
+                      className="absolute bottom-0 left-3 right-3 h-[1.5px] rounded-full bg-[#E8B84B]/70"
+                      transition={{ type: "spring", stiffness: 380, damping: 36 }}
                     />
                   )}
                 </button>
               ))}
 
-              <Link to="/gallery"
+              {/* Gallery link */}
+              <Link
+                to="/gallery"
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className={`flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-full text-[13px] lg:text-sm font-medium transition-all duration-250 ${
-                  location.pathname === "/gallery"
-                    ? "text-[#E8B84B] bg-[#E8B84B]/10"
-                    : "text-white/70 hover:text-white hover:bg-white/5"
+                className={`relative group flex items-center gap-2 px-4 lg:px-5 py-2.5 text-[13px] lg:text-[13.5px] font-medium transition-all duration-300 rounded-lg overflow-hidden ${
+                  location.pathname === "/gallery" ? "text-[#E8B84B]" : "text-white/60 hover:text-white/90"
                 }`}
               >
-                <Image size={14} className="shrink-0" />
-                Gallery
+                <span className="absolute inset-0 rounded-lg bg-white/0 group-hover:bg-white/[0.04] transition-all duration-300" />
+                {location.pathname === "/gallery" && (
+                  <motion.span
+                    layoutId="nav-active-bg"
+                    className="absolute inset-0 rounded-lg bg-[#E8B84B]/10"
+                    transition={{ type: "spring", stiffness: 380, damping: 36 }}
+                  />
+                )}
+                <Image size={13} className={`relative shrink-0 transition-colors duration-300 ${
+                  location.pathname === "/gallery" ? "text-[#E8B84B]" : "text-white/40 group-hover:text-white/70"
+                }`} />
+                <span className="relative">Gallery</span>
+                {location.pathname === "/gallery" && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute bottom-0 left-3 right-3 h-[1.5px] rounded-full bg-[#E8B84B]/70"
+                    transition={{ type: "spring", stiffness: 380, damping: 36 }}
+                  />
+                )}
               </Link>
 
+              {/* Divider */}
+              <div className="w-px h-5 bg-white/10 mx-2" />
+
+              {/* Contact CTA */}
               <button
                 onClick={() => scrollTo("contact")}
-                className="btn btn-primary btn-sm ml-2 gap-1.5"
+                className="relative group flex items-center gap-2 px-5 py-2.5 rounded-lg overflow-hidden
+                           text-[13px] font-semibold text-[#0a0a14] transition-all duration-300"
               >
-                <PhoneCall size={13} />
-                Contact
+                {/* Gold gradient bg */}
+                <span className="absolute inset-0 bg-gradient-to-br from-[#f0c65a] via-[#E8B84B] to-[#c9912a]
+                                  group-hover:from-[#f5d06e] group-hover:via-[#f0c65a] group-hover:to-[#d4a030]
+                                  transition-all duration-300" />
+                {/* Shine sweep */}
+                <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500
+                                  bg-[linear-gradient(105deg,transparent_30%,rgba(255,255,255,0.25)_50%,transparent_70%)]" />
+                <PhoneCall size={13} className="relative shrink-0" />
+                <span className="relative">Contact</span>
               </button>
             </div>
 
-            {/* Mobile Toggle */}
+            {/* ── Mobile Hamburger ── */}
             <button
               onClick={() => setMenuOpen(p => !p)}
-              className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-full glass border border-white/10 text-white transition-all"
-              aria-label="Menu"
+              aria-label="Toggle menu"
+              className="md:hidden relative flex items-center justify-center w-10 h-10 rounded-xl
+                         bg-white/5 border border-white/10 text-white
+                         hover:bg-white/10 hover:border-white/20 transition-all duration-200"
             >
               <AnimatePresence mode="wait">
-                {menuOpen
-                  ? <motion.div key="x"  initial={{rotate:-90,opacity:0}} animate={{rotate:0,opacity:1}} exit={{rotate:90,opacity:0}} transition={{duration:0.2}}><X size={18}/></motion.div>
-                  : <motion.div key="m"  initial={{rotate:90,opacity:0}}  animate={{rotate:0,opacity:1}} exit={{rotate:-90,opacity:0}} transition={{duration:0.2}}><Menu size={18}/></motion.div>
-                }
+                {menuOpen ? (
+                  <motion.span key="x"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0,   opacity: 1 }}
+                    exit={{    rotate:  90, opacity: 0 }}
+                    transition={{ duration: 0.18 }}
+                  >
+                    <X size={18} />
+                  </motion.span>
+                ) : (
+                  <motion.span key="m"
+                    initial={{ rotate:  90, opacity: 0 }}
+                    animate={{ rotate:  0,  opacity: 1 }}
+                    exit={{    rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.18 }}
+                  >
+                    <Menu size={18} />
+                  </motion.span>
+                )}
               </AnimatePresence>
             </button>
 
@@ -157,83 +245,139 @@ export default function Navigation() {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
+      {/* ═══════════════════════════════════════
+          MOBILE DRAWER
+      ═══════════════════════════════════════ */}
       <AnimatePresence>
         {menuOpen && (
           <>
+            {/* Backdrop */}
             <motion.div
               key="overlay"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/70 z-[90] md:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{    opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-[90] md:hidden bg-black/75 backdrop-blur-sm"
               onClick={() => setMenuOpen(false)}
             />
+
+            {/* Drawer panel */}
             <motion.div
               key="drawer"
-              initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 320, damping: 34 }}
-              className="fixed top-0 right-0 bottom-0 w-[78vw] max-w-[320px] z-[95] md:hidden
-                         bg-[#0c0c18]/98 backdrop-blur-2xl border-l border-white/8 flex flex-col"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{    x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 32 }}
+              className="fixed top-0 right-0 bottom-0 z-[95] md:hidden
+                         w-[78vw] max-w-[300px]
+                         bg-[#0a0a14] flex flex-col"
             >
-              {/* Drawer Header */}
-              <div className="flex items-center justify-between p-5 border-b border-white/8">
+              {/* Inner gold left accent */}
+              <div className="absolute top-0 left-0 bottom-0 w-[2px]
+                              bg-gradient-to-b from-transparent via-[#E8B84B]/50 to-transparent" />
+
+              {/* ── Drawer Header ── */}
+              <div className="flex items-center justify-between px-5 py-4
+                              border-b border-white/[0.06]">
                 <div className="flex items-center gap-3">
-                  <img src={CrazyLogo} alt="Logo"
-                    className="object-contain rounded-xl drop-shadow-md"
-                    style={{ width: '46px', height: '46px', minWidth: '46px' }}
+                  <img
+                    src={CrazyLogo}
+                    alt="Logo"
+                    className="rounded-xl object-contain"
+                    style={{ width: 44, height: 44, minWidth: 44 }}
                   />
-                  <div>
-                    <div className="text-white font-bold text-sm">Crazy Capture</div>
-                    <div className="text-[#E8B84B] text-[10px] font-light tracking-widest uppercase mt-0.5">Studio</div>
+                  <div className="leading-none">
+                    <div className="text-white font-bold text-[13.5px] tracking-tight">
+                      Crazy Capture
+                    </div>
+                    <div className="text-[#E8B84B] text-[9px] font-light tracking-[0.28em] uppercase mt-1">
+                      Studio
+                    </div>
                   </div>
                 </div>
-                <button onClick={() => setMenuOpen(false)}
-                  className="w-8 h-8 rounded-full glass flex items-center justify-center text-white/60 hover:text-white"
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center justify-center w-8 h-8 rounded-lg
+                             bg-white/5 border border-white/10 text-white/50
+                             hover:text-white hover:bg-white/10 transition-all duration-200"
                 >
-                  <X size={16} />
+                  <X size={15} />
                 </button>
               </div>
 
-              {/* Drawer Links */}
-              <div className="flex-1 overflow-y-auto p-5 space-y-1">
+              {/* ── Drawer Nav Links ── */}
+              <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
                 {NAV_ITEMS.map(({ id, label, icon: Icon }, i) => (
                   <motion.button
                     key={id}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.06 }}
+                    initial={{ opacity: 0, x: 24 }}
+                    animate={{ opacity: 1, x: 0  }}
+                    transition={{ delay: i * 0.055, ease: "easeOut", duration: 0.3 }}
                     onClick={() => scrollTo(id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all ${
+                    className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-[13.5px] font-medium transition-all duration-200 ${
                       isActive(id)
-                        ? "bg-[#E8B84B]/15 text-[#E8B84B] border border-[#E8B84B]/20"
-                        : "text-white/70 hover:text-white hover:bg-white/5"
+                        ? "bg-[#E8B84B]/12 text-[#E8B84B] border border-[#E8B84B]/20"
+                        : "text-white/55 hover:text-white hover:bg-white/[0.05] border border-transparent"
                     }`}
                   >
-                    <Icon size={16} className="shrink-0" />
+                    <Icon
+                      size={15}
+                      className={`shrink-0 ${isActive(id) ? "text-[#E8B84B]" : "text-white/30"}`}
+                    />
                     {label}
+                    {isActive(id) && (
+                      <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#E8B84B]" />
+                    )}
                   </motion.button>
                 ))}
 
-                <Link to="/gallery"
-                  onClick={() => { setMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                  className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all ${
-                    location.pathname === "/gallery"
-                      ? "bg-[#E8B84B]/15 text-[#E8B84B] border border-[#E8B84B]/20"
-                      : "text-white/70 hover:text-white hover:bg-white/5"
-                  }`}
+                {/* Gallery link */}
+                <motion.div
+                  initial={{ opacity: 0, x: 24 }}
+                  animate={{ opacity: 1, x: 0  }}
+                  transition={{ delay: NAV_ITEMS.length * 0.055, ease: "easeOut", duration: 0.3 }}
                 >
-                  <Image size={16} className="shrink-0" />
-                  Gallery
-                </Link>
-              </div>
+                  <Link
+                    to="/gallery"
+                    onClick={() => { setMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-[13.5px] font-medium transition-all duration-200 ${
+                      location.pathname === "/gallery"
+                        ? "bg-[#E8B84B]/12 text-[#E8B84B] border border-[#E8B84B]/20"
+                        : "text-white/55 hover:text-white hover:bg-white/[0.05] border border-transparent"
+                    }`}
+                  >
+                    <Image
+                      size={15}
+                      className={`shrink-0 ${location.pathname === "/gallery" ? "text-[#E8B84B]" : "text-white/30"}`}
+                    />
+                    Gallery
+                    {location.pathname === "/gallery" && (
+                      <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#E8B84B]" />
+                    )}
+                  </Link>
+                </motion.div>
+              </nav>
 
-              {/* Drawer Footer */}
-              <div className="p-5 border-t border-white/8">
+              {/* ── Drawer Footer ── */}
+              <div className="px-4 pb-6 pt-3 border-t border-white/[0.06]">
+                {/* Studio tagline */}
+                <p className="text-white/25 text-[10.5px] text-center tracking-widest uppercase mb-3">
+                  Book Your Moment
+                </p>
                 <button
                   onClick={() => scrollTo("contact")}
-                  className="btn btn-primary w-full gap-2 justify-center"
+                  className="relative w-full flex items-center justify-center gap-2.5
+                             py-3.5 rounded-xl overflow-hidden
+                             text-[#0a0a14] text-[13.5px] font-bold tracking-wide
+                             transition-all duration-300 active:scale-[0.97]"
                 >
-                  <PhoneCall size={15} />
-                  Book a Session
+                  {/* Gold gradient */}
+                  <span className="absolute inset-0 bg-gradient-to-br from-[#f0c65a] via-[#E8B84B] to-[#c9912a]" />
+                  {/* Shine */}
+                  <span className="absolute inset-0 bg-[linear-gradient(105deg,transparent_35%,rgba(255,255,255,0.22)_50%,transparent_65%)]" />
+                  <PhoneCall size={15} className="relative shrink-0" />
+                  <span className="relative">Book a Session</span>
                 </button>
               </div>
             </motion.div>
@@ -242,4 +386,4 @@ export default function Navigation() {
       </AnimatePresence>
     </>
   );
-}
+              }
