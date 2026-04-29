@@ -19,7 +19,7 @@ export default function Navigation() {
   const [scrollTarget, setScrollTarget] = useState(null);
 
   const location = useLocation();
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
 
   /* ── scroll state ── */
   useEffect(() => {
@@ -73,17 +73,18 @@ export default function Navigation() {
   return (
     <>
       {/* ═══════════════════════════════════════
-          DESKTOP / LAPTOP NAV BAR
+          NAVBAR — hidden on mobile when drawer is open
       ═══════════════════════════════════════ */}
       <motion.nav
         initial={{ y: -90, opacity: 0 }}
-        animate={{ y: 0,   opacity: 1 }}
+        animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
-          scrolled
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500
+          ${menuOpen ? "md:block hidden" : "block"}
+          ${scrolled
             ? "bg-[#06060f]/90 backdrop-blur-2xl shadow-[0_1px_40px_rgba(0,0,0,0.6),0_1px_0_rgba(232,184,75,0.08)]"
             : "bg-transparent"
-        }`}
+          }`}
       >
         {/* Top accent line */}
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#E8B84B]/40 to-transparent" />
@@ -111,10 +112,7 @@ export default function Navigation() {
               </div>
               <div className="hidden sm:block leading-none">
                 <div className="text-white font-bold text-[15px] tracking-tight">Crazy Capture</div>
-                <div
-                  className="text-[#E8B84B] text-[10px] font-light tracking-[0.25em] uppercase mt-0.5"
-                  style={{ fontVariant: "small-caps" }}
-                >
+                <div className="text-[#E8B84B] text-[10px] font-light tracking-[0.25em] uppercase mt-0.5">
                   Studio
                 </div>
               </div>
@@ -126,11 +124,11 @@ export default function Navigation() {
                 <button
                   key={id}
                   onClick={() => scrollTo(id)}
-                  className="relative group flex items-center gap-2 px-4 lg:px-5 py-2.5 text-[13px] lg:text-[13.5px] font-medium transition-all duration-300 rounded-lg overflow-hidden"
+                  className="relative group flex items-center gap-2 px-4 lg:px-5 py-2.5
+                             text-[13px] lg:text-[13.5px] font-medium transition-all duration-300
+                             rounded-lg overflow-hidden"
                 >
-                  {/* Hover fill */}
                   <span className="absolute inset-0 rounded-lg bg-white/0 group-hover:bg-white/[0.04] transition-all duration-300" />
-                  {/* Active fill */}
                   {isActive(id) && (
                     <motion.span
                       layoutId="nav-active-bg"
@@ -138,18 +136,14 @@ export default function Navigation() {
                       transition={{ type: "spring", stiffness: 380, damping: 36 }}
                     />
                   )}
-                  <Icon
-                    size={13}
-                    className={`relative shrink-0 transition-colors duration-300 ${
-                      isActive(id) ? "text-[#E8B84B]" : "text-white/40 group-hover:text-white/70"
-                    }`}
-                  />
+                  <Icon size={13} className={`relative shrink-0 transition-colors duration-300 ${
+                    isActive(id) ? "text-[#E8B84B]" : "text-white/40 group-hover:text-white/70"
+                  }`} />
                   <span className={`relative transition-colors duration-300 ${
                     isActive(id) ? "text-[#E8B84B]" : "text-white/60 group-hover:text-white/90"
                   }`}>
                     {label}
                   </span>
-                  {/* Bottom underline indicator */}
                   {isActive(id) && (
                     <motion.span
                       layoutId="nav-underline"
@@ -160,13 +154,17 @@ export default function Navigation() {
                 </button>
               ))}
 
-              {/* Gallery link */}
+              {/* Gallery */}
               <Link
                 to="/gallery"
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className={`relative group flex items-center gap-2 px-4 lg:px-5 py-2.5 text-[13px] lg:text-[13.5px] font-medium transition-all duration-300 rounded-lg overflow-hidden ${
-                  location.pathname === "/gallery" ? "text-[#E8B84B]" : "text-white/60 hover:text-white/90"
-                }`}
+                className={`relative group flex items-center gap-2 px-4 lg:px-5 py-2.5
+                            text-[13px] lg:text-[13.5px] font-medium transition-all duration-300
+                            rounded-lg overflow-hidden ${
+                              location.pathname === "/gallery"
+                                ? "text-[#E8B84B]"
+                                : "text-white/60 hover:text-white/90"
+                            }`}
               >
                 <span className="absolute inset-0 rounded-lg bg-white/0 group-hover:bg-white/[0.04] transition-all duration-300" />
                 {location.pathname === "/gallery" && (
@@ -198,11 +196,9 @@ export default function Navigation() {
                 className="relative group flex items-center gap-2 px-5 py-2.5 rounded-lg overflow-hidden
                            text-[13px] font-semibold text-[#0a0a14] transition-all duration-300"
               >
-                {/* Gold gradient bg */}
                 <span className="absolute inset-0 bg-gradient-to-br from-[#f0c65a] via-[#E8B84B] to-[#c9912a]
                                   group-hover:from-[#f5d06e] group-hover:via-[#f0c65a] group-hover:to-[#d4a030]
                                   transition-all duration-300" />
-                {/* Shine sweep */}
                 <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500
                                   bg-[linear-gradient(105deg,transparent_30%,rgba(255,255,255,0.25)_50%,transparent_70%)]" />
                 <PhoneCall size={13} className="relative shrink-0" />
@@ -210,35 +206,15 @@ export default function Navigation() {
               </button>
             </div>
 
-            {/* ── Mobile Hamburger ── */}
+            {/* ── Mobile Hamburger — only when drawer closed ── */}
             <button
-              onClick={() => setMenuOpen(p => !p)}
-              aria-label="Toggle menu"
-              className="md:hidden relative flex items-center justify-center w-10 h-10 rounded-xl
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
+              className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl
                          bg-white/5 border border-white/10 text-white
                          hover:bg-white/10 hover:border-white/20 transition-all duration-200"
             >
-              <AnimatePresence mode="wait">
-                {menuOpen ? (
-                  <motion.span key="x"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0,   opacity: 1 }}
-                    exit={{    rotate:  90, opacity: 0 }}
-                    transition={{ duration: 0.18 }}
-                  >
-                    <X size={18} />
-                  </motion.span>
-                ) : (
-                  <motion.span key="m"
-                    initial={{ rotate:  90, opacity: 0 }}
-                    animate={{ rotate:  0,  opacity: 1 }}
-                    exit={{    rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.18 }}
-                  >
-                    <Menu size={18} />
-                  </motion.span>
-                )}
-              </AnimatePresence>
+              <Menu size={18} />
             </button>
 
           </div>
@@ -246,7 +222,7 @@ export default function Navigation() {
       </motion.nav>
 
       {/* ═══════════════════════════════════════
-          MOBILE DRAWER
+          MOBILE DRAWER — completely standalone
       ═══════════════════════════════════════ */}
       <AnimatePresence>
         {menuOpen && (
@@ -256,9 +232,9 @@ export default function Navigation() {
               key="overlay"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{    opacity: 0 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-[90] md:hidden bg-black/75 backdrop-blur-sm"
+              className="fixed inset-0 z-[110] md:hidden bg-black/80 backdrop-blur-sm"
               onClick={() => setMenuOpen(false)}
             />
 
@@ -267,64 +243,61 @@ export default function Navigation() {
               key="drawer"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
-              exit={{    x: "100%" }}
+              exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 32 }}
-              className="fixed top-0 right-0 bottom-0 z-[95] md:hidden
-                         w-[78vw] max-w-[300px]
-                         bg-[#0a0a14] flex flex-col"
+              className="fixed top-0 right-0 bottom-0 z-[120] md:hidden
+                         w-[78vw] max-w-[300px] bg-[#0a0a14] flex flex-col"
             >
-              {/* Inner gold left accent */}
-              <div className="absolute top-0 left-0 bottom-0 w-[2px]
+              {/* Gold left accent stripe */}
+              <div className="absolute top-0 left-0 bottom-0 w-[2px] pointer-events-none
                               bg-gradient-to-b from-transparent via-[#E8B84B]/50 to-transparent" />
 
-              {/* ── Drawer Header ── */}
-              <div className="flex items-center justify-between px-5 py-4
-                              border-b border-white/[0.06]">
+              {/* ── Header — logo + close only ── */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
                 <div className="flex items-center gap-3">
                   <img
                     src={CrazyLogo}
-                    alt="Logo"
+                    alt="Crazy Capture Studio"
                     className="rounded-xl object-contain"
                     style={{ width: 44, height: 44, minWidth: 44 }}
                   />
                   <div className="leading-none">
-                    <div className="text-white font-bold text-[13.5px] tracking-tight">
-                      Crazy Capture
-                    </div>
+                    <div className="text-white font-bold text-[13.5px] tracking-tight">Crazy Capture</div>
                     <div className="text-[#E8B84B] text-[9px] font-light tracking-[0.28em] uppercase mt-1">
                       Studio
                     </div>
                   </div>
                 </div>
+
+                {/* Close button */}
                 <button
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center justify-center w-8 h-8 rounded-lg
+                  aria-label="Close menu"
+                  className="flex items-center justify-center w-9 h-9 rounded-xl
                              bg-white/5 border border-white/10 text-white/50
                              hover:text-white hover:bg-white/10 transition-all duration-200"
                 >
-                  <X size={15} />
+                  <X size={16} />
                 </button>
               </div>
 
-              {/* ── Drawer Nav Links ── */}
+              {/* ── Nav Links ── */}
               <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
                 {NAV_ITEMS.map(({ id, label, icon: Icon }, i) => (
                   <motion.button
                     key={id}
                     initial={{ opacity: 0, x: 24 }}
-                    animate={{ opacity: 1, x: 0  }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.055, ease: "easeOut", duration: 0.3 }}
                     onClick={() => scrollTo(id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-[13.5px] font-medium transition-all duration-200 ${
+                    className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl
+                                text-[13.5px] font-medium transition-all duration-200 ${
                       isActive(id)
-                        ? "bg-[#E8B84B]/12 text-[#E8B84B] border border-[#E8B84B]/20"
+                        ? "bg-[#E8B84B]/[0.12] text-[#E8B84B] border border-[#E8B84B]/20"
                         : "text-white/55 hover:text-white hover:bg-white/[0.05] border border-transparent"
                     }`}
                   >
-                    <Icon
-                      size={15}
-                      className={`shrink-0 ${isActive(id) ? "text-[#E8B84B]" : "text-white/30"}`}
-                    />
+                    <Icon size={15} className={`shrink-0 ${isActive(id) ? "text-[#E8B84B]" : "text-white/30"}`} />
                     {label}
                     {isActive(id) && (
                       <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#E8B84B]" />
@@ -332,25 +305,25 @@ export default function Navigation() {
                   </motion.button>
                 ))}
 
-                {/* Gallery link */}
+                {/* Gallery */}
                 <motion.div
                   initial={{ opacity: 0, x: 24 }}
-                  animate={{ opacity: 1, x: 0  }}
+                  animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: NAV_ITEMS.length * 0.055, ease: "easeOut", duration: 0.3 }}
                 >
                   <Link
                     to="/gallery"
                     onClick={() => { setMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                    className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-[13.5px] font-medium transition-all duration-200 ${
+                    className={`flex items-center gap-3 px-4 py-3.5 rounded-xl
+                                text-[13.5px] font-medium transition-all duration-200 ${
                       location.pathname === "/gallery"
-                        ? "bg-[#E8B84B]/12 text-[#E8B84B] border border-[#E8B84B]/20"
+                        ? "bg-[#E8B84B]/[0.12] text-[#E8B84B] border border-[#E8B84B]/20"
                         : "text-white/55 hover:text-white hover:bg-white/[0.05] border border-transparent"
                     }`}
                   >
-                    <Image
-                      size={15}
-                      className={`shrink-0 ${location.pathname === "/gallery" ? "text-[#E8B84B]" : "text-white/30"}`}
-                    />
+                    <Image size={15} className={`shrink-0 ${
+                      location.pathname === "/gallery" ? "text-[#E8B84B]" : "text-white/30"
+                    }`} />
                     Gallery
                     {location.pathname === "/gallery" && (
                       <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#E8B84B]" />
@@ -359,9 +332,8 @@ export default function Navigation() {
                 </motion.div>
               </nav>
 
-              {/* ── Drawer Footer ── */}
+              {/* ── Footer ── */}
               <div className="px-4 pb-6 pt-3 border-t border-white/[0.06]">
-                {/* Studio tagline */}
                 <p className="text-white/25 text-[10.5px] text-center tracking-widest uppercase mb-3">
                   Book Your Moment
                 </p>
@@ -372,9 +344,7 @@ export default function Navigation() {
                              text-[#0a0a14] text-[13.5px] font-bold tracking-wide
                              transition-all duration-300 active:scale-[0.97]"
                 >
-                  {/* Gold gradient */}
                   <span className="absolute inset-0 bg-gradient-to-br from-[#f0c65a] via-[#E8B84B] to-[#c9912a]" />
-                  {/* Shine */}
                   <span className="absolute inset-0 bg-[linear-gradient(105deg,transparent_35%,rgba(255,255,255,0.22)_50%,transparent_65%)]" />
                   <PhoneCall size={15} className="relative shrink-0" />
                   <span className="relative">Book a Session</span>
@@ -386,4 +356,4 @@ export default function Navigation() {
       </AnimatePresence>
     </>
   );
-              }
+}
