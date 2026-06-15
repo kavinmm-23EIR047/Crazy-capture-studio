@@ -70,7 +70,7 @@ export default function AboutSection() {
   const videoRef1 = useRef(null);
   const videoRef2 = useRef(null);
   const statsRef  = useRef(null);
-  const statsInView = useInView(statsRef, { once: true, margin: "-80px" });
+  const statsInView = useInView(statsRef, { once: true, margin: "-81px" });
 
   useEffect(() => {
     const makeObs = (ref, onPlay, onPause) =>
