@@ -152,13 +152,6 @@ export default function HeroSection() {
             View Portfolio
           </button>
           <button
-            onClick={() => document.getElementById("studio-box")?.scrollIntoView({ behavior: "smooth" })}
-            className="btn btn-primary btn-sm sm:btn-lg gap-2 animate-pulse"
-          >
-            <Camera size={16} />
-            Studio Box
-          </button>
-          <button
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             className="btn btn-secondary btn-sm sm:btn-lg"
             style={{ borderColor: "rgba(232,184,75,0.5)", color: "#E8B84B" }}

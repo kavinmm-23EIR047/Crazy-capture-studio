@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -7,29 +7,26 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const TESTIMONIALS = [
+  { id: 0, rating: 5, comment: "👌", description: "Arunkumar", image: "A", date: "2023-06-24 22:56:27" },
+  { id: 1, rating: 5, comment: "Best in Town", description: "ajith a", image: "A", date: "2023-01-04 8:30:54" },
+  { id: 2, rating: 4, comment: "Nice shots, really professional work 👏", description: "DSLR Vignesh", image: "D", date: "2021-11-19 19:21:37" },
+  { id: 3, rating: 5, comment: "Creativity level vera maari! 🔥🔥", description: "MANIPRAKASH K", image: "M", date: "2021-11-19 15:35:00" },
+  { id: 4, rating: 5, comment: "Creativity level vera maari! 🔥🔥", description: "siva photography", image: "S", date: "2021-11-19 15:19:54" },
+  { id: 5, rating: 5, comment: "Quality work and super friendly team 👍", description: "Ramnath R", image: "R", date: "2021-11-19 15:01:51" },
+  { id: 6, rating: 5, comment: "Superb lighting & angles, mass clicks 😍", description: "SHEIK", image: "S", date: "2021-11-19 14:12:48" },
+  { id: 7, rating: 5, comment: "Every click tells a story ❤️", description: "ramees farith", image: "R", date: "2021-11-19 14:07:11" },
+  { id: 8, rating: 5, comment: "Best photography agency around 👑", description: "sabarizz M", image: "S", date: "2021-11-19 13:55:23" },
+  { id: 9, rating: 5, comment: "Best agency in Tiruppur, no doubt! 👑", description: "Naveen Navi", image: "N", date: "2021-11-19 13:47:13" },
+];
 
 export default function TestimonialsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const [testimonials, setTestimonials] = useState([]);
-  const [avgRating, setAvgRating]       = useState(0);
+  const testimonials = TESTIMONIALS;
+  const avgRating = (testimonials.reduce((total, review) => total + review.rating, 0) / testimonials.length).toFixed(1);
   const [prevEl, setPrevEl] = useState(null);
   const [nextEl, setNextEl] = useState(null);
-
-  useEffect(() => {
-    fetch(`${VITE_BACKEND_URL}/api/feedback`)
-      .then(r => r.json())
-      .then(data => {
-        const reviews = data.reviews || [];
-        setTestimonials(reviews);
-        if (reviews.length) {
-          const total = reviews.reduce((s, r) => s + parseFloat(r.rating || 0), 0);
-          setAvgRating((total / reviews.length).toFixed(1));
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   return (
     <section id="reviews" className="section bg-transparent" ref={ref}>

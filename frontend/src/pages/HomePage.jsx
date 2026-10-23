@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import HeroSection        from '../components/HeroSection';
 import AboutSection       from '../components/AboutSection';
 import ServicesSection    from '../components/ServicesSection';
-import StudioBoxSection   from '../components/StudioBoxSection';
 import GalleryPreview     from '../components/GalleryPreview';
 import TestimonialsSection from '../components/TestimonialsSection';
 import ContactSection     from '../components/ContactSection';
@@ -20,7 +19,6 @@ export default function HomePage() {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
-      <StudioBoxSection />
       <GalleryPreview />
       <TestimonialsSection />
       <ContactSection />

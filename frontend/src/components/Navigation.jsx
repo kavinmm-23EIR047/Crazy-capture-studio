@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, Home, User, Camera, Star, Image, PhoneCall, Aperture } from "lucide-react";
+import { Menu, X, Home, User, Camera, Star, Image, PhoneCall } from "lucide-react";
 import CrazyLogo from "../assets/Crazylogo.png";
 
 const NAV_ITEMS = [
   { id: "home",       label: "Home",      icon: Home },
   { id: "about",      label: "About",     icon: User },
   { id: "services",   label: "Services",  icon: Camera },
-  { id: "studio-box", label: "Studio 📸", icon: Aperture },
   { id: "reviews",    label: "Reviews",   icon: Star },
 ];
 
