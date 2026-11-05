@@ -230,7 +230,7 @@ export default function FooterSection() {
             <span className="text-white/20">Designed by</span>
 
             <a
-              href="https://akwebflairtechnologies.vercel.app/"
+              href="https://www.akwebflairtechnologies.in/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#E8B84B]/70 hover:text-[#E8B84B] underline"
